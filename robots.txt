@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Publish the site first, then replace YOUR_DOMAIN with the real public hostname.
+Sitemap: https://YOUR_DOMAIN/sitemap.xml
