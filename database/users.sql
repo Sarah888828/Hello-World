@@ -1,4 +1,4 @@
--- 회원가입 화면용 SQLite 스키마 초안입니다.
+-- 회원가입 화면용 SQLite 스키마 초안입니다 (회원가입 페이지는 현재 백엔드와 연결되지 않음).
 -- 서버/DB에 자동 적용되지 않습니다. 적용 전 개인정보 처리·보안 정책을 검토하세요.
 -- 비밀번호 원문은 저장하지 말고, 서버에서 Argon2id 또는 bcrypt로 해시한 값을 넣으세요.
 
@@ -10,9 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
     CHECK (length(trim(email)) BETWEEN 3 AND 254),
   password_hash TEXT NOT NULL,
   gender TEXT NOT NULL
-    CHECK (gender IN ('female', 'male', 'other', 'undisclosed')),
-  home_address TEXT NOT NULL
-    CHECK (length(trim(home_address)) BETWEEN 1 AND 500),
+    CHECK (gender IN ('female', 'male')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   deleted_at TEXT DEFAULT NULL

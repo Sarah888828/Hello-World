@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#10110f" />
-    <meta name="description" content="불당 주차 회원가입 화면 시안입니다. 닉네임, 이메일, 성별, 집주소 정보를 입력하는 정적 페이지입니다." />
+    <meta name="description" content="불당 주차 회원가입 화면 시안입니다. 닉네임, 이메일, 비밀번호와 성별을 입력하는 정적 페이지입니다." />
     <meta property="og:title" content="회원가입 | 불당 주차" />
     <meta property="og:description" content="불당 주차 회원가입 화면을 확인하세요." />
     <meta property="og:type" content="website" />
@@ -43,10 +43,7 @@
             <legend>성별 <b aria-hidden="true">*</b></legend>
             <label><input type="radio" name="gender" value="female" required /><span>여성</span></label>
             <label><input type="radio" name="gender" value="male" /><span>남성</span></label>
-            <label><input type="radio" name="gender" value="other" /><span>기타</span></label>
-            <label><input type="radio" name="gender" value="undisclosed" /><span>선택 안 함</span></label>
           </fieldset>
-          <label class="form-field" for="signup-address"><span>집주소 <b aria-hidden="true">*</b></span><input id="signup-address" name="address" type="text" maxlength="200" placeholder="도로명 주소를 입력해 주세요" autocomplete="street-address" required /></label>
           <label class="account-terms"><input type="checkbox" name="terms" required /><span>이용약관 및 개인정보 안내를 확인했습니다. <b aria-hidden="true">*</b></span></label>
           <button class="account-submit" type="button" disabled>가입하기 <span aria-hidden="true">→</span></button>
         </form>
