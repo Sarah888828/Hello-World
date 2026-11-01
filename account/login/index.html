@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10110f" />
+    <meta name="description" content="불당 주차 로그인 화면 시안입니다. 인증 기능은 아직 연결되지 않았습니다." />
+    <meta property="og:title" content="로그인 | 불당 주차" />
+    <meta property="og:description" content="불당 주차 로그인 화면을 확인하세요." />
+    <meta property="og:type" content="website" />
+    <title>로그인 | 불당 주차</title>
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="../../" aria-label="불당 주차 메인"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a>
+      <nav class="topnav" aria-label="주 메뉴">
+        <a class="nav-link" href="../../#parking-list">주차장 찾기</a>
+        <a class="nav-link" href="../../board/">문의 게시판</a>
+        <a class="nav-link active" href="./" aria-current="page">로그인</a>
+        <a class="nav-link" href="../signup/">회원가입</a>
+      </nav>
+      <a class="location-pill" href="https://map.naver.com/p/search/천안%20불당동%20공영주차장" target="_blank" rel="noreferrer"><span class="location-dot" aria-hidden="true"></span> 천안시 불당동</a>
+    </header>
+
+    <main class="account-page account-login-page">
+      <a class="detail-back" href="../../"><span aria-hidden="true">←</span> 메인으로</a>
+      <section class="account-card" aria-labelledby="login-title">
+        <div class="account-heading">
+          <span class="account-mark" aria-hidden="true">P</span>
+          <p class="section-kicker">WELCOME BACK</p>
+          <h1 id="login-title">로그인</h1>
+          <p>불당 주차 계정으로 계속 이용해 보세요.</p>
+        </div>
+        <div class="account-demo-notice" role="note"><strong>화면 시안</strong> — 인증 서버가 연결되어 있지 않습니다. 계정 정보는 입력하거나 전송하지 마세요.</div>
+        <form class="account-form" action="#" method="get">
+          <label class="form-field" for="login-email"><span>이메일 주소</span><input id="login-email" name="email" type="email" placeholder="name@example.com" autocomplete="email" /></label>
+          <label class="form-field" for="login-password"><span>비밀번호</span><input id="login-password" name="password" type="password" placeholder="비밀번호를 입력해 주세요" autocomplete="current-password" /></label>
+          <button class="account-submit" type="button" disabled>로그인 <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="account-switch">아직 계정이 없으신가요? <a href="../signup/">회원가입</a></p>
+      </section>
+    </main>
+
+    <footer class="footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>로그인 화면 시안 · 인증 기능은 연결되지 않았습니다.</p><a href="../../#home" class="to-top">메인으로 ↑</a></footer>
+  </body>
+</html>

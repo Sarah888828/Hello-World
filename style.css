@@ -295,6 +295,36 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .static-compose-form input:disabled, .static-compose-form select:disabled, .static-compose-form textarea:disabled { cursor: not-allowed; opacity: .68; }
 .static-compose-form .submit-inquiry:disabled { cursor: not-allowed; opacity: .45; transform: none; }
 .static-compose-note { margin: -4px 0 0; color: #9a998f; font-size: 9px; line-height: 1.7; }
+.account-page { width: min(100% - 40px, 520px); min-height: calc(100vh - 148px); margin: 0 auto; padding: 37px 0 58px; }
+.account-page > .detail-back { margin: 0 0 21px; }
+.account-card { padding: 30px; border: 1px solid #363731; border-radius: 6px; background: linear-gradient(155deg, #1d1e1a, #171815); box-shadow: 0 16px 44px rgb(0 0 0 / 23%); }
+.account-heading { display: grid; justify-items: center; margin-bottom: 22px; text-align: center; }
+.account-mark { display: grid; width: 42px; height: 42px; margin-bottom: 14px; place-items: center; border: 1px solid #555b42; border-radius: 14px; background: #292b22; color: #d4e19f; font-size: 18px; font-weight: 800; }
+.account-heading h1 { margin: 8px 0 5px; color: #f2f1eb; font-size: 26px; letter-spacing: -1px; }
+.account-heading > p:last-child { margin: 0; color: #a8a79d; font-size: 10px; line-height: 1.7; }
+.account-demo-notice { margin-bottom: 20px; padding: 11px 13px; border: 1px solid #454538; border-radius: 4px; background: #24241d; color: #c2c0b3; font-size: 9px; line-height: 1.75; }
+.account-demo-notice strong { color: #e2e7c8; }
+.account-form { display: grid; gap: 14px; }
+.account-form .form-field { margin: 0; }
+.account-gender { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin: 0; padding: 0; border: 0; }
+.account-gender legend { margin-bottom: 8px; color: #d9d8cd; font-size: 10px; font-weight: 600; }
+.account-gender legend b { color: #d7e49f; }
+.account-gender label { position: relative; cursor: pointer; }
+.account-gender input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.account-gender label span { display: grid; min-height: 37px; padding: 5px; place-items: center; border: 1px solid #3c3d36; border-radius: 3px; background: #141512; color: #bdbbb0; font-size: 9px; transition: border-color .18s, background .18s, color .18s; }
+.account-gender input:checked + span { border-color: #9aa679; background: #2b2e23; color: #e3ecc7; }
+.account-gender input:focus-visible + span { outline: 2px solid #d4e19f; outline-offset: 2px; }
+.account-terms { display: flex; align-items: flex-start; gap: 8px; color: #b8b6aa; font-size: 9px; line-height: 1.6; cursor: pointer; }
+.account-terms input { width: 14px; height: 14px; flex: 0 0 auto; margin: 1px 0 0; accent-color: #d4e19f; }
+.account-terms b { color: #d7e49f; }
+.account-submit { display: flex; width: 100%; min-height: 43px; align-items: center; justify-content: center; gap: 11px; margin-top: 3px; border: 0; border-radius: 3px; background: #d4e19f; color: #171812; font-size: 10px; font-weight: 700; }
+.account-submit:disabled { cursor: not-allowed; opacity: .46; }
+.account-submit span { font-size: 14px; }
+.account-switch { margin: 18px 0 0; color: #a8a79d; font-size: 9px; text-align: center; }
+.account-switch a { margin-left: 5px; color: #dce5bd; font-weight: 700; text-decoration: underline; text-decoration-color: #61694d; text-underline-offset: 3px; }
+.account-switch a:hover { color: #f0f5d5; }
+.account-login-page .account-card { margin-top: 35px; }
+.account-login-page .account-form { gap: 16px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
 
 /* Dark-theme text and contrast overrides. */
@@ -382,6 +412,10 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .static-board, .static-compose { padding: 17px; }
   .static-post { grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 14px 0; }
   .static-post-main h3 { font-size: 11px; }
+  .account-page { width: calc(100% - 32px); padding-top: 25px; }
+  .account-card { padding: 21px 17px; }
+  .account-gender { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .account-login-page .account-card { margin-top: 20px; }
   .section-subtitle { max-width: 230px; font-size: 9px; line-height: 1.65; }
   .sort-control { gap: 5px; padding: 0 7px; }
   .filter-row { gap: 6px; margin-top: 17px; }
