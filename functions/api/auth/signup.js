@@ -1,5 +1,6 @@
 const encoder = new TextEncoder();
-const ITERATIONS = 310_000;
+// Cloudflare Workers Web Crypto currently supports at most 100,000 PBKDF2 iterations.
+const ITERATIONS = 100_000;
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -68,7 +69,8 @@ export async function onRequestPost({ request, env }) {
     return json({ user }, 201);
   } catch (error) {
     console.error("Signup failed:", error);
-    if (/unique constraint/i.test(error?.message || "")) {
+    const message = String(error?.message || "");
+    if (/unique|constraint/i.test(message)) {
       return json({ error: "이미 사용 중인 이메일 또는 닉네임입니다." }, 409);
     }
     return json({ error: "회원가입을 처리하지 못했습니다." }, 500);
