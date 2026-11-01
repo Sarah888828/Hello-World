@@ -1,6 +1,6 @@
 # 불당 주차 — 천안 불당동 공영주차장 안내
 
-천안 불당동에 있는 공영주차장 정보를 찾아볼 수 있는 정적 웹사이트입니다. HTML, CSS, 순수 JavaScript로 만들었고 별도의 프레임워크나 빌드 과정 없이 브라우저에서 실행할 수 있습니다.
+천안 불당동 공영주차장 정보를 제공하는 HTML·CSS·JavaScript 사이트입니다. Node.js 서버는 게시판 문의를 SQLite 데이터베이스에 저장합니다.
 
 ## 사이트에서 할 수 있는 일
 
@@ -9,6 +9,7 @@
 - 각 주차장의 상세 페이지에서 주소, 주차 면수, 운영 정보와 지도 길찾기를 확인합니다.
 - 공식 현황에 등록된 전기차 충전기 수량과 확인 가능한 급속 충전기 정보를 살펴봅니다.
 - 불당 제5주차장 상세 페이지에서 현장 사진과 사진 출처를 확인합니다.
+- 문의 게시판에서 문의를 작성하고 SQLite에 저장·조회합니다.
 
 주차장 운영 정보와 충전 정보는 바뀔 수 있습니다. 충전요금은 회원 또는 결제 방식에 따라 다를 수 있으므로 방문 전 공식 안내나 현장에서 확인해 주세요.
 
@@ -18,6 +19,9 @@
 index.html                      메인 페이지
 style.css                       공통 디자인과 반응형 스타일
 script.js                       검색, 정렬, 목록 및 상세 정보 표시
+server.mjs                      웹 서버, 문의 API와 SQLite 연결
+package.json                    Node.js 실행 설정
+.gitignore                      로컬 SQLite 데이터 파일 제외
 buldang-public-parking.jpg      불당 제5주차장 사진
 robots.txt                      검색 로봇 접근 안내
 sitemap.xml                     검색엔진용 페이지 목록
@@ -27,27 +31,28 @@ parking/
   buldang-3/index.html          불당 제3주차장 상세
   buldang-4/index.html          불당 제4주차장 상세
   buldang-5/index.html          불당 제5주차장 상세
+board/
+  index.html                    문의 게시판 페이지
+  board.js                      문의 등록·목록 조회 API 연결
+data/
+  inquiries.sqlite              실행 시 자동 생성되는 데이터베이스
 ```
 
-## 로컬에서 보기
+## SQLite와 사이트 실행
 
-`index.html`을 브라우저에서 열면 메인 페이지를 볼 수 있습니다. 상세 페이지는 각 주차장 폴더 안의 `index.html`을 열거나, 웹 서버를 실행한 다음 아래 경로로 접속하면 됩니다.
-
-```text
-/parking/buldang-public/index.html
-/parking/buldang-2/index.html
-/parking/buldang-3/index.html
-/parking/buldang-4/index.html
-/parking/buldang-5/index.html
-```
-
-예를 들어, Node.js가 설치된 컴퓨터에서 PowerShell 또는 터미널로 프로젝트 폴더에 이동한 후 다음 명령을 실행하면 로컬 웹 서버를 열 수 있습니다.
+Node.js 22.13 이상이 필요합니다. 프로젝트 폴더에서 서버를 실행하세요.
 
 ```powershell
-npx --yes http-server .
+npm start
 ```
 
-표시된 로컬 주소(예: `http://localhost:8080`)를 브라우저에 입력하세요. `npx` 사용이 어렵다면 정적 파일 호스팅 서비스에 폴더 내용을 업로드하면 됩니다.
+브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `http://127.0.0.1:8780/board/`를 열면 문의 게시판을 볼 수 있습니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다.
+
+```powershell
+$env:PORT=8781; npm start
+```
+
+위 예시는 포트를 8781로 바꿔 실행합니다. SQLite는 Node.js 내장 `node:sqlite` 모듈을 사용하므로 별도 DB 서버나 npm 패키지를 설치할 필요가 없습니다.
 
 ## 데이터와 출처
 
@@ -69,4 +74,6 @@ npx --yes http-server .
 3. 사이트 루트에 `robots.txt`, `sitemap.xml`, `index.html`, `style.css`, `script.js`, 이미지 파일과 `parking/` 폴더를 함께 배포합니다.
 4. 배포 후 `https://실제도메인/robots.txt`와 `https://실제도메인/sitemap.xml`이 열리는지 확인하고, 필요하면 사이트맵을 검색엔진에 제출합니다.
 
-`YOUR_DOMAIN`을 실제 주소로 바꾸기 전에는 `robots.txt`와 사이트맵을 검색엔진 제출용으로 사용할 수 없습니다. 이 저장소에는 아직 도메인 이름, 자동 빌드, 분석 도구 또는 실시간 주차·충전 API가 설정되어 있지 않습니다.
+문의 데이터는 `inquiries` 단일 테이블에 저장됩니다. 비공개 표시는 일반 문의 목록 응답에서 본문을 제외하지만 관리자 인증·비공개 관리자 조회 화면은 아직 없습니다. 서버는 기본적으로 `127.0.0.1`에만 바인딩됩니다. 공개 운영 전에는 인증, 스팸 방지, 개인정보 보유·삭제 정책, HTTPS, 원격 접근이 가능한 Node.js 호스팅과 데이터베이스 백업을 구성해야 합니다. SQLite 파일(`data/*.sqlite`)은 Git에서 제외됩니다. Cloudflare Pages 같은 정적 호스팅에서는 Node API를 실행할 수 없습니다.
+
+`YOUR_DOMAIN`을 실제 주소로 바꾸기 전에는 `robots.txt`와 사이트맵을 검색엔진 제출용으로 사용할 수 없습니다. 실시간 주차 현황·충전소 API는 연결되어 있지 않습니다.

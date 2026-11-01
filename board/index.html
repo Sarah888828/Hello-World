@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10110f" />
+    <meta name="description" content="천안 불당동 공영주차장 이용 문의를 작성하고 SQLite에 저장된 문의 목록을 확인하세요." />
+    <meta property="og:title" content="문의 게시판 | 불당 주차" />
+    <meta property="og:description" content="불당동 공영주차장 이용 문의와 안내를 확인하세요." />
+    <meta property="og:type" content="website" />
+    <title>문의 게시판 | 불당 주차</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../style.css" />
+    <script src="board.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="../" aria-label="불당 주차 메인"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a>
+      <nav class="topnav" aria-label="주 메뉴">
+        <a class="nav-link" href="../#parking-list">주차장 찾기</a>
+        <a class="nav-link" href="../#guide">이용 안내</a>
+        <a class="nav-link active" href="./" aria-current="page">문의 게시판</a>
+      </nav>
+      <a class="location-pill" href="https://map.naver.com/p/search/천안%20불당동%20공영주차장" target="_blank" rel="noreferrer"><span class="location-dot" aria-hidden="true"></span> 천안시 불당동</a>
+    </header>
+
+    <main class="board-page">
+      <section class="board-heading" aria-labelledby="board-title">
+        <a class="detail-back" href="../#home"><span aria-hidden="true">←</span> 메인으로 돌아가기</a>
+        <p class="section-kicker">COMMUNITY · BULDANG PARKING</p>
+        <h1 id="board-title" class="board-title">불당 주차<br /><span>문의 게시판</span></h1>
+        <p class="board-intro">주차장 이용에 관한 자주 묻는 질문을 확인하고 문의를 남겨 주세요.</p>
+      </section>
+
+      <section class="board-notice" aria-label="게시판 안내">
+        <span class="board-notice-icon" aria-hidden="true">ⓘ</span>
+        <p><strong>문의는 SQLite 데이터베이스에 저장됩니다.</strong> 비공개 표시는 목록에서 내용 미리보기만 숨기며 관리자 인증 기능은 아직 없습니다. 전화번호, 차량번호 등 민감한 개인정보는 입력하지 마세요. 공식 주차 정보는 <a href="https://www.cauc.or.kr/_parking/main.asp?no=1" target="_blank" rel="noreferrer">천안도시공사 공영주차장 안내</a>에서 확인해 주세요.</p>
+      </section>
+
+      <section class="static-board" aria-labelledby="faq-title">
+        <div class="static-board-heading">
+          <div><p class="section-kicker">NOTICE &amp; FAQ</p><h2 id="faq-title">자주 묻는 질문 <span class="count-badge">03</span></h2></div>
+          <span class="static-board-label">안내 글</span>
+        </div>
+        <div class="static-post-list">
+          <article class="static-post"><div class="static-post-index">01</div><div class="static-post-main"><div class="static-post-tags"><span class="inquiry-category">주차장 이용</span><span class="static-post-notice">공지</span></div><h3>주차 가능 대수와 요금은 어디에서 확인하나요?</h3><p>주차면 수와 시설 현황은 천안도시공사 안내를, 최신 요금과 운영 조건은 공식 안내 또는 현장 표지판을 확인해 주세요.</p><div class="static-post-meta"><span>불당 주차 안내</span><time datetime="2026-11-01">2026.11.01</time></div></div></article>
+          <article class="static-post"><div class="static-post-index">02</div><div class="static-post-main"><div class="static-post-tags"><span class="inquiry-category">전기차 충전</span><span class="static-post-notice">안내</span></div><h3>전기차 충전기 정보와 단가는 실시간인가요?</h3><p>표시된 충전기 수량·출력·단가는 참고 정보입니다. 실시간 사용 여부와 실제 결제 금액은 충전 사업자 안내와 충전기 화면에서 확인해 주세요.</p><div class="static-post-meta"><span>불당 주차 안내</span><time datetime="2026-11-01">2026.11.01</time></div></div></article>
+          <article class="static-post"><div class="static-post-index">03</div><div class="static-post-main"><div class="static-post-tags"><span class="inquiry-category">사이트 이용</span><span class="static-post-notice">안내</span></div><h3>웹사이트 정보가 실제 현장과 다르면 어떻게 하나요?</h3><p>최신 현황은 천안도시공사 공식 안내에서 확인해 주세요. 문의를 남기면 현재는 사이트 운영자에게 바로 전달되지 않습니다.</p><div class="static-post-meta"><span>불당 주차 안내</span><time datetime="2026-11-01">2026.11.01</time></div></div></article>
+        </div>
+      </section>
+
+      <section class="static-compose" aria-labelledby="compose-title">
+        <div class="form-heading"><p class="section-kicker">CONTACT</p><h2 id="compose-title">문의 작성</h2><p>문의는 서버의 SQLite 데이터베이스에 저장됩니다.</p></div>
+        <form id="inquiry-form" class="static-compose-form" novalidate>
+          <label class="form-field" for="inquiry-category"><span>문의 유형 <b aria-hidden="true">*</b></span>
+            <select id="inquiry-category" name="category" required><option value="" selected disabled>문의 유형을 선택해 주세요</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select>
+          </label>
+          <label class="form-field" for="inquiry-name"><span>작성자 <b aria-hidden="true">*</b></span><input id="inquiry-name" name="name" type="text" maxlength="24" placeholder="닉네임을 입력해 주세요" required /></label>
+          <label class="form-field" for="inquiry-title"><span>제목 <b aria-hidden="true">*</b></span><input id="inquiry-title" name="title" type="text" maxlength="80" placeholder="문의 제목을 입력해 주세요" required /></label>
+          <label class="form-field" for="inquiry-content"><span>문의 내용 <b aria-hidden="true">*</b></span><textarea id="inquiry-content" name="content" rows="5" maxlength="1200" placeholder="문의 내용을 입력해 주세요. 개인정보는 작성하지 마세요." required></textarea></label>
+          <label class="private-option" for="inquiry-private"><input id="inquiry-private" name="private" type="checkbox" /><span><strong>비공개 문의로 표시</strong><small>목록에서 문의 내용 미리보기만 숨깁니다. 관리자 인증 기능은 아직 없습니다.</small></span></label>
+          <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+          <button class="submit-inquiry" type="submit">문의 등록 <span aria-hidden="true">→</span></button>
+        </form>
+      </section>
+
+      <section class="inquiry-list-section" aria-labelledby="inquiry-list-title">
+        <div class="inquiry-list-heading"><div><p class="section-kicker">INQUIRY BOARD</p><h2 id="inquiry-list-title">문의 목록 <span id="inquiry-count" class="count-badge">0</span></h2></div>
+          <label class="board-filter" for="category-filter"><span class="visually-hidden">문의 유형 필터</span><select id="category-filter" aria-label="문의 유형 필터"><option value="all">전체</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select></label>
+        </div>
+        <div id="inquiry-list" class="inquiry-list" aria-live="polite"></div>
+        <div id="inquiry-empty" class="inquiry-empty"><span aria-hidden="true">✳</span><h3>아직 등록된 문의가 없어요</h3><p>궁금한 점을 첫 문의로 남겨 주세요.</p></div>
+      </section>
+    </main>
+
+    <footer class="footer"><a class="brand footer-brand" href="../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>문의는 SQLite 데이터베이스에 저장됩니다.</p><a href="../#home" class="to-top">메인으로 ↑</a></footer>
+  </body>
+</html>
