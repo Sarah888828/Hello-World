@@ -39,7 +39,7 @@ async function loadInquiries() {
     inquiryList.hidden = true;
     emptyState.hidden = false;
     emptyState.querySelector("h3").textContent = "서버에 연결할 수 없어요";
-    emptyState.querySelector("p").textContent = "Node.js 서버를 실행한 뒤 페이지를 새로고침해 주세요.";
+    emptyState.querySelector("p").textContent = "페이지를 새로고침하거나 잠시 후 다시 시도해 주세요.";
     formMessage.textContent = error.message;
     formMessage.classList.add("error");
   } finally {

@@ -37,7 +37,7 @@
       </section>
 
       <section class="board-notice" aria-label="게시판 안내">
-        <span class="board-notice-icon" aria-hidden="true">ⓘ</span>
+        <span class="board-notice-icon" aria-hidden="true">i</span>
         <p><strong>문의는 SQLite 데이터베이스에 저장됩니다.</strong> 비공개 표시는 목록에서 내용 미리보기만 숨기며 관리자 인증 기능은 아직 없습니다. 전화번호, 차량번호 등 민감한 개인정보는 입력하지 마세요. 공식 주차 정보는 <a href="https://www.cauc.or.kr/_parking/main.asp?no=1" target="_blank" rel="noreferrer">천안도시공사 공영주차장 안내</a>에서 확인해 주세요.</p>
       </section>
 
@@ -73,7 +73,7 @@
           <label class="board-filter" for="category-filter"><span class="visually-hidden">문의 유형 필터</span><select id="category-filter" aria-label="문의 유형 필터"><option value="all">전체</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select></label>
         </div>
         <div id="inquiry-list" class="inquiry-list" aria-live="polite"></div>
-        <div id="inquiry-empty" class="inquiry-empty"><span aria-hidden="true">✳</span><h3>아직 등록된 문의가 없어요</h3><p>궁금한 점을 첫 문의로 남겨 주세요.</p></div>
+        <div id="inquiry-empty" class="inquiry-empty"><span class="empty-mark" aria-hidden="true"></span><h3>아직 등록된 문의가 없어요</h3><p>궁금한 점을 첫 문의로 남겨 주세요.</p></div>
       </section>
     </main>
 
