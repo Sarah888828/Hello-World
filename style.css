@@ -354,8 +354,8 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 }
 @media (max-width: 700px) {
   html { scroll-padding-top: 72px; }
-  .topbar { height: 66px; gap: 12px; padding: 0 21px; }
-  .topnav { justify-content: flex-start; gap: 17px; }
+  .topbar { position: relative; height: auto; min-height: 66px; flex-wrap: wrap; gap: 0 12px; padding: 10px 21px; }
+  .topnav { order: 3; width: 100%; height: 39px; flex: 0 0 100%; justify-content: space-between; gap: 12px; overflow: visible; }
   .nav-link { font-size: 10px; }
   .location-pill { min-height: 33px; gap: 7px; padding: 0 10px; font-size: 9px; }
   .hero { min-height: auto; grid-template-columns: 1fr; gap: 26px; margin: 0; padding: 40px 22px 30px; }
@@ -378,11 +378,11 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .footer p { max-width: 205px; line-height: 1.6; }
 }
 @media (max-width: 460px) {
-  .topbar { gap: 9px; padding: 0 16px; }
+  .topbar { gap: 0 9px; padding: 9px 16px; }
   .brand { gap: 8px; font-size: 15px; }
   .brand-mark { width: 30px; height: 30px; border-radius: 10px; }
-  .topnav { gap: 13px; }
-  .nav-link { flex: 0 0 auto; font-size: 9px; }
+  .topnav { height: 36px; gap: 5px; }
+  .nav-link { display: flex; flex: 1 1 auto; justify-content: center; font-size: 8px; white-space: nowrap; }
   .location-pill { gap: 6px; padding: 0 8px; font-size: 8px; }
   .hero { gap: 23px; padding: 34px 19px 27px; }
   h1 { letter-spacing: -2.8px; }
