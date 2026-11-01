@@ -1,0 +1,9 @@
+name = "hello-world"
+pages_build_output_dir = "."
+compatibility_date = "2026-11-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "buldang-parking-db"
+database_id = "b8faf191-7944-4efc-82e6-c228f11c708b"
+migrations_dir = "migrations"
