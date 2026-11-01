@@ -1,4 +1,5 @@
 import { onRequestPost as onSignup } from "./functions/api/auth/signup.js";
+import { onRequestPost as onLogin } from "./functions/api/auth/login.js";
 import { onRequestGet as onInquiriesGet, onRequestPost as onInquiriesPost } from "./functions/api/inquiries.js";
 
 export default {
@@ -13,6 +14,16 @@ export default {
         });
       }
       return onSignup({ request, env, params: {}, data: {} });
+    }
+
+    if (url.pathname === "/api/auth/login") {
+      if (request.method !== "POST") {
+        return new Response(JSON.stringify({ error: "지원하지 않는 요청 방식입니다." }), {
+          status: 405,
+          headers: { "Content-Type": "application/json; charset=utf-8", Allow: "POST", "Cache-Control": "no-store" }
+        });
+      }
+      return onLogin({ request, env, params: {}, data: {} });
     }
 
     if (url.pathname === "/api/inquiries") {
