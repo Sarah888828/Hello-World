@@ -36,6 +36,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   z-index: 20;
   top: 0;
   display: flex;
+  gap: 20px;
   height: 76px;
   align-items: center;
   justify-content: space-between;
@@ -47,7 +48,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 800; letter-spacing: -0.8px; }
 .brand-mark { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 11px; background: var(--green); box-shadow: 0 4px 10px rgb(36 74 54 / 16%); color: white; font-size: 17px; font-weight: 800; }
 .brand-light { color: #aaa99f; font-weight: 500; }
-.topnav { display: flex; height: 100%; align-items: center; gap: 36px; }
+.topnav { display: flex; min-width: 0; height: 100%; flex: 1 1 auto; align-items: center; justify-content: center; gap: 26px; overflow-x: auto; scrollbar-width: none; }
+.topnav::-webkit-scrollbar { display: none; }
 .nav-link { position: relative; display: grid; height: 100%; align-items: center; color: #a19f95; font-size: 12px; font-weight: 600; transition: color .2s; }
 .nav-link:hover, .nav-link.active { color: #f2f1eb; }
 .nav-link.active::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--lime); content: ""; }
@@ -250,6 +252,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .private-option small { color: #929187; font-size: 8px; line-height: 1.6; }
 .form-message { min-height: 16px; margin: 0 0 7px; color: #cad7a5; font-size: 9px; line-height: 1.6; }
 .form-message.error { color: #ee9d91; }
+.form-message.success { color: #cad7a5; }
 .submit-inquiry { display: flex; width: 100%; min-height: 42px; align-items: center; justify-content: center; gap: 13px; border: 0; border-radius: 3px; background: #d4e19f; color: #171812; cursor: pointer; font-size: 10px; font-weight: 700; transition: background .18s, transform .18s; }
 .submit-inquiry:hover { transform: translateY(-1px); background: #e4efb4; }
 .submit-inquiry span { font-size: 14px; }
@@ -351,8 +354,8 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 }
 @media (max-width: 700px) {
   html { scroll-padding-top: 72px; }
-  .topbar { height: 66px; padding: 0 21px; }
-  .topnav { gap: 19px; }
+  .topbar { height: 66px; gap: 12px; padding: 0 21px; }
+  .topnav { justify-content: flex-start; gap: 17px; }
   .nav-link { font-size: 10px; }
   .location-pill { min-height: 33px; gap: 7px; padding: 0 10px; font-size: 9px; }
   .hero { min-height: auto; grid-template-columns: 1fr; gap: 26px; margin: 0; padding: 40px 22px 30px; }
@@ -375,12 +378,11 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .footer p { max-width: 205px; line-height: 1.6; }
 }
 @media (max-width: 460px) {
-  .topbar { padding: 0 16px; }
+  .topbar { gap: 9px; padding: 0 16px; }
   .brand { gap: 8px; font-size: 15px; }
   .brand-mark { width: 30px; height: 30px; border-radius: 10px; }
-  .topnav { gap: 14px; }
-  .nav-link { font-size: 9px; }
-  .topnav .nav-link:last-child { display: none; }
+  .topnav { gap: 13px; }
+  .nav-link { flex: 0 0 auto; font-size: 9px; }
   .location-pill { gap: 6px; padding: 0 8px; font-size: 8px; }
   .hero { gap: 23px; padding: 34px 19px 27px; }
   h1 { letter-spacing: -2.8px; }
