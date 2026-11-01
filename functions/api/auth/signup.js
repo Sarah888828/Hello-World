@@ -57,13 +57,8 @@ export async function onRequestPost({ request, env }) {
     const passwordHash = await hashPassword(password);
     const result = await env.DB.prepare(`
       INSERT INTO users (nickname, email, password_hash, gender)
-      SELECT ?, ?, ?, ?
-      WHERE NOT EXISTS (
-        SELECT 1 FROM users WHERE deleted_at IS NULL AND (email = ? COLLATE NOCASE OR nickname = ? COLLATE NOCASE)
-      )
-    `).bind(nickname, email, passwordHash, gender, email, nickname).run();
-
-    if (result.meta.changes === 0) return json({ error: "이미 사용 중인 이메일 또는 닉네임입니다." }, 409);
+      VALUES (?, ?, ?, ?)
+    `).bind(nickname, email, passwordHash, gender).run();
 
     const user = await env.DB.prepare(`
       SELECT id, nickname, email, gender, created_at AS createdAt
@@ -73,6 +68,9 @@ export async function onRequestPost({ request, env }) {
     return json({ user }, 201);
   } catch (error) {
     console.error("Signup failed:", error);
+    if (/unique constraint/i.test(error?.message || "")) {
+      return json({ error: "이미 사용 중인 이메일 또는 닉네임입니다." }, 409);
+    }
     return json({ error: "회원가입을 처리하지 못했습니다." }, 500);
   }
 }
