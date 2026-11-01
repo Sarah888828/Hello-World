@@ -53,9 +53,9 @@ npm start
 
 브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `/board/`는 문의 게시판, `/account/signup/`은 회원가입, `/account/login/`은 로그인 화면입니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다. Cloudflare Pages 배포본은 D1 binding을 사용합니다.
 
-회원가입은 Pages Function을 통해 닉네임, 이메일, 비밀번호 해시, 성별을 D1 `users` 테이블에 저장합니다. 비밀번호는 PBKDF2-SHA-256으로 해시됩니다. 로그인 API와 세션 인증은 아직 구현되어 있지 않습니다. 공개 운영 전에는 이메일 인증, 스팸 방지, 약관·개인정보 동의 기록, 계정 삭제와 관리자 기능을 추가로 구성해야 합니다.
+회원가입과 로그인은 Pages Function에서 D1 `users` 테이블과 연동됩니다. 비밀번호는 PBKDF2-SHA-256(Workers 지원 반복 횟수 100,000)으로 해시해 저장하며 원문은 저장하지 않습니다. 로그인 API는 자격 증명을 검증하지만 세션 쿠키·로그아웃·보호된 사용자 영역은 아직 구현되지 않아 로그인 상태가 유지되지 않습니다. 공개 운영 전에는 이메일 인증, 스팸 방지, 약관·개인정보 동의 기록, 세션 관리, 계정 삭제와 관리자 기능을 추가로 구성해야 합니다.
 
-`database/users.sql`은 회원가입용 테이블 설계 문서입니다. 실제 D1 테이블은 `migrations/0002_create_users.sql`로 생성됩니다. 로그인 화면은 아직 시안이며 로그인·세션 API는 제공하지 않습니다.
+`database/users.sql`은 회원가입용 테이블 설계 문서입니다. 실제 D1 테이블은 `migrations/0002_create_users.sql`로 생성됩니다. 인증 API 경로는 `/api/auth/signup` 및 `/api/auth/login`입니다.
 
 ```powershell
 $env:PORT=8781; npm start
