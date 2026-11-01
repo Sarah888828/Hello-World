@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#10110f" />
-    <meta name="description" content="불당 주차 회원가입 화면 시안입니다. 닉네임, 이메일, 비밀번호와 성별을 입력하는 정적 페이지입니다." />
+    <meta name="description" content="불당 주차 회원가입 페이지입니다. 닉네임, 이메일, 비밀번호와 성별을 등록할 수 있습니다." />
     <meta property="og:title" content="회원가입 | 불당 주차" />
     <meta property="og:description" content="불당 주차 회원가입 화면을 확인하세요." />
     <meta property="og:type" content="website" />
@@ -33,9 +33,9 @@
           <p>불당 주차 서비스를 이용할 계정을 만들어 보세요.</p>
         </div>
 
-        <div class="account-demo-notice" role="note"><strong>화면 시안</strong> — HTML·CSS 전용 페이지입니다. 가입 버튼은 실제 계정 생성이나 데이터 전송을 하지 않습니다. 개인정보를 실제로 입력하지 마세요.</div>
+        <div class="account-demo-notice" role="note"><strong>개인정보 안내</strong> — 닉네임, 이메일, 비밀번호 해시, 성별이 Cloudflare D1에 저장됩니다. 집주소는 수집하지 않습니다. 동의하지 않으면 가입할 수 없습니다.</div>
 
-        <form class="account-form" action="#" method="get">
+        <form id="signup-form" class="account-form" novalidate>
           <label class="form-field" for="signup-nickname"><span>닉네임 <b aria-hidden="true">*</b></span><input id="signup-nickname" name="nickname" type="text" minlength="2" maxlength="24" placeholder="사용할 닉네임" autocomplete="nickname" required /></label>
           <label class="form-field" for="signup-email"><span>이메일 주소 <b aria-hidden="true">*</b></span><input id="signup-email" name="email" type="email" placeholder="name@example.com" autocomplete="email" required /></label>
           <label class="form-field" for="signup-password"><span>비밀번호 <b aria-hidden="true">*</b></span><input id="signup-password" name="password" type="password" minlength="8" placeholder="8자 이상 입력해 주세요" autocomplete="new-password" required /></label>
@@ -45,13 +45,15 @@
             <label><input type="radio" name="gender" value="male" /><span>남성</span></label>
           </fieldset>
           <label class="account-terms"><input type="checkbox" name="terms" required /><span>이용약관 및 개인정보 안내를 확인했습니다. <b aria-hidden="true">*</b></span></label>
-          <button class="account-submit" type="button" disabled>가입하기 <span aria-hidden="true">→</span></button>
+          <p id="signup-message" class="form-message" role="status" aria-live="polite"></p>
+          <button class="account-submit" type="submit">가입하기 <span aria-hidden="true">→</span></button>
         </form>
 
         <p class="account-switch">이미 계정이 있으신가요? <a href="../login/">로그인</a></p>
       </section>
     </main>
 
-    <footer class="footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>회원가입 화면 시안 · 정보가 저장되거나 전송되지 않습니다.</p><a href="../../#home" class="to-top">메인으로 ↑</a></footer>
+    <footer class="footer"><a class="brand footer-brand" href="../../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>계정 정보는 Cloudflare D1에 저장됩니다.</p><a href="../../#home" class="to-top">메인으로 ↑</a></footer>
+    <script src="signup.js" defer></script>
   </body>
 </html>

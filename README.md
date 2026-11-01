@@ -51,11 +51,11 @@ Node.js 22.13 이상이 필요합니다. 프로젝트 폴더에서 서버를 실
 npm start
 ```
 
-브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `/board/`는 문의 게시판, `/account/signup/`은 회원가입 시안, `/account/login/`은 로그인 시안입니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다.
+브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `/board/`는 문의 게시판, `/account/signup/`은 회원가입, `/account/login/`은 로그인 화면입니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다. Cloudflare Pages 배포본은 D1 binding을 사용합니다.
 
-회원가입과 로그인은 HTML·CSS 화면 시안만 제공합니다. 실제 이메일·주소 저장, 비밀번호 인증, 세션 관리는 구현되어 있지 않으므로 테스트 페이지에 실제 개인정보를 입력하지 마세요.
+회원가입은 Pages Function을 통해 닉네임, 이메일, 비밀번호 해시, 성별을 D1 `users` 테이블에 저장합니다. 비밀번호는 PBKDF2-SHA-256으로 해시됩니다. 로그인 API와 세션 인증은 아직 구현되어 있지 않습니다. 공개 운영 전에는 이메일 인증, 스팸 방지, 약관·개인정보 동의 기록, 계정 삭제와 관리자 기능을 추가로 구성해야 합니다.
 
-`database/users.sql`에는 회원가입 화면에 맞춘 `users` 테이블 스키마 초안이 있습니다. 요청에 따라 현재 애플리케이션 DB와 서버에는 적용하지 않았습니다. 비밀번호 컬럼은 원문 대신 Argon2id/bcrypt 해시 저장용이며, 회원 테이블을 실제 적용하기 전에 개인정보 동의·주소 수집 필요성·보관기간·삭제 및 접근통제를 검토해야 합니다.
+`database/users.sql`은 회원가입용 테이블 설계 문서입니다. 실제 D1 테이블은 `migrations/0002_create_users.sql`로 생성됩니다. 로그인 화면은 아직 시안이며 로그인·세션 API는 제공하지 않습니다.
 
 ```powershell
 $env:PORT=8781; npm start
