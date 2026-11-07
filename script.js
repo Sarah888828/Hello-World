@@ -409,6 +409,8 @@ function renderParkingLots() {
       <p class="card-address" title="${escapeHtml(lot.address)}">${escapeHtml(lot.address)}</p>
       <div class="card-divider"></div>
       <div class="card-meta"><span>${escapeHtml(lot.priceLabel)}</span><span class="card-price">${lot.price == null ? "공식 안내 확인" : `${lot.price.toLocaleString("ko-KR")}원 / 시간`}</span></div>
+      <p class="capacity-label">총 주차면 <strong>${escapeHtml(lot.capacity.split(" · ")[0])}</strong></p>
+      <p class="availability-unavailable"><span aria-hidden="true">◷</span> 실시간 빈자리 정보 없음</p>
       <div class="card-bottom"><span class="hours-label">${escapeHtml(lot.charger.exists ? `⚡ 충전 ${lot.charger.count}` : lot.hours)}</span><a class="detail-button" href="${getLotDetailUrl(lot)}"${lot.id.startsWith("buldang-") ? "" : ' target="_blank" rel="noreferrer"'}>${lot.id.startsWith("buldang-") ? "상세 보기　→" : "지도 보기　↗"}</a></div>
     </article>
   `).join("");
