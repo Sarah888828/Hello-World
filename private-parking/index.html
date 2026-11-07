@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#10110f" />
-    <meta name="description" content="천안 불당동 주변 사설 주차장을 지도에서 찾고, 제공되는 경우 실시간 혼잡 정보를 확인하는 안내 페이지입니다." />
-    <meta property="og:title" content="사설 주차장 혼잡도 안내 | 불당 주차" />
-    <meta property="og:description" content="지도에서 천안 불당동 민영주차장을 찾고 최신 혼잡 정보를 확인하세요." />
+    <meta name="description" content="천안 불당동 주변 민영주차장을 네이버 지도와 카카오맵에서 찾아보세요. 실시간 혼잡도는 현재 연동되지 않았습니다." />
+    <meta property="og:title" content="불당동 주변 민영주차장 찾기 | 불당 주차" />
+    <meta property="og:description" content="불당동 사설 주차장을 지도에서 찾고, 요금과 실시간 잔여면은 지도 앱이나 현장에서 확인하세요." />
     <meta property="og:type" content="website" />
-    <title>사설 주차장 혼잡도 안내 | 불당 주차</title>
+    <title>불당동 주변 민영주차장 찾기 | 불당 주차</title>
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
@@ -19,20 +19,20 @@
     <main class="private-parking-page">
       <section class="private-parking-hero">
         <a class="detail-back" href="../#home"><span aria-hidden="true">←</span> 메인으로 돌아가기</a>
-        <p class="section-kicker">PRIVATE PARKING · LIVE STATUS</p>
-        <h1 class="private-parking-title">불당동 사설 주차장<br /><span>혼잡도 확인</span></h1>
-        <p>주변 민영주차장을 지도에서 찾고, 각 사업자가 제공하는 경우 실시간 주차 가능 여부를 확인하세요.</p>
-        <div class="private-live-status"><span class="status-indicator" aria-hidden="true"></span><span><strong>실시간 혼잡도 데이터 미연동</strong><small>현재 잔여 면수나 만차 여부를 이 페이지에서 직접 제공하지 않습니다.</small></span></div>
+        <p class="section-kicker">PRIVATE PARKING · MAP SEARCH</p>
+        <h1 class="private-parking-title">불당동 주변<br /><span>민영주차장 찾기</span></h1>
+        <p>지도 앱에서 주변 사설 주차장을 검색하고 위치를 확인하세요. 실시간 잔여 주차면 정보는 현재 제공하지 않습니다.</p>
+        <div class="private-live-status" role="status"><span class="status-indicator" aria-hidden="true"></span><span><strong>실시간 혼잡도 연동 전</strong><small>이 페이지에는 실시간 잔여 면수·만차 정보가 표시되지 않습니다. 아래 지도 검색으로 주변 주차장을 확인해 주세요.</small></span></div>
       </section>
 
       <section class="private-map-search" aria-labelledby="private-map-title">
         <div class="private-map-copy">
           <p class="section-kicker">FIND PRIVATE PARKING</p>
-          <h2 id="private-map-title">지도로 주변 주차장 찾기</h2>
+          <h2 id="private-map-title">지도 앱에서 주차장 검색</h2>
           <p>지도 앱에서 영업 여부·요금·혼잡 정보가 표시되는지 확인한 뒤 이동하세요. 제공 정보는 주차장과 지도 사업자에 따라 다를 수 있습니다.</p>
           <div class="private-map-links">
-            <a href="https://map.naver.com/p/search/천안%20불당동%20민영주차장" target="_blank" rel="noreferrer">네이버 지도에서 찾기 <span aria-hidden="true">↗</span></a>
-            <a href="https://map.kakao.com/?q=천안%20불당동%20민영주차장" target="_blank" rel="noreferrer">카카오맵에서 찾기 <span aria-hidden="true">↗</span></a>
+            <a href="https://map.naver.com/p/search/%EC%B2%9C%EC%95%88%20%EB%B6%88%EB%8B%B9%EB%8F%99%20%EB%AF%BC%EC%98%81%EC%A3%BC%EC%B0%A8%EC%9E%A5" target="_blank" rel="noopener noreferrer">네이버 지도에서 찾기 <span aria-hidden="true">↗</span></a>
+            <a href="https://map.kakao.com/?q=%EC%B2%9C%EC%95%88%20%EB%B6%88%EB%8B%B9%EB%8F%99%20%EB%AF%BC%EC%98%81%EC%A3%BC%EC%B0%A8%EC%9E%A5" target="_blank" rel="noopener noreferrer">카카오맵에서 찾기 <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <div class="private-map-illustration" aria-hidden="true">
@@ -52,7 +52,7 @@
           <li><span>02</span><div><strong>주차장 상세 정보 확인</strong><p>잔여 주차면, 만차 상태, 영업시간과 요금 표시 여부를 살펴봅니다.</p></div></li>
           <li><span>03</span><div><strong>방문 직전 다시 확인</strong><p>민영주차장 혼잡도는 빠르게 바뀔 수 있으니 출발 전에 지도 앱이나 현장에 확인합니다.</p></div></li>
         </ol>
-        <p class="private-data-note"><span aria-hidden="true">ⓘ</span> 공개된 민영주차장 실시간 API를 아직 연결하지 않았습니다. 실제 잔여 면수나 혼잡 등급을 임의로 표시하지 않습니다.</p>
+        <p class="private-data-note"><span aria-hidden="true">ⓘ</span> 실시간 민영주차장 데이터 API는 아직 연결되지 않았습니다. 실제 잔여 면수나 혼잡 등급을 임의로 표시하지 않으며, 지도 검색 결과도 사업자별 정보 제공 여부에 따라 다를 수 있습니다.</p>
       </section>
 
       <section class="private-data-source">
