@@ -16,7 +16,7 @@
     <script type="importmap">
       {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
     </script>
-    <script src="../script.js" defer></script>
+    <script src="../script.js"></script>
     <script type="module" src="./distance.js"></script>
   </head>
   <body>
@@ -71,14 +71,13 @@
     <footer class="footer"><a class="brand footer-brand" href="../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>거리 계산은 참고용이며 내 위치는 저장하지 않습니다.</p><a href="../#home" class="to-top">메인으로 ↑</a></footer>
     <script src="../nav.js" defer></script>
     <script>
-      window.addEventListener("DOMContentLoaded", () => {
+      (() => {
         const selector = document.querySelector("#destination-select");
         const lots = window.parkingLots || [];
         const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" })[character]);
         selector.innerHTML = lots.map((lot) => `<option value="${escapeHtml(lot.id)}">${escapeHtml(lot.name)} · ${escapeHtml(lot.district)}</option>`).join("");
         selector.value = "buldang-public";
-        selector.dispatchEvent(new Event("change", { bubbles: true }));
-      });
+      })();
     </script>
   </body>
 </html>

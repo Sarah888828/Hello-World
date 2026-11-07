@@ -208,9 +208,9 @@ function updateDestination() {
   googleMapLink.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(search)}&travelmode=driving`;
 
   destination = verifiedDestinations[lot.id] || null;
-  const parkingMarker = scene.getObjectByName("parking-marker-base");
-  const parkingPin = scene.getObjectByName("parking-marker-pin");
-  const parkingLetter = scene.getObjectByName("parking-marker-letter");
+  const parkingMarker = scene?.getObjectByName("parking-marker-base");
+  const parkingPin = scene?.getObjectByName("parking-marker-pin");
+  const parkingLetter = scene?.getObjectByName("parking-marker-letter");
   const hasVerifiedCoordinates = Boolean(destination);
   if (parkingMarker) parkingMarker.visible = hasVerifiedCoordinates;
   if (parkingPin) parkingPin.visible = hasVerifiedCoordinates;
@@ -219,13 +219,13 @@ function updateDestination() {
     distanceValue.innerHTML = '--<small> km</small>';
     distanceStatus.textContent = "이 주차장의 정확한 좌표는 아직 확인되지 않아 직선거리를 계산할 수 없습니다. 지도에서 실제 길찾기를 이용해 주세요.";
     locateButton.disabled = true;
-    if (routeLine) {
+    if (routeLine && scene) {
       scene.remove(routeLine);
       routeLine.geometry.dispose();
       routeLine.material.dispose();
       routeLine = null;
     }
-    if (userMarker) {
+    if (userMarker && scene) {
       scene.remove(userMarker);
       userMarker.geometry.dispose();
       userMarker.material.dispose();
@@ -281,5 +281,6 @@ try {
   distanceStatus.textContent = "3D 장면을 불러오지 못했습니다. 거리 측정은 계속 사용할 수 있습니다.";
 }
 
+updateDestination();
 destinationSelect.addEventListener("change", updateDestination);
 locateButton.addEventListener("click", requestLocation);
