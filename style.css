@@ -508,6 +508,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .private-map-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 19px; }
 .private-map-links a { display: inline-flex; min-height: 38px; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid #4b4e3c; border-radius: 3px; background: #292b22; color: #e0e8c5; font-size: 9px; font-weight: 700; transition: background .18s, border-color .18s; }
 .private-map-links a:hover { border-color: #8b966d; background: #34372b; }
+.private-location-note { margin: 10px 0 0; color: #a9a79d; font-size: 9px; line-height: 1.7; }
 .private-map-illustration { position: relative; min-height: 230px; overflow: hidden; border-left: 1px solid #383a32; background-color: #292c25; background-image: radial-gradient(rgb(222 231 196 / 8%) .65px, transparent .65px); background-size: 7px 7px; }
 .private-map-illustration::before { position: absolute; inset: 0; background: radial-gradient(ellipse at 52% 45%, transparent 0%, rgb(15 17 14 / 36%) 100%); content: ""; }
 .map-road { position: absolute; z-index: 1; border: 8px solid #43473d; background: #35392f; box-shadow: 0 0 0 2px rgb(215 222 198 / 8%); }
