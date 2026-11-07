@@ -226,6 +226,8 @@ const parkingLots = [
   }
 ];
 
+window.parkingLots = parkingLots;
+
 let parkingGrid;
 let searchInput;
 let searchButton;

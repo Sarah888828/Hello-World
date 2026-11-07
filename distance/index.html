@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#10110f" />
-    <meta name="description" content="현재 위치에서 천안 불당 제1공영주차장까지의 직선거리를 확인하는 3D 거리 측정 시안입니다." />
+    <meta name="description" content="현재 위치에서 천안 공영주차장까지의 근사 직선거리를 확인하고 지도 앱에서 실제 길찾기를 시작하세요." />
     <meta property="og:title" content="내 위치에서 주차장까지 | 불당 주차" />
-    <meta property="og:description" content="현재 위치를 허용하면 불당 제1공영주차장까지 직선거리를 계산합니다." />
+    <meta property="og:description" content="주차장을 선택해 근사 직선거리를 확인하고 지도 앱에서 실제 길찾기를 이용하세요." />
     <meta property="og:type" content="website" />
     <title>내 위치에서 주차장까지 | 불당 주차</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,6 +16,7 @@
     <script type="importmap">
       {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
     </script>
+    <script src="../script.js" defer></script>
     <script type="module" src="./distance.js"></script>
   </head>
   <body>
@@ -28,7 +29,7 @@
         <a class="detail-back" href="../#home"><span aria-hidden="true">←</span> 메인으로 돌아가기</a>
         <p class="section-kicker">3D DISTANCE · CHEONAN</p>
         <h1 id="distance-title">내 위치에서<br /><span>주차장까지</span></h1>
-        <p>위치 권한을 허용하면 선택한 공영주차장까지의 직선거리를 계산합니다.</p>
+        <p>목적지를 선택하고 위치 권한을 허용하면 확인 가능한 경우 근사 직선거리를 계산합니다. 실제 이동 경로는 지도 앱에서 확인하세요.</p>
       </section>
 
       <section class="distance-layout" aria-label="내 위치와 주차장 거리 측정">
@@ -37,28 +38,46 @@
           <div id="distance-scene" class="distance-scene" role="img" aria-label="현재 위치에서 주차장 주소 대표점까지의 직선거리를 나타내는 3D 시각화">
             <div class="scene-fallback" aria-hidden="true"><span class="scene-fallback-user">●</span><span class="scene-fallback-line"></span><span class="scene-fallback-parking">P</span></div>
           </div>
-          <div class="distance-scene-legend"><span><i class="legend-dot user-dot"></i>내 위치</span><span><i class="legend-dot parking-dot"></i>불당 제1주차장</span><span class="distance-scene-note">직선거리 · 경로거리 아님</span></div>
+          <div class="distance-scene-legend"><span><i class="legend-dot user-dot"></i>내 위치</span><span><i class="legend-dot parking-dot"></i><span id="scene-destination-name">불당 제1주차장</span></span><span class="distance-scene-note">개념도 · 실제 경로 아님</span></div>
         </div>
 
         <aside class="distance-info-card">
           <p class="section-kicker">DESTINATION</p>
-          <h2>불당 제1주차장</h2>
-          <p class="distance-address">천안시 서북구 검은들1길 15</p>
+          <label class="distance-destination-label" for="destination-select">목적지 주차장</label>
+          <select id="destination-select" class="distance-destination-select" aria-describedby="destination-help">
+            <option value="buldang-public">불당 제1주차장 · 서북구</option>
+          </select>
+          <h2 id="destination-name">불당 제1주차장</h2>
+          <p id="destination-address" class="distance-address">천안시 서북구 검은들1길 15</p>
+          <p id="destination-help" class="distance-destination-help">현재 좌표가 공식 확인된 목적지만 직선거리를 계산합니다. 다른 주차장은 지도에서 길찾기를 이용할 수 있습니다.</p>
           <div class="distance-result" aria-live="polite">
-            <span class="distance-result-label">내 위치에서 거리</span>
+            <span class="distance-result-label">내 위치에서 직선거리</span>
             <strong id="distance-value">--<small> km</small></strong>
             <span id="distance-status" class="distance-status">위치 권한을 허용하면 측정할 수 있어요.</span>
           </div>
           <button id="locate-button" class="distance-button" type="button">현재 위치로 거리 측정 <span aria-hidden="true">↗</span></button>
-          <a class="distance-map-link" href="https://map.naver.com/p/search/%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noreferrer">지도에서 길찾기 <span aria-hidden="true">↗</span></a>
+          <div class="distance-map-actions">
+            <a id="distance-map-link" class="distance-map-link" href="https://map.naver.com/p/search/%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noopener noreferrer">네이버 지도에서 실제 길찾기 <span aria-hidden="true">↗</span></a>
+            <a id="kakao-map-link" class="distance-map-link distance-map-secondary" href="https://map.kakao.com/?q=%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noopener noreferrer">카카오맵 검색 <span aria-hidden="true">↗</span></a>
+          </div>
           <p class="distance-privacy-note"><span aria-hidden="true">ⓘ</span> 위치 권한은 거리 계산에만 사용하며 서버에 전송하거나 저장하지 않습니다.</p>
         </aside>
       </section>
 
-      <p class="distance-disclaimer">주소 대표 좌표(불당동상업지구 인근)를 사용한 근사 직선거리입니다. 주차장 출입구까지의 정확한 거리나 도로 이동 거리·소요시간과 다를 수 있습니다. 내 위치는 브라우저에서만 계산하며 서버에 저장하지 않습니다. 위치 측정은 HTTPS에서 지원됩니다.</p>
+      <p class="distance-disclaimer">직선거리는 확인된 주소 대표 좌표를 사용한 근사값이며 실제 도로 이동 거리·소요시간이 아닙니다. 도로 경로는 선택한 주차장 이름과 주소를 지도 앱에 전달해 확인합니다. 현재 위치는 버튼을 눌렀을 때 브라우저에서만 읽으며 이 사이트 서버에 저장하지 않습니다. 위치 측정은 HTTPS에서 지원됩니다.</p>
     </main>
 
     <footer class="footer"><a class="brand footer-brand" href="../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>거리 계산은 참고용이며 내 위치는 저장하지 않습니다.</p><a href="../#home" class="to-top">메인으로 ↑</a></footer>
     <script src="../nav.js" defer></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const selector = document.querySelector("#destination-select");
+        const lots = window.parkingLots || [];
+        const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" })[character]);
+        selector.innerHTML = lots.map((lot) => `<option value="${escapeHtml(lot.id)}">${escapeHtml(lot.name)} · ${escapeHtml(lot.district)}</option>`).join("");
+        selector.value = "buldang-public";
+        selector.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    </script>
   </body>
 </html>

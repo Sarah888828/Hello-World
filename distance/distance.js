@@ -1,15 +1,26 @@
 import * as THREE from "three";
 
-const destination = {
+const verifiedDestinations = {
+  "buldang-public": {
   latitude: 36.8109713,
   longitude: 127.1099504,
-  name: "불당 제1주차장 주소 대표점"
+    name: "불당 제1주차장",
+    address: "천안시 서북구 검은들1길 15"
+  }
 };
+
+let destination = verifiedDestinations["buldang-public"];
 
 const sceneElement = document.querySelector("#distance-scene");
 const distanceValue = document.querySelector("#distance-value");
 const distanceStatus = document.querySelector("#distance-status");
 const locateButton = document.querySelector("#locate-button");
+const destinationSelect = document.querySelector("#destination-select");
+const destinationName = document.querySelector("#destination-name");
+const destinationAddress = document.querySelector("#destination-address");
+const sceneDestinationName = document.querySelector("#scene-destination-name");
+const naverMapLink = document.querySelector("#distance-map-link");
+const kakaoMapLink = document.querySelector("#kakao-map-link");
 let renderer;
 let scene;
 let camera;
@@ -49,6 +60,7 @@ function makeParkingMarker() {
     new THREE.CylinderGeometry(0.8, 0.95, 0.22, 40),
     new THREE.MeshStandardMaterial({ color: 0xbacc8b, roughness: 0.55, metalness: 0.08 })
   );
+  base.name = "parking-marker-base";
   base.position.set(4.7, 0.13, -1.25);
   scene.add(base);
 
@@ -56,10 +68,12 @@ function makeParkingMarker() {
     new THREE.SphereGeometry(0.33, 32, 24),
     new THREE.MeshStandardMaterial({ color: 0xe8f3bd, emissive: 0x566338, emissiveIntensity: 0.6 })
   );
+  pin.name = "parking-marker-pin";
   pin.position.set(4.7, 1.05, -1.25);
   scene.add(pin);
 
   const letter = makeTextSprite("P", "#172015");
+  letter.name = "parking-marker-letter";
   letter.position.set(4.7, 1.05, -0.88);
   scene.add(letter);
 }
@@ -141,7 +155,10 @@ function resizeRenderer() {
   camera.updateProjectionMatrix();
 }
 
+let lastPosition = null;
+
 function updateDistance(lat, lon) {
+  lastPosition = { latitude: lat, longitude: lon };
   const km = haversineKm(lat, lon, destination.latitude, destination.longitude);
   distanceValue.innerHTML = `${km < 1 ? Math.round(km * 1000).toLocaleString("ko-KR") : km.toFixed(2)}<small> ${km < 1 ? "m" : "km"}</small>`;
   distanceStatus.textContent = "현재 위치 기준 직선거리입니다.";
@@ -175,6 +192,50 @@ function updateDistance(lat, lon) {
   userMarker.position.y = 0.4;
   scene.add(userMarker);
   sceneElement.classList.add("has-location");
+}
+
+function updateDestination() {
+  const lot = (window.parkingLots || []).find((item) => item.id === destinationSelect.value);
+  if (!lot) return;
+
+  destinationName.textContent = lot.name;
+  destinationAddress.textContent = lot.address;
+  sceneDestinationName.textContent = lot.name;
+  const search = `${lot.name} ${lot.address}`;
+  naverMapLink.href = `https://map.naver.com/p/search/${encodeURIComponent(search)}`;
+  kakaoMapLink.href = `https://map.kakao.com/?q=${encodeURIComponent(search)}`;
+
+  destination = verifiedDestinations[lot.id] || null;
+  const parkingMarker = scene.getObjectByName("parking-marker-base");
+  const parkingPin = scene.getObjectByName("parking-marker-pin");
+  const parkingLetter = scene.getObjectByName("parking-marker-letter");
+  const hasVerifiedCoordinates = Boolean(destination);
+  if (parkingMarker) parkingMarker.visible = hasVerifiedCoordinates;
+  if (parkingPin) parkingPin.visible = hasVerifiedCoordinates;
+  if (parkingLetter) parkingLetter.visible = hasVerifiedCoordinates;
+  if (!destination) {
+    distanceValue.innerHTML = '--<small> km</small>';
+    distanceStatus.textContent = "이 주차장의 정확한 좌표는 아직 확인되지 않아 직선거리를 계산할 수 없습니다. 지도에서 실제 길찾기를 이용해 주세요.";
+    locateButton.disabled = true;
+    if (routeLine) {
+      scene.remove(routeLine);
+      routeLine.geometry.dispose();
+      routeLine.material.dispose();
+      routeLine = null;
+    }
+    if (userMarker) {
+      scene.remove(userMarker);
+      userMarker.geometry.dispose();
+      userMarker.material.dispose();
+      userMarker = null;
+    }
+    sceneElement.classList.remove("has-location");
+    return;
+  }
+
+  locateButton.disabled = false;
+  if (lastPosition) updateDistance(lastPosition.latitude, lastPosition.longitude);
+  distanceStatus.textContent = "위치 권한을 허용하면 근사 직선거리를 계산할 수 있어요.";
 }
 
 function requestLocation() {
@@ -218,4 +279,5 @@ try {
   distanceStatus.textContent = "3D 장면을 불러오지 못했습니다. 거리 측정은 계속 사용할 수 있습니다.";
 }
 
+destinationSelect.addEventListener("change", updateDestination);
 locateButton.addEventListener("click", requestLocation);
