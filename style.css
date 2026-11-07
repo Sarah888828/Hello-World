@@ -241,7 +241,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .detail-side-note p { margin: 0; color: #c2c0b6; font-size: 12px; line-height: 1.8; }
 .detail-side-note > a { display: inline-block; margin-top: 15px; color: #dce5bd; font-size: 10px; font-weight: 700; }
 .detail-side-note > a:hover { color: #f0f5d5; }
-.board-page { max-width: var(--content); min-height: calc(100vh - 148px); margin: 0 auto; padding: 41px 0 62px; }
+.board-page, .guide-page { width: min(var(--content), calc(100% - 48px)); min-height: calc(100vh - 148px); margin: 0 auto; padding: 41px 0 62px; }
 .board-heading { max-width: 690px; padding-bottom: 27px; }
 .board-heading .detail-back { margin-bottom: 31px; }
 .board-title { margin: 12px 0 12px; color: #f2f1eb; font-size: clamp(38px, 6vw, 55px); font-weight: 700; line-height: 1.2; letter-spacing: -2.8px; }
@@ -558,7 +558,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .search-section { padding-bottom: 46px; }
   .hero { margin: 0 16px; }
   .detail-page-hero, .detail-page-content { margin-right: 28px; margin-left: 28px; }
-  .board-page { margin-right: 28px; margin-left: 28px; }
+  .board-page, .guide-page { width: auto; margin-right: 28px; margin-left: 28px; }
   .distance-page { margin-right: 22px; margin-left: 22px; }
   .ev-page { margin-right: 22px; margin-left: 22px; }
   .pass-page { margin-right: 22px; margin-left: 22px; }
@@ -582,7 +582,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .hero-art { height: 238px; }
   .search-section, .parking-section { margin-right: 22px; margin-left: 22px; }
   .detail-page-hero, .detail-page-content { margin-right: 22px; margin-left: 22px; }
-  .board-page { margin-right: 22px; margin-left: 22px; }
+  .board-page, .guide-page { margin-right: 22px; margin-left: 22px; }
   .search-section { padding-bottom: 34px; }
   .search-wrap { height: 55px; }
   .search-button { min-width: 94px; height: 42px; padding: 0 12px; font-size: 9px; }
@@ -629,7 +629,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .detail-info-card { padding: 18px; }
   .detail-info-list > div { grid-template-columns: 105px 1fr; gap: 12px; }
   .detail-side-note { padding: 18px; }
-  .board-page { margin-right: 16px; margin-left: 16px; padding-top: 30px; }
+  .board-page, .guide-page { margin-right: 16px; margin-left: 16px; padding-top: 30px; }
   .board-heading .detail-back { margin-bottom: 23px; }
   .board-title { font-size: 39px; letter-spacing: -2.2px; }
   .board-layout { grid-template-columns: 1fr; gap: 12px; }
