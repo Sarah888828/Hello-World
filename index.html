@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -16,27 +16,7 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <header class="topbar">
-      <a class="brand" href="#home" aria-label="불당 주차 홈">
-        <span class="brand-mark" aria-hidden="true">P</span>
-        <span>불당<span class="brand-light">주차</span></span>
-      </a>
-      <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">메뉴 <span aria-hidden="true">☰</span></button>
-      <nav id="main-navigation" class="topnav" aria-label="주 메뉴">
-        <a class="nav-link active" href="./#parking-list">주차장 찾기</a>
-        <a class="nav-link" href="guide/">이용 안내</a>
-        <a class="nav-link" href="charging/">전기차 충전</a>
-        <a class="nav-link" href="private-parking/">사설 주차 혼잡도</a>
-        <a class="nav-link" href="distance/">거리 측정</a>
-        <a class="nav-link" href="passes/">정기권</a>
-        <a class="nav-link" href="board/">문의 게시판</a>
-        <a class="nav-link" href="account/login/">로그인</a>
-        <a class="nav-link" href="account/signup/">회원가입</a>
-      </nav>
-      <a class="location-pill" href="https://map.naver.com/p/search/천안%20불당동%20공영주차장" target="_blank" rel="noreferrer">
-        <span class="location-dot" aria-hidden="true"></span> 천안시 불당동
-      </a>
-    </header>
+    <header class="topbar">`r`n      <div data-site-navigation></div>`r`n    </header>
 
     <main id="home">
       <section class="hero" aria-labelledby="hero-title">
@@ -133,14 +113,8 @@
       <p class="dialog-disclaimer">※ 요금·운영 정보는 예시입니다. 방문 전 최신 정보를 확인해 주세요.</p>
       <a id="dialog-directions" class="directions-button" target="_blank" rel="noreferrer">지도에서 길찾기 <span aria-hidden="true">↗</span></a>
     </dialog>
+    <script src="nav.js" defer></script>
     <script>
-      const menuToggle = document.querySelector(".mobile-menu-toggle");
-      const mainNavigation = document.querySelector("#main-navigation");
-      menuToggle.addEventListener("click", () => {
-        const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
-        menuToggle.setAttribute("aria-expanded", String(!isOpen));
-        mainNavigation.classList.toggle("is-open", !isOpen);
-      });
       document.querySelectorAll(".quick-filter").forEach((button) => {
         button.addEventListener("click", () => {
           const input = document.querySelector("#search-input");

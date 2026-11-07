@@ -19,19 +19,7 @@
     <script type="module" src="./distance.js"></script>
   </head>
   <body>
-    <header class="topbar">
-      <a class="brand" href="../" aria-label="불당 주차 메인"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a>
-      <nav class="topnav" aria-label="주 메뉴">
-        <a class="nav-link" href="../#parking-list">주차장 찾기</a>
-        <a class="nav-link" href="../guide/">이용 안내</a>
-        <a class="nav-link" href="../charging/">전기차 충전</a>
-        <a class="nav-link active" href="./" aria-current="page">거리 측정</a>
-        <a class="nav-link" href="../board/">문의 게시판</a>
-        <a class="nav-link" href="../account/login/">로그인</a>
-        <a class="nav-link" href="../account/signup/">회원가입</a>
-      </nav>
-      <a class="location-pill" href="https://map.naver.com/p/search/%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5" target="_blank" rel="noreferrer"><span class="location-dot" aria-hidden="true"></span> 천안시 불당동</a>
-    </header>
+    <header class="topbar">`r`n      <div data-site-navigation></div>`r`n    </header>
 
     <main class="distance-page">
       <section class="distance-heading" aria-labelledby="distance-title">
@@ -69,5 +57,6 @@
     </main>
 
     <footer class="footer"><a class="brand footer-brand" href="../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>거리 계산은 참고용이며 내 위치는 저장하지 않습니다.</p><a href="../#home" class="to-top">메인으로 ↑</a></footer>
+    <script src="../nav.js" defer></script>
   </body>
 </html>

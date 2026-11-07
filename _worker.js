@@ -39,6 +39,10 @@ export default {
       return env.ASSETS.fetch(new Request(new URL("/distance/distance.js", url), request));
     }
 
+    if (url.pathname === "/nav.js") {
+      return env.ASSETS.fetch(new Request(new URL("/nav.js", url), request));
+    }
+
     return env.ASSETS.fetch(request);
   }
 };
