@@ -218,7 +218,8 @@ function updateDestination() {
   if (!destination) {
     distanceValue.innerHTML = '--<small> km</small>';
     distanceStatus.textContent = "이 주차장의 정확한 좌표는 아직 확인되지 않아 직선거리를 계산할 수 없습니다. 지도에서 실제 길찾기를 이용해 주세요.";
-    locateButton.disabled = true;
+    locateButton.disabled = false;
+    locateButton.textContent = "내 위치 확인";
     if (routeLine && scene) {
       scene.remove(routeLine);
       routeLine.geometry.dispose();
@@ -236,13 +237,21 @@ function updateDestination() {
   }
 
   locateButton.disabled = false;
+  locateButton.innerHTML = lastPosition
+    ? '다시 측정 <span aria-hidden="true">↻</span>'
+    : '현재 위치로 거리 측정 <span aria-hidden="true">↗</span>';
   if (lastPosition) updateDistance(lastPosition.latitude, lastPosition.longitude);
   distanceStatus.textContent = "위치 권한을 허용하면 근사 직선거리를 계산할 수 있어요.";
 }
 
 function requestLocation() {
+  if (!destination) {
+    distanceStatus.textContent = "선택한 주차장은 좌표가 확인되지 않아 거리를 계산할 수 없습니다. 네이버·카카오·Google 지도 길찾기를 이용해 주세요.";
+    return;
+  }
+
   if (!navigator.geolocation) {
-    distanceStatus.textContent = "이 브라우저에서는 위치 정보를 지원하지 않습니다.";
+  distanceStatus.textContent = `현재 위치 기준 근사 직선거리 · ${destination.name}`;
     return;
   }
   if (!window.isSecureContext) {
