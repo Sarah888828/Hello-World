@@ -12,6 +12,16 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://YOUR_DOMAIN/charging/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://YOUR_DOMAIN/charging/central-church/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://YOUR_DOMAIN/parking/buldang-public/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
