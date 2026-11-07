@@ -55,7 +55,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 800; letter-spacing: -0.8px; }
 .brand-mark { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 11px; background: var(--green); box-shadow: 0 4px 10px rgb(36 74 54 / 16%); color: white; font-size: 17px; font-weight: 800; }
 .brand-light { color: #aaa99f; font-weight: 500; }
-.topnav { display: flex; min-width: 0; height: 100%; flex: 1 1 auto; align-items: center; justify-content: center; gap: 26px; overflow-x: auto; scrollbar-width: none; }
+.topnav { display: flex; min-width: 0; height: 100%; flex: 1 1 auto; align-items: center; justify-content: center; gap: clamp(10px, 1.65vw, 24px); overflow-x: auto; scrollbar-width: none; }
 .topnav::-webkit-scrollbar { display: none; }
 .nav-link { position: relative; display: grid; height: 100%; align-items: center; color: #a19f95; font-size: 12px; font-weight: 600; transition: color .2s; }
 .nav-link:hover, .nav-link.active { color: #f2f1eb; }
@@ -457,12 +457,12 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .ev-page { margin-right: 22px; margin-left: 22px; }
 }
 @media (max-width: 700px) {
-  html { scroll-padding-top: 72px; }
-  .topbar { position: sticky; display: grid; height: auto; min-height: 0; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 40px 38px; gap: 3px 10px; padding: 8px 18px 5px; }
+  html { scroll-padding-top: 82px; }
+  .topbar { position: sticky; display: grid; height: auto; min-height: 0; grid-template-columns: minmax(0,1fr) auto; grid-template-rows: 40px auto; gap: 5px 10px; padding: 8px 18px 8px; }
   .topbar > .brand { grid-column: 1; grid-row: 1; }
   .topbar > .location-pill { grid-column: 2; grid-row: 1; justify-self: end; }
-  .topnav { grid-column: 1 / -1; grid-row: 2; display: flex; width: 100%; min-width: 0; height: 38px; justify-content: space-between; gap: 4px; overflow: visible; }
-  .nav-link { font-size: 10px; }
+  .topnav { grid-column: 1 / -1; grid-row: 2; display: flex; width: 100%; min-width: 0; height: auto; min-height: 34px; flex-wrap: wrap; align-content: center; justify-content: flex-start; gap: 3px 15px; overflow: visible; }
+  .nav-link { display: grid; min-height: 30px; flex: 0 0 auto; align-items: center; font-size: 10px; }
   .location-pill { min-height: 33px; gap: 7px; padding: 0 10px; font-size: 9px; }
   .hero { min-height: auto; grid-template-columns: 1fr; gap: 26px; margin: 0; padding: 40px 22px 30px; }
   .hero-copy { padding-left: 0; }
@@ -484,11 +484,11 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .footer p { max-width: 205px; line-height: 1.6; }
 }
 @media (max-width: 460px) {
-  .topbar { grid-template-rows: 38px 36px; gap: 2px 7px; padding: 7px 12px 4px; }
+  .topbar { grid-template-rows: 38px auto; gap: 3px 7px; padding: 7px 12px 7px; }
   .brand { gap: 8px; font-size: 15px; }
   .brand-mark { width: 30px; height: 30px; border-radius: 10px; }
-  .topnav { height: 36px; gap: 2px; }
-  .nav-link { display: flex; min-width: 0; flex: 1 1 0; align-items: center; justify-content: center; font-size: clamp(7px, 2.1vw, 8px); letter-spacing: -.15px; white-space: nowrap; }
+  .topnav { min-height: 32px; gap: 2px 12px; }
+  .nav-link { min-height: 28px; font-size: 9px; letter-spacing: 0; white-space: nowrap; }
   .location-pill { min-height: 30px; gap: 5px; padding: 0 7px; font-size: 8px; white-space: nowrap; }
   .hero { gap: 23px; padding: 34px 19px 27px; }
   h1 { letter-spacing: -2.8px; }
