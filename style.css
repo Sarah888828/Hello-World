@@ -133,7 +133,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .filter-chip.active { border-color: #d4e19f; background: #d4e19f; color: #171812; }
 .filter-chip span { margin-left: 4px; color: #bfc5a6; font-size: 8px; }
 .filter-chip.active span { color: #414733; }
-.parking-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.parking-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .parking-card { position: relative; min-height: 224px; overflow: hidden; padding: 19px; border: 1px solid var(--border-soft); border-radius: var(--radius-card); background: linear-gradient(145deg, #1d1e1a, #191a17); box-shadow: 0 7px 20px rgb(0 0 0 / 16%); animation: card-in .38s both; transition: transform .22s, border-color .22s, box-shadow .22s; }
 .parking-card::before { position: absolute; top: 0; right: 0; left: 0; height: 2px; transform: scaleX(0); transform-origin: left; background: #d2deaa; content: ""; transition: transform .25s; }
 .parking-card:hover { transform: translateY(-4px); border-color: #5d6449; box-shadow: 0 15px 32px rgb(0 0 0 / 27%); }
@@ -143,6 +143,10 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .card-topline { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .type-tag { padding: 5px 8px; border-radius: 3px; background: #303429; color: #d7e4b2; font-size: 8px; font-weight: 700; }
 .type-tag.nearby-tag { background: #302b20; color: #dfcc9b; }
+.type-tag.free-tag { background: #26302b; color: #b8d8c3; }
+.type-tag.temporary-tag { background: #383020; color: #ead49d; }
+.type-tag.park-tag { background: #292d36; color: #c3d0eb; }
+.type-tag.camping-tag { background: #342c24; color: #e4c5a1; }
 .distance-tag { color: #c1bfb4; font-size: 11px; }
 .card-title { margin: 15px 0 6px; color: #f0efe8; font-size: 15px; font-weight: 700; letter-spacing: -.35px; }
 .card-address { overflow: hidden; margin: 0; color: #c2c0b6; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
