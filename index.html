@@ -21,7 +21,8 @@
         <span class="brand-mark" aria-hidden="true">P</span>
         <span>불당<span class="brand-light">주차</span></span>
       </a>
-      <nav class="topnav" aria-label="주 메뉴">
+      <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">메뉴 <span aria-hidden="true">☰</span></button>
+      <nav id="main-navigation" class="topnav" aria-label="주 메뉴">
         <a class="nav-link active" href="./#parking-list">주차장 찾기</a>
         <a class="nav-link" href="guide/">이용 안내</a>
         <a class="nav-link" href="charging/">전기차 충전</a>
@@ -41,7 +42,7 @@
           <p class="eyebrow"><span class="eyebrow-line"></span> CHEONAN · BULDANG</p>
         <h1 id="hero-title">천안시 주차장,<br />한눈에 <span>찾아요</span>.</h1>
           <p class="hero-description">천안도시공사 공식 현황의 공영주차장 전체 목록을 모았어요.<br class="desktop-break" /> 지역과 주차장 이름으로 찾아보세요.</p>
-        <a class="hero-cta" href="#parking-list">공영주차장 55곳 둘러보기 <span aria-hidden="true">↓</span></a>
+        <a class="hero-cta" href="#parking-list">공영주차장 전체 보기 <span aria-hidden="true">↓</span></a>
           <div class="hero-note"><span class="hero-note-mark" aria-hidden="true"></span> 주차 전 현장 안내판을 확인해 주세요.</div>
         </div>
         <figure class="hero-art">
@@ -56,13 +57,22 @@
       </section>
 
       <section class="search-section" aria-label="주차장 검색">
-        <div class="search-wrap">
-          <span class="search-icon" aria-hidden="true">⌕</span>
-          <label class="visually-hidden" for="search-input">주차장 이름이나 주소 검색</label>
-          <input id="search-input" type="search" placeholder="주차장 이름이나 주소를 검색해 보세요" autocomplete="off" />
-          <button id="search-button" class="search-button" type="button">검색</button>
+        <div class="search-panel">
+          <div class="search-wrap">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <label class="visually-hidden" for="search-input">주차장 이름이나 주소 검색</label>
+            <input id="search-input" type="search" placeholder="어디에 주차하시나요? 주차장 이름·주소 검색" autocomplete="off" />
+            <button id="search-button" class="search-button" type="button">주차장 찾기</button>
+          </div>
+          <div class="search-quick-filters">
+            <span class="quick-filter-label">빠른 찾기</span>
+            <button class="quick-filter" type="button" data-quick-query="불당">불당동</button>
+            <button class="quick-filter" type="button" data-quick-query="두정">두정역</button>
+            <button class="quick-filter" type="button" data-quick-query="공원">공원</button>
+            <button class="quick-filter" type="button" data-quick-query="충전">충전기</button>
+            <span class="quick-filter-hint">천안시 공영주차장 55곳</span>
+          </div>
         </div>
-        <p class="search-hint">예: 불당동, 두정, 공원, 급속</p>
       </section>
 
       <section id="parking-list" class="parking-section" aria-labelledby="list-title">
@@ -79,7 +89,8 @@
             </select>
           </label>
         </div>
-        <div class="filter-row" role="group" aria-label="주차장 종류 필터">
+        <div class="parking-controls">
+        <div class="filter-row" role="group" aria-label="주차장 이용 유형 필터">
           <button class="filter-chip active" type="button" data-filter="all" aria-pressed="true">전체 <span>55</span></button>
           <button class="filter-chip" type="button" data-filter="paid" aria-pressed="false">유료</button>
           <button class="filter-chip" type="button" data-filter="free" aria-pressed="false">무료</button>
@@ -92,6 +103,7 @@
             <option value="동남구">동남구</option>
           </select>
         </label>
+        </div>
         <div id="parking-grid" class="parking-grid" aria-live="polite"></div>
         <div id="empty-state" class="empty-state" hidden>
           <span aria-hidden="true">⌕</span>
@@ -119,5 +131,22 @@
       <p class="dialog-disclaimer">※ 요금·운영 정보는 예시입니다. 방문 전 최신 정보를 확인해 주세요.</p>
       <a id="dialog-directions" class="directions-button" target="_blank" rel="noreferrer">지도에서 길찾기 <span aria-hidden="true">↗</span></a>
     </dialog>
+    <script>
+      const menuToggle = document.querySelector(".mobile-menu-toggle");
+      const mainNavigation = document.querySelector("#main-navigation");
+      menuToggle.addEventListener("click", () => {
+        const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+        menuToggle.setAttribute("aria-expanded", String(!isOpen));
+        mainNavigation.classList.toggle("is-open", !isOpen);
+      });
+      document.querySelectorAll(".quick-filter").forEach((button) => {
+        button.addEventListener("click", () => {
+          const input = document.querySelector("#search-input");
+          input.value = button.dataset.quickQuery;
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+          document.querySelector("#parking-list").scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
   </body>
 </html>
