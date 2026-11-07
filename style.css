@@ -150,7 +150,25 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .parking-controls .filter-row { margin: 0; }
 .parking-controls .sort-control { margin-left: auto; }
 .parking-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.parking-view-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+.parking-view-toolbar > p { margin: 0; color: #a9a79d; font-size: 9px; }
+.view-toggle { display: inline-flex; gap: 4px; padding: 3px; border: 1px solid #363830; border-radius: 5px; background: #151613; }
+.view-toggle-button { min-height: 34px; padding: 0 13px; border: 0; border-radius: 3px; background: transparent; color: #b7b5aa; cursor: pointer; font: inherit; font-size: 10px; }
+.view-toggle-button.active { background: #d4e19f; color: #171812; font-weight: 700; }
+.parking-map-view { margin: 0 0 16px; padding: 16px; border: 1px solid #383a32; border-radius: 6px; background: #171815; }
+.parking-map-intro strong { color: #f1f0e8; font-size: 12px; }
+.parking-map-intro p { margin: 5px 0 12px; color: #aaa99f; font-size: 9px; line-height: 1.7; }
+.parking-map-links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.parking-map-result { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; padding: 11px; border: 1px solid #33352e; border-radius: 4px; background: #1c1d19; }
+.parking-map-result > div { min-width: 0; }
+.parking-map-result strong { color: #e6e5dc; font-size: 10px; }
+.parking-map-result p { overflow: hidden; margin: 4px 0 0; color: #a9a79d; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.parking-map-result a { flex: 0 0 auto; color: #dbe5bb; font-size: 9px; font-weight: 700; }
+.parking-map-empty { grid-column: 1/-1; margin: 4px; color: #b5b3a8; font-size: 10px; }
 .parking-card { position: relative; min-height: 214px; overflow: hidden; padding: 18px 18px 16px; border: 1px solid #3a3d32; border-radius: 6px; background: linear-gradient(145deg, #20221d, #171815 78%); box-shadow: 0 9px 23px rgb(0 0 0 / 21%); animation: card-in .38s both; transition: transform .22s, border-color .22s, box-shadow .22s; }
+.favorite-button { position: absolute; top: 12px; right: 12px; z-index: 1; display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #45473b; border-radius: 50%; background: #171815; color: #c9c7bc; cursor: pointer; font-size: 19px; }
+.favorite-button:hover, .favorite-button.is-favorite { border-color: #879369; color: #e4efb4; }
+.favorite-button:focus-visible { outline: 3px solid #91ad65; outline-offset: 3px; }
 .parking-card::before { position: absolute; top: 0; right: 0; left: 0; height: 2px; transform: scaleX(0); transform-origin: left; background: #d2deaa; content: ""; transition: transform .25s; }
 .parking-card:hover { transform: translateY(-4px); border-color: #5d6449; box-shadow: 0 15px 32px rgb(0 0 0 / 27%); }
 .parking-card:hover::before { transform: scaleX(1); }
@@ -408,6 +426,25 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .distance-button:disabled { cursor: wait; opacity: .72; }
 .distance-button span { font-size: 13px; }
 .distance-map-link { display: flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; margin-top: 8px; border: 1px solid #42443a; border-radius: 3px; color: #d8dfc1; font-size: 9px; font-weight: 600; }
+.guide-faq { max-width: var(--content); margin: 0 auto 58px; padding: 22px; border: 1px solid #383a32; border-radius: 6px; background: #171815; }
+.guide-faq-heading h2 { margin: 7px 0 14px; color: #f1f0e8; font-size: 19px; }
+.guide-faq-item { border-top: 1px solid #34362f; }
+.guide-faq-item summary { min-height: 48px; padding: 15px 28px 12px 2px; color: #e7e6dc; cursor: pointer; font-size: 11px; font-weight: 700; }
+.guide-faq-item summary::marker { color: #d4e19f; }
+.guide-faq-item p { margin: 0 0 10px; color: #b6b4a9; font-size: 10px; line-height: 1.8; }
+.guide-faq-item a { display: inline-flex; min-height: 38px; align-items: center; margin: 0 0 12px; color: #dce5bd; font-size: 10px; font-weight: 700; }
+@media (max-width: 1100px) { .guide-faq { margin-right: 28px; margin-left: 28px; } }
+@media (max-width: 700px) {
+  .parking-view-toolbar { align-items: flex-start; flex-direction: column; }
+  .parking-map-view { padding: 12px; }
+  .parking-map-links { grid-template-columns: 1fr; }
+  .parking-map-result { min-height: 58px; }
+  .guide-faq { margin-right: 22px; margin-left: 22px; padding: 17px; }
+}
+@media (max-width: 460px) {
+  .guide-faq { margin-right: 16px; margin-left: 16px; padding: 15px; }
+  .favorite-button { top: 9px; right: 9px; width: 40px; height: 40px; }
+}
 .distance-map-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .distance-map-actions .distance-map-link { min-width: 0; min-height: 42px; margin: 0; padding: 0 8px; text-align: center; }
 .distance-map-link.distance-map-secondary { color: #bbb9ae; }

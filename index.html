@@ -79,6 +79,7 @@
           <button class="filter-chip" type="button" data-filter="paid" aria-pressed="false">유료</button>
           <button class="filter-chip" type="button" data-filter="free" aria-pressed="false">무료</button>
           <button class="filter-chip" type="button" data-filter="temporary" aria-pressed="false">임시 무료</button>
+          <button id="favorites-filter" class="filter-chip" type="button" aria-pressed="false">즐겨찾기 <span id="favorites-count">0</span></button>
         </div>
         <label class="sort-control district-select" for="district-filter"><span>지역</span>
           <select id="district-filter" aria-label="행정구 지역 필터">
@@ -88,6 +89,17 @@
           </select>
         </label>
         </div>
+        <div class="parking-view-toolbar">
+          <p id="favorites-storage-note">즐겨찾기는 이 브라우저에만 저장됩니다.</p>
+          <div class="view-toggle" role="group" aria-label="주차장 표시 방식">
+            <button class="view-toggle-button active" type="button" data-view="list" aria-pressed="true">목록</button>
+            <button class="view-toggle-button" type="button" data-view="map" aria-pressed="false">지도</button>
+          </div>
+        </div>
+        <section id="parking-map-view" class="parking-map-view" aria-label="주차장 지도 검색" hidden>
+          <div class="parking-map-intro"><strong>주차장 위치를 지도 앱에서 확인하세요</strong><p>정확한 위치·도로 경로는 선택한 주차장의 지도 검색 결과에서 확인할 수 있습니다. 이 화면은 실시간 잔여면수나 좌표 기반 지도를 표시하지 않습니다.</p></div>
+          <div id="parking-map-links" class="parking-map-links"></div>
+        </section>
         <div class="availability-summary" role="status" aria-live="polite">
           <span class="availability-summary-icon" aria-hidden="true">◷</span>
           <div><strong>실시간 주차 가능 대수는 현재 제공되지 않습니다.</strong><p>천안도시공사 공개 현황에는 주차장별 총 면수만 있어, 빈자리는 현장 또는 공식 안내에서 확인해 주세요.</p></div>

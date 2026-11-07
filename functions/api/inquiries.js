@@ -1,4 +1,4 @@
-const categories = new Set(["주차장 이용", "요금·운영시간", "전기차 충전", "사이트 이용", "기타"]);
+const categories = new Set(["주차장 이용", "요금·운영시간", "전기차 충전", "정보 정정/제보", "사이트 이용", "기타"]);
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {

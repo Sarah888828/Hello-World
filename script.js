@@ -238,6 +238,20 @@ let filterButtons = [];
 let parkingDialog;
 let activeFilter = "all";
 let activeDistrictFilter = "all";
+let favoritesOnly = false;
+let parkingView = "list";
+const favoritesStorageKey = "buldang-parking-favorites-v1";
+
+function getFavoriteIds() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(favoritesStorageKey) || "[]");
+    return new Set(Array.isArray(saved) ? saved.filter((id) => typeof id === "string") : []);
+  } catch {
+    return new Set();
+  }
+}
+
+let favoriteIds = getFavoriteIds();
 
 function escapeHtml(value) {
   return value.replace(/[&<>"']/g, (character) => ({
@@ -257,12 +271,17 @@ function initializeHomepage() {
   resultCount = document.querySelector("#result-count");
   emptyState = document.querySelector("#empty-state");
   filterButtons = [...document.querySelectorAll(".filter-chip")];
+  const favoritesFilter = document.querySelector("#favorites-filter");
+  const favoritesCount = document.querySelector("#favorites-count");
+  const parkingMapView = document.querySelector("#parking-map-view");
+  const parkingMapLinks = document.querySelector("#parking-map-links");
   const districtFilter = document.querySelector("#district-filter");
   parkingDialog = document.querySelector("#parking-dialog");
 
   if (!parkingGrid || !searchInput || !searchButton || !sortSelect || !resultCount || !emptyState || !parkingDialog) return;
 
   filterButtons.forEach((button) => {
+    if (button === favoritesFilter) return;
     button.addEventListener("click", () => {
       activeFilter = button.dataset.filter;
       filterButtons.forEach((item) => {
@@ -271,6 +290,25 @@ function initializeHomepage() {
         item.setAttribute("aria-pressed", String(isActive));
       });
       renderParkingLots();
+    });
+  });
+  favoritesFilter?.addEventListener("click", () => {
+    favoritesOnly = !favoritesOnly;
+    favoritesFilter.classList.toggle("active", favoritesOnly);
+    favoritesFilter.setAttribute("aria-pressed", String(favoritesOnly));
+    renderParkingLots();
+  });
+  document.querySelectorAll(".view-toggle-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      parkingView = button.dataset.view;
+      document.querySelectorAll(".view-toggle-button").forEach((item) => {
+        const active = item === button;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+      parkingGrid.hidden = parkingView !== "list";
+      parkingMapView.hidden = parkingView !== "map";
+      if (parkingView === "map") renderParkingMapLinks(parkingMapLinks, getVisibleLots());
     });
   });
   districtFilter?.addEventListener("change", () => {
@@ -285,6 +323,19 @@ function initializeHomepage() {
   });
   sortSelect.addEventListener("change", renderParkingLots);
   parkingGrid.addEventListener("click", (event) => {
+    const favoriteButton = event.target.closest("[data-favorite-id]");
+    if (favoriteButton) {
+      const id = favoriteButton.dataset.favoriteId;
+      if (favoriteIds.has(id)) favoriteIds.delete(id);
+      else favoriteIds.add(id);
+      try {
+        localStorage.setItem(favoritesStorageKey, JSON.stringify([...favoriteIds]));
+      } catch {
+        document.querySelector("#favorites-storage-note").textContent = "브라우저 저장공간을 사용할 수 없어 즐겨찾기를 저장하지 못했습니다.";
+      }
+      renderParkingLots();
+      return;
+    }
     const detailButton = event.target.closest("[data-lot-id]");
     if (detailButton) showParkingDetails(detailButton.dataset.lotId);
   });
@@ -307,6 +358,7 @@ function initializeHomepage() {
   });
 
   renderParkingLots();
+  updateFavoritesCount(favoritesCount);
 }
 
 function getVisibleLots() {
@@ -314,6 +366,7 @@ function getVisibleLots() {
   return parkingLots
     .filter((lot) => activeFilter === "all" || lot.type === activeFilter)
     .filter((lot) => activeDistrictFilter === "all" || lot.district === activeDistrictFilter)
+    .filter((lot) => !favoritesOnly || favoriteIds.has(lot.id))
     .filter((lot) => !query || `${lot.name} ${lot.address} ${lot.typeLabel} ${lot.charger?.exists ? `전기차 충전 ${lot.charger.count} ${lot.charger.output} 급속 ${lot.charger.price}` : "충전기 없음"}`.toLocaleLowerCase("ko-KR").includes(query))
     .sort((first, second) => sortSelect.value === "capacity"
       ? parseCapacity(first.capacity) - parseCapacity(second.capacity)
@@ -398,15 +451,19 @@ function renderParkingDetailPage(lot) {
 
 function renderParkingLots() {
   const visibleLots = getVisibleLots();
+  updateFavoritesCount(document.querySelector("#favorites-count"));
   resultCount.textContent = String(visibleLots.length).padStart(2, "0");
   emptyState.hidden = visibleLots.length > 0;
-  parkingGrid.hidden = visibleLots.length === 0;
+  parkingGrid.hidden = visibleLots.length === 0 || parkingView !== "list";
+  const mapView = document.querySelector("#parking-map-view");
+  if (mapView) mapView.hidden = parkingView !== "map";
   parkingGrid.innerHTML = visibleLots.map((lot) => `
       <article class="parking-card">
       <div class="card-topline">
         <span class="type-tag ${getCardTypeClass(lot)}">${escapeHtml(lot.typeLabel)}</span>
         <span class="distance-tag">${escapeHtml(lot.distance)}</span>
       </div>
+      <button class="favorite-button${favoriteIds.has(lot.id) ? " is-favorite" : ""}" type="button" data-favorite-id="${escapeHtml(lot.id)}" aria-pressed="${favoriteIds.has(lot.id)}" aria-label="${favoriteIds.has(lot.id) ? "즐겨찾기 해제" : "즐겨찾기 추가"}: ${escapeHtml(lot.name)}">${favoriteIds.has(lot.id) ? "★" : "☆"}</button>
       <h3 class="card-title">${escapeHtml(lot.name)}</h3>
       <p class="card-address" title="${escapeHtml(lot.address)}">${escapeHtml(lot.address)}</p>
       <div class="card-divider"></div>
@@ -416,6 +473,19 @@ function renderParkingLots() {
       <div class="card-bottom"><span class="hours-label">${escapeHtml(lot.charger.exists ? `⚡ 충전 ${lot.charger.count}` : lot.hours)}</span><a class="detail-button" href="${getLotDetailUrl(lot)}"${lot.id.startsWith("buldang-") ? "" : ' target="_blank" rel="noreferrer"'}>${lot.id.startsWith("buldang-") ? "상세 보기　→" : "지도 보기　↗"}</a></div>
     </article>
   `).join("");
+  if (parkingView === "map") renderParkingMapLinks(document.querySelector("#parking-map-links"), visibleLots);
+}
+
+function updateFavoritesCount(element) {
+  if (element) element.textContent = String(favoriteIds.size);
+}
+
+function renderParkingMapLinks(container, lots) {
+  if (!container) return;
+  container.innerHTML = lots.map((lot) => {
+    const query = encodeURIComponent(`${lot.name} ${lot.address}`);
+    return `<article class="parking-map-result"><div><strong>${escapeHtml(lot.name)}</strong><p>${escapeHtml(lot.address)} · 총 ${escapeHtml(lot.capacity.split(" · ")[0])}</p></div><a href="https://map.naver.com/p/search/${query}" target="_blank" rel="noopener noreferrer">지도에서 보기 ↗</a></article>`;
+  }).join("") || `<p class="parking-map-empty">표시할 주차장이 없습니다. 검색어나 필터를 바꾸거나 즐겨찾기를 추가해 주세요.</p>`;
 }
 
 function showParkingDetails(lotId) {

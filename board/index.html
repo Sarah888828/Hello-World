@@ -30,7 +30,7 @@
 
       <section class="board-notice" aria-label="게시판 안내">
         <span class="board-notice-icon" aria-hidden="true">i</span>
-        <p><strong>문의는 SQLite 데이터베이스에 저장됩니다.</strong> 비공개 표시는 목록에서 내용 미리보기만 숨기며 관리자 인증 기능은 아직 없습니다. 전화번호, 차량번호 등 민감한 개인정보는 입력하지 마세요. 공식 주차 정보는 <a href="https://www.cauc.or.kr/_parking/main.asp?no=1" target="_blank" rel="noreferrer">천안도시공사 공영주차장 안내</a>에서 확인해 주세요.</p>
+          <p><strong>문의는 데이터베이스에 저장됩니다.</strong> 정보 정정 제보는 검토 후 반영하며 즉시 수정되지 않습니다. 비공개 표시는 목록에서 내용 미리보기만 숨기고 관리자 인증은 아직 없습니다. 전화번호·차량번호 등 민감정보는 입력하지 마세요. 공식 주차 정보는 <a href="https://www.cauc.or.kr/_parking/main.asp?no=1" target="_blank" rel="noreferrer">천안도시공사 안내</a>에서 확인해 주세요.</p>
       </section>
 
       <section class="static-board" aria-labelledby="faq-title">
@@ -49,11 +49,11 @@
         <div class="form-heading"><p class="section-kicker">CONTACT</p><h2 id="compose-title">문의 작성</h2><p>문의는 서버의 SQLite 데이터베이스에 저장됩니다.</p></div>
         <form id="inquiry-form" class="static-compose-form" novalidate>
           <label class="form-field" for="inquiry-category"><span>문의 유형 <b aria-hidden="true">*</b></span>
-            <select id="inquiry-category" name="category" required><option value="" selected disabled>문의 유형을 선택해 주세요</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select>
+            <select id="inquiry-category" name="category" required><option value="" selected disabled>문의 유형을 선택해 주세요</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="정보 정정/제보">정보 정정/제보</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select>
           </label>
           <label class="form-field" for="inquiry-name"><span>작성자 <b aria-hidden="true">*</b></span><input id="inquiry-name" name="name" type="text" maxlength="24" placeholder="닉네임을 입력해 주세요" required /></label>
           <label class="form-field" for="inquiry-title"><span>제목 <b aria-hidden="true">*</b></span><input id="inquiry-title" name="title" type="text" maxlength="80" placeholder="문의 제목을 입력해 주세요" required /></label>
-          <label class="form-field" for="inquiry-content"><span>문의 내용 <b aria-hidden="true">*</b></span><textarea id="inquiry-content" name="content" rows="5" maxlength="1200" placeholder="문의 내용을 입력해 주세요. 개인정보는 작성하지 마세요." required></textarea></label>
+          <label class="form-field" for="inquiry-content"><span>문의 내용 <b aria-hidden="true">*</b></span><textarea id="inquiry-content" name="content" rows="5" maxlength="1200" placeholder="정보 제보라면 주차장명, 틀린 내용, 확인 가능한 공식 출처를 적어 주세요. 개인정보는 작성하지 마세요." required></textarea></label>
           <label class="private-option" for="inquiry-private"><input id="inquiry-private" name="private" type="checkbox" /><span><strong>비공개 문의로 표시</strong><small>목록에서 문의 내용 미리보기만 숨깁니다. 관리자 인증 기능은 아직 없습니다.</small></span></label>
           <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
           <button class="submit-inquiry" type="submit">문의 등록 <span aria-hidden="true">→</span></button>
@@ -62,7 +62,7 @@
 
       <section class="inquiry-list-section" aria-labelledby="inquiry-list-title">
         <div class="inquiry-list-heading"><div><p class="section-kicker">INQUIRY BOARD</p><h2 id="inquiry-list-title">문의 목록 <span id="inquiry-count" class="count-badge">0</span></h2></div>
-          <label class="board-filter" for="category-filter"><span class="visually-hidden">문의 유형 필터</span><select id="category-filter" aria-label="문의 유형 필터"><option value="all">전체</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select></label>
+          <label class="board-filter" for="category-filter"><span class="visually-hidden">문의 유형 필터</span><select id="category-filter" aria-label="문의 유형 필터"><option value="all">전체</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="정보 정정/제보">정보 정정/제보</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select></label>
         </div>
         <div id="inquiry-list" class="inquiry-list" aria-live="polite"></div>
         <div id="inquiry-empty" class="inquiry-empty"><span class="empty-mark" aria-hidden="true"></span><h3>아직 등록된 문의가 없어요</h3><p>궁금한 점을 첫 문의로 남겨 주세요.</p></div>
