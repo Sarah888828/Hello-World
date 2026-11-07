@@ -218,8 +218,8 @@ function updateDestination() {
   if (!destination) {
     distanceValue.innerHTML = '--<small> km</small>';
     distanceStatus.textContent = "이 주차장의 정확한 좌표는 아직 확인되지 않아 직선거리를 계산할 수 없습니다. 지도에서 실제 길찾기를 이용해 주세요.";
-    locateButton.disabled = false;
-    locateButton.textContent = "내 위치 확인";
+    locateButton.disabled = true;
+    locateButton.textContent = "직선거리 좌표 미등록";
     if (routeLine && scene) {
       scene.remove(routeLine);
       routeLine.geometry.dispose();
