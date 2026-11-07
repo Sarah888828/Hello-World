@@ -112,7 +112,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .art-street { position: absolute; z-index: 6; right: 15px; bottom: 12px; color: #788275; font-size: 7px; font-weight: 800; letter-spacing: 1.1px; }
 .art-street span { padding: 0 3px; color: #95a787; }
 
-.search-section { position: relative; z-index: 1; max-width: var(--content); margin: 0 auto; padding: 0 0 42px; }
+.search-section { position: relative; z-index: 1; width: min(calc(var(--content) + 48px), 100%); margin: 0 auto; padding: 18px 24px 0; }
 .search-panel { padding: 9px; border: 1px solid #45473b; border-radius: 8px; background: linear-gradient(130deg, #20221c, #191a17 68%, #22241d); box-shadow: 0 18px 42px rgb(0 0 0 / 30%); }
 .search-wrap { display: flex; height: 59px; align-items: center; padding: 6px 7px 6px 19px; border: 1px solid #34352f; border-radius: 5px; background: #11120f; box-shadow: inset 0 1px 0 rgb(255 255 255 / 3%); transition: border-color .2s, box-shadow .2s; }
 .search-wrap:focus-within { border-color: #9dab78; box-shadow: 0 0 0 3px var(--focus-ring), 0 9px 26px rgb(0 0 0 / 30%); }
@@ -555,7 +555,8 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 }
 @media (max-width: 1100px) {
   .search-section, .parking-section, .guide-section { margin-right: 28px; margin-left: 28px; }
-  .search-section { padding-bottom: 46px; }
+  .search-section { width: auto; padding: 16px 0 0; }
+  .parking-section { padding-bottom: 46px; }
   .hero { margin: 0 16px; }
   .detail-page-hero, .detail-page-content { margin-right: 28px; margin-left: 28px; }
   .board-page, .guide-page { width: auto; margin-right: 28px; margin-left: 28px; }
@@ -581,6 +582,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   h1 { margin-top: 15px; font-size: clamp(39px, 10vw, 51px); }
   .hero-art { height: 238px; }
   .search-section, .parking-section { margin-right: 22px; margin-left: 22px; }
+  .search-section { padding-top: 14px; }
   .detail-page-hero, .detail-page-content { margin-right: 22px; margin-left: 22px; }
   .board-page, .guide-page { margin-right: 22px; margin-left: 22px; }
   .search-section { padding-bottom: 34px; }
@@ -616,7 +618,8 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .art-pin { top: 58px; }
   .art-car { right: 62px; }
   .search-section, .parking-section { margin-right: 18px; margin-left: 18px; }
-  .search-section { padding-bottom: 35px; }
+  .search-section { padding-top: 12px; }
+  .parking-section { padding-bottom: 35px; }
   .search-wrap { padding-left: 12px; }
   .search-wrap input { font-size: 10px; }
   .search-button { min-width: 84px; padding: 0 9px; font-size: 8px; }
