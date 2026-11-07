@@ -35,6 +35,10 @@ export default {
       });
     }
 
+    if (url.pathname === "/distance/distance.js") {
+      return env.ASSETS.fetch(new Request(new URL("/distance/distance.js", url), request));
+    }
+
     return env.ASSETS.fetch(request);
   }
 };
