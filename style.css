@@ -395,6 +395,14 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .ev-notice p { margin: 1px 0 0; color: #c2c0b4; font-size: 10px; line-height: 1.75; }
 .ev-notice strong { color: #e3e8ca; }
 .ev-list, .ev-search-card { padding: 22px; border: 1px solid #35362f; border-radius: 6px; background: linear-gradient(150deg, #1d1e1a, #181916); box-shadow: 0 12px 32px rgb(0 0 0 / 18%); }
+.ev-station-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+.ev-station-grid .ev-station-card { min-width: 0; grid-template-columns: 34px minmax(0,1fr); gap: 10px; padding: 14px; }
+.ev-station-grid .ev-station-symbol { width: 34px; height: 34px; font-size: 17px; }
+.ev-station-grid .ev-station-main h3 { font-size: 12px; line-height: 1.55; }
+.ev-station-grid .ev-facts { gap: 6px 10px; font-size: 8px; }
+.ev-station-grid .ev-card-note { font-size: 8px; }
+.ev-station-grid .ev-card-link { grid-column: 2; justify-self: start; min-height: 29px; }
+.ev-station-grid .ev-station-card:first-child { border-color: #68734f; background: linear-gradient(140deg, #22251d, #151612); box-shadow: inset 0 0 0 1px rgb(188 207 145 / 10%); }
 .ev-list-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 16px; }
 .ev-list-heading h2, .ev-search-card h2 { margin: 7px 0 0; color: #f1f0e8; font-size: 18px; letter-spacing: -.5px; }
 .ev-station-card { display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: start; gap: 15px; padding: 18px; border: 1px solid #373930; border-radius: 5px; background: #151612; }
@@ -528,6 +536,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .distance-page { margin-right: 16px; margin-left: 16px; padding-top: 26px; }
   .ev-page { margin-right: 16px; margin-left: 16px; padding-top: 26px; }
   .ev-list, .ev-search-card, .ev-detail-card, .ev-side-note { padding: 17px; }
+  .ev-station-grid { grid-template-columns: 1fr; }
   .ev-station-card { grid-template-columns: 34px minmax(0,1fr); gap: 10px; padding: 13px; }
   .ev-station-symbol { width: 34px; height: 34px; font-size: 17px; }
   .ev-card-link { grid-column: 2; justify-self: start; }
