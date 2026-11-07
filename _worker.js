@@ -13,6 +13,13 @@ export default {
       });
     }
 
+    if (url.pathname === "/private-parking" || url.pathname.startsWith("/private-parking/")) {
+      return new Response("페이지를 찾을 수 없습니다.", {
+        status: 404,
+        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" }
+      });
+    }
+
     if (url.pathname === "/api/auth/signup") {
       if (request.method !== "POST") {
         return new Response(JSON.stringify({ error: "지원하지 않는 요청 방식입니다." }), {

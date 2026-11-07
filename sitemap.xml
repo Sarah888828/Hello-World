@@ -22,11 +22,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/private-parking/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://YOUR_DOMAIN/parking/buldang-public/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
