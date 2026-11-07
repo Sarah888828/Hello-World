@@ -22,6 +22,11 @@ const sceneDestinationName = document.querySelector("#scene-destination-name");
 const naverMapLink = document.querySelector("#distance-map-link");
 const kakaoMapLink = document.querySelector("#kakao-map-link");
 const googleMapLink = document.querySelector("#google-map-link");
+const originSearchInput = document.querySelector("#origin-search-input");
+const originSearchButton = document.querySelector("#origin-search-button");
+const originSearchStatus = document.querySelector("#origin-search-status");
+const originNaverLink = document.querySelector("#origin-naver-link");
+const originKakaoLink = document.querySelector("#origin-kakao-link");
 let renderer;
 let scene;
 let camera;
@@ -244,6 +249,21 @@ function updateDestination() {
   distanceStatus.textContent = "위치 권한을 허용하면 근사 직선거리를 계산할 수 있어요.";
 }
 
+function searchOriginOnMaps(openNaver = true) {
+  const query = originSearchInput.value.trim();
+  if (query.length < 2) {
+    originSearchStatus.textContent = "출발지 주소나 장소를 두 글자 이상 입력해 주세요.";
+    originSearchInput.focus();
+    return;
+  }
+
+  const encodedQuery = encodeURIComponent(query);
+  originNaverLink.href = `https://map.naver.com/p/search/${encodedQuery}`;
+  originKakaoLink.href = `https://map.kakao.com/?q=${encodedQuery}`;
+  originSearchStatus.textContent = `“${query}” 검색 결과에서 정확한 출발지를 선택해 주세요. 장소를 선택해도 이 페이지의 거리 계산 좌표는 자동 변경되지 않습니다.`;
+  if (openNaver) window.open(originNaverLink.href, "_blank", "noopener,noreferrer");
+}
+
 function requestLocation() {
   if (!destination) {
     distanceStatus.textContent = "선택한 주차장은 좌표가 확인되지 않아 거리를 계산할 수 없습니다. 네이버·카카오·Google 지도 길찾기를 이용해 주세요.";
@@ -293,3 +313,10 @@ try {
 updateDestination();
 destinationSelect.addEventListener("change", updateDestination);
 locateButton.addEventListener("click", requestLocation);
+originSearchButton.addEventListener("click", () => searchOriginOnMaps(true));
+originSearchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    searchOriginOnMaps(true);
+  }
+});

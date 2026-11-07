@@ -414,6 +414,15 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .distance-destination-label { margin-top: 8px; color: #aead9f; font-size: 9px; }
 .distance-destination-select { width: 100%; min-height: 43px; margin-top: 6px; padding: 0 11px; border: 1px solid #494b3e; border-radius: 4px; background: #12130f; color: #f1f0e8; font: inherit; font-size: 12px; }
 .distance-destination-help { margin: 8px 0 0; color: #aaa99f; font-size: 9px; line-height: 1.65; }
+.distance-origin-search { display: grid; gap: 6px; margin-top: 14px; padding-top: 13px; border-top: 1px solid #34362f; }
+.distance-origin-search .distance-destination-label { margin-top: 0; }
+.distance-origin-input-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 7px; }
+.distance-origin-input-row input { min-width: 0; min-height: 42px; padding: 0 10px; border: 1px solid #494b3e; border-radius: 4px; background: #12130f; color: #f1f0e8; font: inherit; font-size: 11px; }
+.distance-origin-input-row button { min-height: 42px; padding: 0 10px; border: 1px solid #5c6548; border-radius: 4px; background: #292d22; color: #e2eac9; cursor: pointer; font: inherit; font-size: 9px; font-weight: 700; }
+.distance-origin-input-row button:hover { background: #353a2a; }
+.distance-origin-note { margin: 0; color: #a8a69c; font-size: 8px; line-height: 1.6; }
+.distance-origin-map-actions { margin-top: 2px; }
+.distance-origin-map-actions .distance-map-link { min-height: 36px; font-size: 8px; }
 .distance-info-card h2 { margin: 8px 0 5px; color: #f1f0e8; font-size: 18px; letter-spacing: -.6px; }
 .distance-address { margin: 0; color: #aaa99f; font-size: 9px; line-height: 1.7; }
 .distance-result { display: grid; gap: 7px; margin: 23px 0 18px; padding: 17px 14px; border: 1px solid #37392f; border-radius: 4px; background: #141512; }

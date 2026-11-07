@@ -50,6 +50,15 @@
           <h2 id="destination-name">불당 제1주차장</h2>
           <p id="destination-address" class="distance-address">천안시 서북구 검은들1길 15</p>
           <p id="destination-help" class="distance-destination-help">직선거리 좌표가 설정된 목적지는 불당 제1주차장뿐입니다. 다른 주차장은 측정 버튼 대신 아래 지도 길찾기를 이용하세요.</p>
+          <div class="distance-origin-search">
+            <label class="distance-destination-label" for="origin-search-input">내 위치·출발지 주소 검색</label>
+            <div class="distance-origin-input-row"><input id="origin-search-input" type="search" autocomplete="street-address" placeholder="예: 천안시청, 불당동 카페" /><button id="origin-search-button" type="button">지도에서 찾기</button></div>
+            <p id="origin-search-status" class="distance-origin-note" role="status" aria-live="polite">검색어로 지도 앱을 열어 주소를 확인하세요. 검색만으로 거리 좌표가 자동 입력되지는 않습니다.</p>
+            <div class="distance-map-actions distance-origin-map-actions">
+              <a id="origin-naver-link" class="distance-map-link" href="https://map.naver.com/p/search/%EC%B2%9C%EC%95%88%EC%8B%9C" target="_blank" rel="noopener noreferrer">네이버에서 출발지 검색 ↗</a>
+              <a id="origin-kakao-link" class="distance-map-link distance-map-secondary" href="https://map.kakao.com/?q=%EC%B2%9C%EC%95%88%EC%8B%9C" target="_blank" rel="noopener noreferrer">카카오에서 출발지 검색 ↗</a>
+            </div>
+          </div>
           <div class="distance-result" aria-live="polite">
             <span class="distance-result-label">내 위치에서 직선거리</span>
             <strong id="distance-value">--<small> km</small></strong>
