@@ -337,6 +337,50 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .account-switch a:hover { color: #f0f5d5; }
 .account-login-page .account-card { margin-top: 35px; }
 .account-login-page .account-form { gap: 16px; }
+.distance-page { max-width: var(--content); min-height: calc(100vh - 148px); margin: 0 auto; padding: 39px 0 58px; }
+.distance-heading { margin-bottom: 21px; }
+.distance-heading .detail-back { margin-bottom: 24px; }
+.distance-heading h1 { margin: 10px 0 9px; color: #f2f1eb; font-size: clamp(38px, 5.5vw, 51px); line-height: 1.2; letter-spacing: -2.7px; }
+.distance-heading h1 span { color: #d5e4ac; }
+.distance-heading > p:last-child { margin: 0; color: #b8b7ad; font-size: 11px; line-height: 1.8; }
+.distance-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(270px, .85fr); align-items: stretch; gap: 15px; }
+.distance-scene-card, .distance-info-card { min-width: 0; overflow: hidden; border: 1px solid #363830; border-radius: 7px; background: linear-gradient(150deg, #1d1e1a, #171815); box-shadow: 0 14px 36px rgb(0 0 0 / 24%); }
+.distance-scene-card { display: flex; min-height: 400px; flex-direction: column; }
+.distance-scene-top { display: flex; min-height: 45px; align-items: center; justify-content: space-between; gap: 10px; padding: 0 15px; border-bottom: 1px solid #30312c; }
+.distance-scene-label { display: inline-flex; align-items: center; gap: 8px; color: #d1d7bd; font-size: 8px; font-weight: 800; letter-spacing: 1.3px; }
+.distance-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #92c9dc; box-shadow: 0 0 0 4px rgb(117 193 218 / 12%); }
+.distance-scene-caption { color: #888a80; font-size: 8px; }
+.distance-scene { position: relative; min-height: 315px; flex: 1; overflow: hidden; background: radial-gradient(ellipse at 48% 38%, #33392e 0%, #20231d 52%, #191a17 100%); }
+.distance-scene canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.scene-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0; background-image: linear-gradient(rgb(212 225 159 / 4%) 1px, transparent 1px), linear-gradient(90deg, rgb(212 225 159 / 4%) 1px, transparent 1px); background-size: 28px 28px; }
+.distance-scene canvas ~ .scene-fallback { display: none; }
+.scene-fallback-user, .scene-fallback-parking { z-index: 1; display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid #565b45; border-radius: 50%; background: #24271f; color: #9bd8ed; box-shadow: 0 0 24px rgb(130 198 218 / 13%); }
+.scene-fallback-parking { border-color: #8a9668; border-radius: 13px; background: #d4e19f; color: #172015; font-size: 19px; font-weight: 800; }
+.scene-fallback-line { width: min(34%, 155px); border-top: 2px dashed #bdcf91; }
+.distance-scene-legend { display: flex; min-height: 43px; flex-wrap: wrap; align-items: center; gap: 15px; padding: 0 15px; border-top: 1px solid #30312c; color: #b7b6ab; font-size: 8px; }
+.distance-scene-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+.user-dot { background: #78cae3; }
+.parking-dot { background: #d4e19f; }
+.distance-scene-legend .distance-scene-note { margin-left: auto; color: #929187; }
+.distance-info-card { display: flex; flex-direction: column; padding: 21px; }
+.distance-info-card h2 { margin: 8px 0 5px; color: #f1f0e8; font-size: 18px; letter-spacing: -.6px; }
+.distance-address { margin: 0; color: #aaa99f; font-size: 9px; line-height: 1.7; }
+.distance-result { display: grid; gap: 7px; margin: 23px 0 18px; padding: 17px 14px; border: 1px solid #37392f; border-radius: 4px; background: #141512; }
+.distance-result-label { color: #aaa99f; font-size: 9px; }
+.distance-result strong { color: #e1ebc2; font-size: 35px; line-height: 1.05; letter-spacing: -1.8px; }
+.distance-result strong small { color: #c2c7ae; font-size: 15px; letter-spacing: 0; }
+.distance-status { min-height: 14px; color: #a7a699; font-size: 8px; line-height: 1.65; }
+.distance-button { display: flex; min-height: 43px; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 3px; background: #d4e19f; color: #171812; cursor: pointer; font-size: 9px; font-weight: 700; transition: background .18s, transform .18s; }
+.distance-button:hover { transform: translateY(-1px); background: #e4efb4; }
+.distance-button:disabled { cursor: wait; opacity: .72; }
+.distance-button span { font-size: 13px; }
+.distance-map-link { display: flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; margin-top: 8px; border: 1px solid #42443a; border-radius: 3px; color: #d8dfc1; font-size: 9px; font-weight: 600; }
+.distance-map-link:hover { border-color: #74805a; background: #25281f; }
+.distance-privacy-note { display: flex; align-items: start; gap: 6px; margin: auto 0 0; padding-top: 18px; color: #96958b; font-size: 8px; line-height: 1.7; }
+.distance-privacy-note span { color: #cbd9a0; }
+.distance-disclaimer { margin: 14px 0 0; color: #a5a49a; font-size: 9px; line-height: 1.8; }
+.distance-scene.scene-unavailable .scene-fallback { opacity: 1; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
 .account-form input:focus-visible, .account-form select:focus-visible, .account-form textarea:focus-visible, .account-form button:focus-visible, .inquiry-form input:focus-visible, .inquiry-form select:focus-visible, .inquiry-form textarea:focus-visible, .inquiry-form button:focus-visible, .board-filter select:focus-visible { outline: 3px solid #d4e19f; outline-offset: 3px; }
 .inquiry-list[aria-busy="true"] { opacity: .65; }
@@ -363,6 +407,7 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .hero { margin: 0 16px; }
   .detail-page-hero, .detail-page-content { margin-right: 28px; margin-left: 28px; }
   .board-page { margin-right: 28px; margin-left: 28px; }
+  .distance-page { margin-right: 22px; margin-left: 22px; }
 }
 @media (max-width: 700px) {
   html { scroll-padding-top: 72px; }
@@ -429,6 +474,12 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
   .static-post { grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 14px 0; }
   .static-post-main h3 { font-size: 11px; }
   .account-page { width: calc(100% - 32px); padding-top: 25px; }
+  .distance-page { margin-right: 16px; margin-left: 16px; padding-top: 26px; }
+  .distance-layout { grid-template-columns: 1fr; }
+  .distance-scene-card { min-height: 300px; }
+  .distance-scene { min-height: 235px; }
+  .distance-info-card { padding: 18px; }
+  .distance-result { margin: 17px 0 14px; }
   .account-card { padding: 21px 17px; }
   .account-gender { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .account-login-page .account-card { margin-top: 20px; }

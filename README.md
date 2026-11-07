@@ -7,6 +7,7 @@
 - 천안도시공사 공식 현황에 등록된 불당 제1~제5주차장을 확인합니다.
 - 주차장 이름 또는 주소를 검색하고 이름순·면수순으로 정렬합니다.
 - 각 주차장의 상세 페이지에서 주소, 주차 면수, 운영 정보와 지도 길찾기를 확인합니다.
+- 거리 측정 페이지에서 브라우저 위치를 허용하면 불당 제1주차장 주소 대표점까지의 근사 직선거리를 Three.js로 시각화합니다.
 - 공식 현황에 등록된 전기차 충전기 수량과 확인 가능한 급속 충전기 정보를 살펴봅니다.
 - 불당 제5주차장 상세 페이지에서 현장 사진과 사진 출처를 확인합니다.
 - 문의 게시판에서 문의를 작성하고 SQLite에 저장·조회합니다.
@@ -33,6 +34,9 @@ parking/
   buldang-3/index.html          불당 제3주차장 상세
   buldang-4/index.html          불당 제4주차장 상세
   buldang-5/index.html          불당 제5주차장 상세
+distance/
+  index.html                    Three.js 거리 측정 화면
+  distance.js                   브라우저 위치·직선거리·3D 장면
 board/
   index.html                    문의 게시판 페이지
   board.js                      문의 등록·목록 조회 API 연결
@@ -53,9 +57,11 @@ Node.js 22.13 이상이 필요합니다. 프로젝트 폴더에서 서버를 실
 npm start
 ```
 
-브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `/guide/`는 이용 안내, `/board/`는 문의 게시판, `/account/signup/`은 회원가입, `/account/login/`은 로그인 화면입니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다. Cloudflare Pages 배포본은 D1 binding을 사용합니다.
+브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `/guide/`는 이용 안내, `/board/`는 문의 게시판, `/distance/`는 거리 측정, `/account/signup/`은 회원가입, `/account/login/`은 로그인 화면입니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다. Cloudflare Pages 배포본은 D1 binding을 사용합니다.
 
 회원가입과 로그인은 Pages Function에서 D1 `users` 테이블과 연동됩니다. 비밀번호는 PBKDF2-SHA-256(Workers 지원 반복 횟수 100,000)으로 해시해 저장하며 원문은 저장하지 않습니다. 로그인 API는 자격 증명을 검증하지만 세션 쿠키·로그아웃·보호된 사용자 영역은 아직 구현되지 않아 로그인 상태가 유지되지 않습니다. 공개 운영 전에는 이메일 인증, 스팸 방지, 약관·개인정보 동의 기록, 세션 관리, 계정 삭제와 관리자 기능을 추가로 구성해야 합니다.
+
+거리 측정은 브라우저 Geolocation API로 현재 좌표를 일시적으로 읽고, 해당 좌표와 불당 제1주차장 주소 대표 좌표 사이의 Haversine 직선거리를 계산합니다. 주소 대표 좌표는 주차장 출입구의 측량 좌표가 아니며 실제 이동 경로/거리와 다를 수 있습니다. Three.js 모듈은 jsDelivr CDN에서 로드됩니다. HTTPS 또는 localhost, 사용자 위치 권한 허용이 필요합니다. 좌표는 서버에 저장하지 않습니다.
 
 `database/users.sql`은 회원가입용 테이블 설계 문서입니다. 실제 D1 테이블은 `migrations/0002_create_users.sql`로 생성됩니다. 인증 API 경로는 `/api/auth/signup` 및 `/api/auth/login`입니다.
 
