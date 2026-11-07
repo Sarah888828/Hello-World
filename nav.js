@@ -4,14 +4,13 @@ const navigationItems = [
   { label: "전기차 충전", href: "charging/", match: ["/charging/"] },
   { label: "사설 주차 혼잡도", href: "private-parking/", match: ["/private-parking/"] },
   { label: "거리 측정", href: "distance/", match: ["/distance/"] },
-  { label: "정기권", href: "passes/", match: ["/passes/"] },
   { label: "문의 게시판", href: "board/", match: ["/board/"] },
   { label: "로그인", href: "account/login/", match: ["/account/login/"] },
   { label: "회원가입", href: "account/signup/", match: ["/account/signup/"] }
 ];
 
 function getSiteBasePath(pathname) {
-  const specialRoots = ["/parking/", "/charging/", "/account/", "/board/", "/distance/", "/guide/", "/passes/", "/private-parking/"];
+  const specialRoots = ["/parking/", "/charging/", "/account/", "/board/", "/distance/", "/guide/", "/private-parking/"];
   const root = specialRoots.find((prefix) => pathname.includes(prefix));
   if (root) return pathname.slice(0, pathname.indexOf(root) + 1);
   if (pathname.endsWith("/")) return pathname;

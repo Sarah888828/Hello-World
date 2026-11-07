@@ -13,7 +13,6 @@
 - 천안중앙교회 Tesla 수퍼차저 목록 및 별도 상세 안내 페이지를 제공합니다.
 - 사설 주차장 혼잡도 안내 페이지에서 지도 검색 링크와 실시간 데이터 미연동 상태를 안내합니다.
 - 사설 주차장 주변 검색 링크와 실시간 혼잡도 정보 한계를 안내합니다.
-- 천안 공영주차장 월정기권 요금 기준과 천안도시공사 공식 신청 포털을 안내합니다.
 - 불당 제5주차장 상세 페이지에서 현장 사진과 사진 출처를 확인합니다.
 - 문의 게시판에서 문의를 작성하고 SQLite에 저장·조회합니다.
 - 회원가입·로그인 폼의 HTML/CSS 시안을 확인합니다. 계정 인증과 저장 기능은 연결되어 있지 않습니다.
@@ -47,8 +46,6 @@ charging/
   central-church/index.html     천안중앙교회 Tesla 수퍼차저 상세
 private-parking/
   index.html                    불당동 주변 사설 주차장·혼잡도 안내
-passes/
-  index.html                    공영주차장 정기권 요금·신청 안내
 board/
   index.html                    문의 게시판 페이지
   board.js                      문의 등록·목록 조회 API 연결
@@ -69,7 +66,7 @@ Node.js 22.13 이상이 필요합니다. 프로젝트 폴더에서 서버를 실
 npm start
 ```
 
-브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `/guide/`는 이용 안내, `/board/`는 문의 게시판, `/distance/`는 거리 측정, `/charging/`은 전기차 충전소 목록, `/charging/central-church/`는 천안중앙교회 수퍼차저 상세, `/private-parking/`은 사설 주차장 혼잡도 안내, `/passes/`는 공영주차장 정기권 안내, `/account/signup/`은 회원가입, `/account/login/`은 로그인 화면입니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다. Cloudflare Pages 배포본은 D1 binding을 사용합니다.
+브라우저에서 `http://127.0.0.1:8780/`을 열면 메인 페이지, `/guide/`는 이용 안내, `/board/`는 문의 게시판, `/distance/`는 거리 측정, `/charging/`은 전기차 충전소 목록, `/charging/central-church/`는 천안중앙교회 수퍼차저 상세, `/private-parking/`은 사설 주차장 혼잡도 안내, `/account/signup/`은 회원가입, `/account/login/`은 로그인 화면입니다. 처음 실행할 때 `data/inquiries.sqlite` 파일과 `inquiries` 테이블이 자동 생성됩니다. Cloudflare Pages 배포본은 D1 binding을 사용합니다.
 
 회원가입과 로그인은 Pages Function에서 D1 `users` 테이블과 연동됩니다. 비밀번호는 PBKDF2-SHA-256(Workers 지원 반복 횟수 100,000)으로 해시해 저장하며 원문은 저장하지 않습니다. 로그인 API는 자격 증명을 검증하지만 세션 쿠키·로그아웃·보호된 사용자 영역은 아직 구현되지 않아 로그인 상태가 유지되지 않습니다. 공개 운영 전에는 이메일 인증, 스팸 방지, 약관·개인정보 동의 기록, 세션 관리, 계정 삭제와 관리자 기능을 추가로 구성해야 합니다.
 
@@ -89,7 +86,6 @@ $env:PORT=8781; npm start
 
 - 주차장명·주소·면수·주차장별 충전기 수량(55곳): [천안도시공사 공영주차장 현황](https://www.cauc.or.kr/_parking/main.asp?no=1)
 - 주차요금 안내: [천안도시공사 공영주차장 요금안내](https://www.cauc.or.kr/_parking/main.asp?no=2)
-- 월정기권 신청 포털: [천안도시공사 정기권 신청/미납조회/납부](https://parking.cauc.or.kr/). 신청 일정·주차장별 모집 여부는 공식 포털에서 확인하세요.
 - 공공 주차장 정보 참고: [공공데이터포털 주차장정보 표준데이터](https://www.data.go.kr/data/15012896/standard.do). 사설 주차장 실시간 혼잡 정보 API는 현재 연동되어 있지 않습니다.
 - 천안중앙교회 수퍼차저 위치·운영 정보는 Tesla 공식 [충전소 찾기](https://www.tesla.com/findus)에서 확인하세요. 페이지에 기재한 V3 6기·최대 250kW 정보는 공개 검색으로 확인한 값이며 요금·이용 가능 차량·출입 조건은 Tesla 앱/현장 기준으로 확인해야 합니다.
 - 제1·제3주차장 충전소 상세 정보: 각 상세 페이지의 해피차저 출처 링크를 참고하세요.
