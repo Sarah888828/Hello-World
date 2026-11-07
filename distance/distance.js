@@ -21,6 +21,7 @@ const destinationAddress = document.querySelector("#destination-address");
 const sceneDestinationName = document.querySelector("#scene-destination-name");
 const naverMapLink = document.querySelector("#distance-map-link");
 const kakaoMapLink = document.querySelector("#kakao-map-link");
+const googleMapLink = document.querySelector("#google-map-link");
 let renderer;
 let scene;
 let camera;
@@ -204,6 +205,7 @@ function updateDestination() {
   const search = `${lot.name} ${lot.address}`;
   naverMapLink.href = `https://map.naver.com/p/search/${encodeURIComponent(search)}`;
   kakaoMapLink.href = `https://map.kakao.com/?q=${encodeURIComponent(search)}`;
+  googleMapLink.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(search)}&travelmode=driving`;
 
   destination = verifiedDestinations[lot.id] || null;
   const parkingMarker = scene.getObjectByName("parking-marker-base");
