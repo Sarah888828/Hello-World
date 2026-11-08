@@ -693,6 +693,117 @@ main, section, article, aside, dialog { color-scheme: dark; }
 .availability-summary, .parking-map-view, .guide-faq { box-shadow: 0 12px 30px rgb(0 0 0 / 32%); }
 .photo-label { border-color: rgb(210 214 199 / 20%); background: rgb(12 13 11 / 78%); color: #f0efe7; }
 .photo-caption { background: linear-gradient(transparent, rgb(8 9 8 / 78%)); }
+
+/* Refined editorial layer: calmer charcoal surfaces, stronger hierarchy, roomier controls. */
+:root {
+  --content: 1120px;
+  --radius-card: 14px;
+  --radius-control: 9px;
+  --surface: #10110f;
+  --surface-raised: #191a17;
+  --border-soft: #30322c;
+  --focus-ring: rgb(195 211 148 / 34%);
+  --shadow-card: 0 18px 48px rgb(0 0 0 / 34%);
+}
+body { font-size: 15px; line-height: 1.6; }
+.topbar { min-height: 78px; border-bottom-color: #242620; background: rgb(8 9 8 / 96%); }
+.brand { font-size: 18px; letter-spacing: -.5px; }
+.nav-link { font-size: 13px; }
+.location-pill { min-height: 42px; font-size: 11px; }
+.hero { min-height: 440px; gap: 52px; padding-top: 48px; padding-bottom: 42px; }
+.hero::before { border-color: #292b25; border-radius: 16px; background: radial-gradient(ellipse at 88% 15%, rgb(195 211 148 / 7%), transparent 38%), linear-gradient(125deg, #171814, #0d0e0c 72%); }
+.hero-copy { padding-left: 20px; }
+.hero h1, h1 { font-size: clamp(42px, 5.3vw, 60px); letter-spacing: -2.3px; line-height: 1.12; }
+.hero-description { max-width: 500px; color: #cfcec5; font-size: 15px; line-height: 1.9; }
+.hero-cta { min-height: 48px; margin-top: 28px; padding: 0 18px; border-radius: 8px; font-size: 12px; }
+.hero-art { height: 330px; border-radius: 14px; box-shadow: 0 24px 64px rgb(0 0 0 / 44%); }
+.photo-label { top: 20px; left: 20px; padding: 9px 12px; border-radius: 7px; }
+.photo-caption { right: 20px; bottom: 18px; left: 20px; }
+.search-section { padding-top: 22px; }
+.search-panel { padding: 12px; border-color: #30322b; border-radius: 12px; background: #11120f; box-shadow: 0 20px 55px rgb(0 0 0 / 34%); }
+.search-wrap { min-height: 64px; border-radius: 8px; }
+.search-wrap input { font-size: 14px; }
+.search-button { min-height: 48px; border-radius: 7px; font-size: 12px; }
+.search-quick-filters { gap: 9px; padding: 12px 8px 4px; }
+.quick-filter { min-height: 38px; padding: 0 14px; border-radius: 20px; font-size: 11px; }
+.parking-section { padding-bottom: 72px; }
+.section-heading { margin-bottom: 20px; }
+.section-heading h2 { margin: 9px 0 7px; font-size: 29px; letter-spacing: -.9px; }
+.section-kicker { font-size: 10px; letter-spacing: 1.6px; }
+.section-subtitle { font-size: 14px; }
+.parking-controls { gap: 14px; margin-bottom: 18px; padding: 14px; border-color: #2c2e28; border-radius: 10px; background: #10110f; }
+.filter-chip { min-height: 40px; padding: 0 15px; border-radius: 22px; font-size: 11px; }
+.sort-control { min-height: 42px; border-radius: 8px; font-size: 11px; }
+.sort-control select { font-size: 12px; }
+.parking-grid { gap: 15px; }
+.parking-card { min-height: 236px; padding: 20px; border-color: #2f312a; border-radius: 12px; background: linear-gradient(150deg, #171814, #10110f 78%); box-shadow: 0 10px 30px rgb(0 0 0 / 24%); }
+.parking-card:hover { transform: translateY(-3px); border-color: #596149; box-shadow: 0 18px 42px rgb(0 0 0 / 36%); }
+.type-tag, .distance-tag { font-size: 10px; }
+.card-title { margin-top: 15px; font-size: 17px; letter-spacing: -.35px; }
+.card-address { color: #c5c4bb; font-size: 12px; }
+.card-meta { font-size: 11px; }
+.capacity-label { font-size: 11px; }
+.availability-unavailable { font-size: 10px; }
+.detail-button { min-height: 40px; padding: 0 12px; border-radius: 7px; font-size: 10px; }
+.availability-summary { gap: 15px; margin: 18px 0; padding: 16px 18px; border-radius: 9px; }
+.availability-summary strong { font-size: 12px; }
+.availability-summary p { font-size: 10px; }
+.data-notice { font-size: 12px; }
+.guide-section { min-height: 150px; gap: 22px; margin-bottom: 68px; padding: 26px 30px; border-radius: 12px; }
+.guide-section h2 { font-size: 18px; }
+.guide-section > div:nth-child(2) > p:last-child { font-size: 12px; }
+.guide-section > a { min-height: 44px; padding: 0 15px; border-radius: 7px; font-size: 10px; }
+.guide-faq { padding: 28px; border-radius: 12px; }
+.guide-faq-heading h2 { font-size: 22px; }
+.guide-faq-item summary { min-height: 54px; font-size: 13px; }
+.guide-faq-item p { font-size: 12px; }
+.footer { min-height: 82px; }
+.board-page, .guide-page, .distance-page, .ev-page { padding-top: 46px; }
+.board-title, .private-parking-title { font-size: clamp(42px, 5.4vw, 58px); letter-spacing: -2px; }
+.board-intro, .distance-heading > p:last-child { color: #cfcec5; font-size: 14px; line-height: 1.85; }
+.guide-card, .static-board, .static-compose, .inquiry-list-section, .distance-info-card, .distance-scene-card, .ev-station-card, .ev-detail-card { border-radius: 12px; }
+.guide-card, .static-compose, .inquiry-list-section, .distance-info-card { padding: 25px; }
+.form-field input, .form-field select, .form-field textarea, .distance-destination-select, .distance-origin-input-row input { min-height: 46px; border-radius: 7px; font-size: 13px; }
+.form-field textarea { min-height: 130px; }
+.submit-inquiry, .distance-button, .map-point-button, .map-clear-button { min-height: 46px; border-radius: 7px; font-size: 11px; }
+.view-toggle-button { min-height: 40px; padding-inline: 16px; border-radius: 6px; }
+.favorite-button { width: 42px; height: 42px; font-size: 20px; }
+.distance-map-link { min-height: 44px; border-radius: 7px; font-size: 10px; }
+.distance-map-canvas, .kakao-map-canvas { min-height: 360px; }
+@media (max-width: 1100px) {
+  .hero { gap: 32px; }
+  .parking-section, .search-section, .guide-section, .guide-faq { margin-right: 22px; margin-left: 22px; }
+}
+@media (max-width: 700px) {
+  .topbar { min-height: 0; }
+  .hero { gap: 24px; padding: 32px 22px 28px; }
+  .hero-copy { padding-left: 0; }
+  .hero h1, h1 { font-size: clamp(38px, 10vw, 50px); letter-spacing: -1.8px; }
+  .hero-description { font-size: 13px; }
+  .hero-art { height: 240px; }
+  .search-section, .parking-section, .guide-section, .guide-faq { margin-right: 20px; margin-left: 20px; }
+  .section-heading h2 { font-size: 24px; }
+  .parking-controls { padding: 11px; }
+  .parking-grid { gap: 11px; }
+  .parking-card { min-height: 220px; padding: 15px; border-radius: 10px; }
+  .guide-section { flex-wrap: wrap; padding: 19px; }
+  .guide-section > a { margin-left: 56px; }
+  .guide-faq { padding: 19px; }
+  .guide-card, .static-compose, .inquiry-list-section, .distance-info-card { padding: 18px; }
+  .distance-page { margin-right: 20px; margin-left: 20px; padding-top: 30px; }
+  .distance-layout { grid-template-columns: 1fr; }
+  .kakao-map-canvas { min-height: 300px; }
+}
+@media (max-width: 460px) {
+  .hero { padding-inline: 17px; }
+  .hero-art { height: 215px; }
+  .search-section, .parking-section, .guide-section, .guide-faq { margin-right: 16px; margin-left: 16px; }
+  .parking-grid { grid-template-columns: 1fr; }
+  .parking-card { min-height: 205px; }
+  .quick-filter { min-height: 40px; }
+  .view-toggle-button { min-height: 42px; }
+  .parking-map-result { align-items: flex-start; flex-direction: column; }
+}
 .brand, .nav-link, .location-pill, h1, h1 span,
 .section-heading h2, .guide-section h2, .card-title,
 .sort-control select, .dialog-details .detail-row span:last-child,
