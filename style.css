@@ -965,32 +965,22 @@ body { font-size: 15px; line-height: 1.6; }
   .to-top { font-size: 8px; }
   .parking-dialog { padding: 25px 21px; }
 }
-.search-intro { animation: rise-in .38s ease-out backwards; }
-.search-panel { animation: rise-in .38s .06s ease-out backwards; }
-.parking-card { animation: none; }
-.parking-card:nth-child(-n+6) { animation: card-in .28s ease-out backwards; }
-.parking-card:nth-child(even):nth-child(-n+6) { animation-delay: .045s; }
-.parking-dialog[open], .parking-map-view:not([hidden]) { animation: rise-in .24s ease-out backwards; }
-.search-button, .quick-filter, .filter-chip, .view-toggle-button, .favorite-button, .parking-card .detail-button {
-  transition: transform .16s ease-out, background-color .16s, border-color .16s, color .16s;
-}
-.search-button:active, .quick-filter:active, .filter-chip:active, .view-toggle-button:active,
-.favorite-button:active, .parking-card .detail-button:active { transform: scale(.96); }
-
 @media (prefers-reduced-motion: reduce) {
-  .parking-card:hover, .search-button:active, .quick-filter:active, .filter-chip:active,
-  .view-toggle-button:active, .favorite-button:active, .parking-card .detail-button:active { transform: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
 
-/* Restrained interaction motion; follows prefers-reduced-motion below. */
+/* Quiet motion: subtle entrances and interaction feedback; respect reduced-motion. */
+button, .nav-link, .location-pill, .detail-button, .distance-map-link, .map-point-button, .map-clear-button, .parking-map-result a { transition: color .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease; }
+.mobile-menu-toggle:hover { border-color: #73805a; background: #25281f; }
+.mobile-menu-toggle:active { transform: scale(.98); }
 .hero-copy, .hero-art, .search-panel, .section-heading, .guide-section, .guide-faq { animation: editorial-enter .58s cubic-bezier(.2,.7,.25,1) both; }
 .hero-art { animation-delay: 90ms; }
 .search-panel { animation-delay: 140ms; }
 .section-heading { animation-delay: 70ms; }
 .guide-section, .guide-faq { animation-delay: 90ms; }
 .parking-card { animation: card-in .4s cubic-bezier(.2,.7,.25,1) both; animation-delay: calc(var(--card-index, 0) * 28ms); }
+.parking-card:hover { transform: translateY(-3px); }
 .parking-card:active { transform: translateY(-1px) scale(.995); }
 .favorite-button:active, .view-toggle-button:active, .filter-chip:active, .quick-filter:active { transform: scale(.96); }
 .search-wrap:focus-within .search-icon { transform: rotate(-20deg) scale(1.08); color: #e0eabf; }
