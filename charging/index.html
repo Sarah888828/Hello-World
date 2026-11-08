@@ -9,7 +9,7 @@
     <meta property="og:description" content="천안 지역 전기차 충전소와 수퍼차저 안내를 확인하세요." />
     <meta property="og:type" content="website" />
     <title>전기차 충전소 | 불당 주차</title>
-    <link rel="stylesheet" href="../style.css?theme=editorial-v6" />
+    <link rel="stylesheet" href="../style.css?theme=ev-editorial-v1" />
     <script src="charging.js" defer></script>
   </head>
   <body>
@@ -18,40 +18,48 @@
     </header>
 
     <main class="ev-page">
-      <section class="ev-heading">
+      <section class="ev-heading ev-hero">
         <a class="detail-back" href="../#home"><span aria-hidden="true">←</span> 메인으로 돌아가기</a>
-        <p class="section-kicker">EV CHARGING · CHEONAN</p>
-        <h1 class="ev-title">천안 전기차 충전<br /><span>충전소 전체 보기</span></h1>
-        <p>공식 현황에 충전기가 등록된 공영주차장과 Tesla 수퍼차저를 모았습니다.</p>
-        <svg class="route-graphic" viewBox="0 0 320 148" aria-hidden="true" focusable="false">
-          <path class="route-streets" d="M8 34h306M8 72h306M8 110h306M40 8v132M88 8v132M148 8v132M208 8v132M268 8v132M23 143 298 12"/>
-          <path class="route-track" pathLength="100" d="M40 110h69q16 0 16-16V62q0-16 16-16h91"/>
-          <path class="route-signal" pathLength="100" d="M40 110h69q16 0 16-16V62q0-16 16-16h91"/>
-          <circle class="route-origin" cx="40" cy="110" r="5"/>
-          <circle class="route-ring" cx="248" cy="46" r="23"/>
-          <circle class="route-pin" cx="248" cy="46" r="17"/>
-          <path class="route-icon" d="m250 34-10 14h7l-1 10 10-14h-7z"/>
-        </svg>
+        <div class="ev-hero-grid">
+          <div class="ev-hero-copy">
+            <p class="section-kicker"><span class="ev-kicker-mark" aria-hidden="true"></span> EV CHARGING · CHEONAN</p>
+            <h1 class="ev-title">천안에서 충전할 곳,<br /><span>한눈에 찾기.</span></h1>
+            <p>공식 현황에 등록된 공영 충전소와 Tesla 수퍼차저를 모았습니다. 방문 전 운영 앱에서 이용 가능 여부를 확인하세요.</p>
+            <a class="ev-hero-link" href="#ev-list-title">충전소 둘러보기 <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="ev-hero-art" aria-hidden="true">
+            <div class="ev-orbit ev-orbit-one"></div><div class="ev-orbit ev-orbit-two"></div>
+            <div class="ev-bolt">ϟ</div><span class="ev-art-label">POWER<br />YOUR WAY</span>
+          </div>
+          <div class="ev-hero-stats" aria-label="충전소 요약">
+            <div><strong>10</strong><span>등록 충전소</span></div>
+            <i aria-hidden="true"></i>
+            <div><strong>09<span>+</span></strong><span>공영 · Tesla</span></div>
+            <i aria-hidden="true"></i>
+            <div><strong>2<span>종</span></strong><span>충전 방식</span></div>
+          </div>
+        </div>
       </section>
 
       <section class="ev-notice" aria-label="충전 정보 안내">
-        <span class="board-notice-icon" aria-hidden="true">ⓘ</span>
-        <p><strong>공개된 공영 충전소 목록입니다.</strong> 아래는 천안도시공사 공식 주차장 현황에 충전기가 표시된 9곳과 천안중앙교회 Tesla 수퍼차저를 담았습니다. 민간 충전소를 포함한 실시간 전체 목록은 <a href="https://www.ev.or.kr/nportal/monitor/evMap.do" target="_blank" rel="noreferrer">무공해차 통합누리집 지도</a>에서 천안시를 검색하세요. 상태·요금은 변동될 수 있습니다.</p>
+        <span class="ev-notice-mark" aria-hidden="true">i</span>
+        <div><strong>목록 범위 안내</strong><p>천안도시공사 공식 현황의 공영 충전소 9곳과 천안중앙교회 Tesla 수퍼차저입니다. 민간 충전소를 포함한 실시간 전체 현황은 <a href="https://www.ev.or.kr/nportal/monitor/evMap.do" target="_blank" rel="noreferrer">무공해차 통합누리집 지도</a>에서 확인하세요. 운영 상태와 요금은 바뀔 수 있습니다.</p></div>
       </section>
 
-      <section class="ev-list" aria-labelledby="ev-list-title">
+      <section class="ev-list ev-list-section" aria-labelledby="ev-list-title">
         <div class="ev-list-heading">
-          <div><p class="section-kicker">CHEONAN · OFFICIAL PARKING + TESLA</p><h2 id="ev-list-title">충전소 목록 <span id="ev-count" class="count-badge">10</span></h2></div>
-          <label class="board-filter" for="ev-type-filter"><span class="visually-hidden">충전소 종류 필터</span><select id="ev-type-filter" aria-label="충전소 종류 필터"><option value="all">전체 충전소</option><option value="public">공영주차장 충전기</option><option value="tesla">Tesla 수퍼차저</option><option value="fast">급속</option><option value="slow">완속</option></select></label>
+          <div><p class="section-kicker">PICK YOUR CHARGER</p><h2 id="ev-list-title">충전소 찾기 <span id="ev-count" class="count-badge">10</span></h2><p class="ev-list-subtitle">장소를 고르고 주변 지도와 사업자 안내를 확인하세요.</p></div>
+          <label class="ev-filter-control" for="ev-type-filter"><span>필터</span><select id="ev-type-filter" aria-label="충전소 종류 필터"><option value="all">전체 충전소</option><option value="public">공영주차장 충전기</option><option value="tesla">Tesla 수퍼차저</option><option value="fast">급속</option><option value="slow">완속</option></select></label>
         </div>
         <div class="ev-station-grid" id="ev-station-grid" aria-live="polite"></div>
       </section>
 
-      <section class="ev-search-card">
-        <div><p class="section-kicker">LIVE CHARGER MAP</p><h2>천안 전체 충전소 실시간 검색</h2><p>공영·민간 충전소의 위치와 상태는 공식 통합 지도에서 지역을 천안시로 선택해 확인하세요.</p></div>
+      <section class="ev-search-card ev-live-panel">
+        <div class="ev-live-icon" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="ev-live-copy"><p class="section-kicker">LIVE CHARGER MAP</p><h2>실시간 현황은 공식 지도에서</h2><p>공영·민간 충전소의 현재 위치, 이용 상태와 상세 정보는 지역을 천안시로 선택해 확인하세요.</p></div>
         <div class="ev-search-links">
-          <a href="https://www.tesla.com/findus" target="_blank" rel="noreferrer">Tesla 충전소 찾기 ↗</a>
-          <a href="https://ev.or.kr/nportal/monitor/evMap.do" target="_blank" rel="noreferrer">무공해차 통합누리집 ↗</a>
+          <a href="https://www.tesla.com/findus" target="_blank" rel="noreferrer">Tesla 지도 <span aria-hidden="true">↗</span></a>
+          <a href="https://ev.or.kr/nportal/monitor/evMap.do" target="_blank" rel="noreferrer">전체 충전소 지도 <span aria-hidden="true">↗</span></a>
         </div>
       </section>
     </main>
