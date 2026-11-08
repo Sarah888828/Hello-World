@@ -24,6 +24,10 @@ export async function createMeasurementMap(element, onMeasure) {
   controls.innerHTML = '<button type="button" class="map-point-button" aria-pressed="true">출발지 선택</button><button type="button" class="map-point-button" aria-pressed="false">도착지 선택</button>';
   element.after(controls);
   const buttons = [...controls.querySelectorAll("button")];
+  const summary = document.createElement("p");
+  summary.className = "map-point-status";
+  summary.setAttribute("aria-live", "polite");
+  controls.after(summary);
   let mode = 0;
   let points = [null, null];
   let markers = [null, null];
@@ -36,11 +40,16 @@ export async function createMeasurementMap(element, onMeasure) {
   }
   function draw() {
     if (line) map.removeLayer(line);
+    summary.textContent = points.map((point, index) =>
+      `${index === 0 ? "출발" : "도착"} · ${point ? point.lat.toFixed(5) + ", " + point.lng.toFixed(5) : "지도에서 선택"}`
+    ).join(" / ");
     if (points.every(Boolean)) {
       line = L.polyline(points, { color: "#3b7564", weight: 4 }).addTo(map);
       const meters = points[0].distanceTo(points[1]);
       status.textContent = `선택한 두 지점의 직선거리 · ${Math.round(meters).toLocaleString("ko-KR")} m`;
-      onMeasure(meters);
+      onMeasure(meters, points);
+    } else {
+      onMeasure(null, points);
     }
   }
   function setPoint(index, point) {
@@ -62,6 +71,7 @@ export async function createMeasurementMap(element, onMeasure) {
   choose(0);
   return {
     setPoint,
+    refresh: draw,
     focus(point) { map.setView([point.latitude, point.longitude], 15); },
     clearDestination() {
       if (markers[1]) map.removeLayer(markers[1]);
@@ -69,6 +79,7 @@ export async function createMeasurementMap(element, onMeasure) {
       points[1] = null;
       if (line) map.removeLayer(line);
       choose(1);
+      draw();
     },
     clear() {
       markers.forEach((marker) => marker && map.removeLayer(marker));
@@ -76,6 +87,7 @@ export async function createMeasurementMap(element, onMeasure) {
       markers = [null, null];
       points = [null, null];
       choose(0);
+      draw();
     },
   };
 }
