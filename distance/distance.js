@@ -19,10 +19,8 @@ const naverMapLink = $("#distance-map-link");
 const kakaoMapLink = $("#kakao-map-link");
 const googleMapLink = $("#google-map-link");
 const originSearchInput = $("#origin-search-input");
-const originSearchButton = $("#origin-search-button");
+const originSearchForm = $("#origin-search-form");
 const originSearchStatus = $("#origin-search-status");
-const originNaverLink = $("#origin-naver-link");
-const originKakaoLink = $("#origin-kakao-link");
 const kakaoMapElement = $("#kakao-map");
 const kakaoMapPlaceholder = $("#kakao-map-placeholder");
 const kakaoMapState = $("#kakao-map-state");
@@ -207,18 +205,17 @@ function requestCurrentLocation(forMap = false) {
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });
 }
 
-function searchOriginOnMaps() {
-  const query = originSearchInput.value.trim();
+function searchOriginOnMaps(event) {
+  event.preventDefault();
+  const query = originSearchInput.value.trim().replace(/\s+/g, " ");
   if (query.length < 2) {
     originSearchStatus.textContent = "출발지 주소나 장소를 두 글자 이상 입력해 주세요.";
     originSearchInput.focus();
     return;
   }
-  const encoded = encodeURIComponent(query);
-  originNaverLink.href = `https://map.naver.com/p/search/${encoded}`;
-  originKakaoLink.href = `https://map.kakao.com/?q=${encoded}`;
-  originSearchStatus.textContent = `“${query}”의 지도 검색 결과를 엽니다. 검색 장소의 좌표는 이 페이지로 자동 전달되지 않습니다.`;
-  window.open(originNaverLink.href, "_blank", "noopener,noreferrer");
+  const place = query.includes("천안") ? query : `천안 ${query}`;
+  originSearchStatus.textContent = `네이버 지도에서 “${place}” 검색 결과를 엽니다.`;
+  window.open(`https://map.naver.com/p/search/${encodeURIComponent(place)}`, "_blank", "noopener,noreferrer");
 }
 
 async function showLocationPermissionState() {
@@ -308,13 +305,7 @@ function clearMapPoints() {
 
 destinationSelect.addEventListener("change", updateDestination);
 locateButton.addEventListener("click", () => requestCurrentLocation());
-originSearchButton.addEventListener("click", searchOriginOnMaps);
-originSearchInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    searchOriginOnMaps();
-  }
-});
+originSearchForm.addEventListener("submit", searchOriginOnMaps);
 setCurrentPointButton.addEventListener("click", () => requestCurrentLocation(true));
 clearMapPointsButton.addEventListener("click", clearMapPoints);
 
