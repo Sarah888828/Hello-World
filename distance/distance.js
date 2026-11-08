@@ -134,7 +134,7 @@ function requestCurrentLocation() {
 
   locateButton.disabled = true;
   locateButton.textContent = "위치 확인 중…";
-  distanceStatus.textContent = "브라우저의 위치 권한 응답을 기다리고 있습니다.";
+  distanceStatus.textContent = "브라우저의 위치 권한 요청을 기다리고 있습니다. 권한 창이 뜨면 ‘허용’을 선택해 주세요.";
   navigator.geolocation.getCurrentPosition(({ coords }) => {
     currentPosition = { latitude: coords.latitude, longitude: coords.longitude };
     renderDistance(haversineMeters(currentPosition, selectedDestination), "내 위치와 선택한 주차장 사이 근사");
@@ -151,6 +151,9 @@ function requestCurrentLocation() {
       3: "위치 확인 시간이 초과되었습니다. 다시 시도해 주세요."
     };
     distanceStatus.textContent = errors[error.code] || "현재 위치를 확인할 수 없습니다.";
+    if (error.code === 1) {
+      distanceStatus.textContent += " 사이트 주소창의 자물쇠/권한 메뉴에서 위치 접근을 허용한 뒤 다시 눌러 주세요.";
+    }
     locateButton.disabled = false;
     locateButton.textContent = "현재 위치로 거리 측정";
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });

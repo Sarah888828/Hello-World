@@ -17,7 +17,7 @@
       {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
     </script>
     <script src="../script.js"></script>
-    <script type="module" src="./distance.js?v=d5ece9f"></script>
+    <script type="module" src="./distance.js?v=b1a7d4d"></script>
   </head>
   <body>
     <header class="topbar">
@@ -29,7 +29,7 @@
         <a class="detail-back" href="../#home"><span aria-hidden="true">←</span> 메인으로 돌아가기</a>
         <p class="section-kicker">KAKAO MAP · DISTANCE TOOL</p>
         <h1 id="distance-title">내 위치에서<br /><span>주차장까지</span></h1>
-        <p>브라우저 위치 권한을 허용하면 좌표가 등록된 목적지까지 근사 직선거리를 계산합니다. 현재 거리 계산은 불당 제1주차장만 지원하며, 다른 주차장은 아래 Google·네이버·카카오 지도에서 실제 길찾기를 이용하세요.</p>
+        <p>먼저 목적지를 선택하고 <strong>현재 위치로 거리 측정</strong>을 누른 다음 브라우저의 위치 권한 창에서 허용을 선택하세요. 실제 거리는 근사 직선거리이며 도로 경로는 지도 앱에서 확인할 수 있습니다.</p>
       </section>
 
       <section class="distance-layout" aria-label="내 위치와 주차장 거리 측정">
@@ -55,7 +55,7 @@
           </select>
           <h2 id="destination-name">불당 제1주차장</h2>
           <p id="destination-address" class="distance-address">천안시 서북구 검은들1길 15</p>
-          <p id="destination-help" class="distance-destination-help">목적지는 목록에서 선택하거나, Kakao 지도에 연결한 뒤 지도 클릭으로 두 번째 점을 지정할 수 있습니다.</p>
+          <p id="destination-help" class="distance-destination-help">현재 위치 직선거리 계산은 좌표가 확인된 불당 제1주차장만 지원합니다. 다른 주차장과 두 지점 지도 측정은 Kakao 키 설정 후 사용할 수 있습니다.</p>
           <div class="distance-origin-search">
             <label class="distance-destination-label" for="origin-search-input">내 위치·출발지 주소 검색</label>
             <div class="distance-origin-input-row"><input id="origin-search-input" type="search" autocomplete="street-address" placeholder="예: 천안시청, 불당동 카페" /><button id="origin-search-button" type="button">지도에서 찾기</button></div>
