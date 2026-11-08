@@ -70,7 +70,7 @@ npm start
 
 거리 측정 페이지에는 Kakao 지도 SDK용 두 지점 마커·선·Polyline 거리 계산 UI가 있습니다. 실제 지도를 활성화하려면 Kakao Developers JavaScript 키와 허용 도메인이 필요합니다. 키는 HTML/브라우저에 노출되는 공개 앱 키이므로 Kakao Developers에서 도메인을 제한하고 GitHub에 실제 키를 커밋하지 않아야 합니다. 현재 배포에는 키가 없어 지도 영역은 설정 안내를 표시합니다. 지도 두 지점 간 길이는 직선거리이며 실제 도로 경로가 아닙니다. 기존 위치 계산은 불당 제1주차장 대표 좌표만 지원하고, Geolocation 좌표는 서버에 저장하지 않습니다.
 
-Kakao 지도 사용 준비: Kakao Developers에서 앱을 만들고 플랫폼에 `https://hello-world-e90.pages.dev`와 로컬 테스트 도메인을 등록한 뒤 JavaScript 키를 발급합니다. 키는 비밀키가 아니라 브라우저에 노출되는 공개 키이므로 허용 도메인을 제한하고 저장소에 실제 키를 커밋하지 마세요. `distance/index.html`의 `data-kakao-javascript-key` 값을 안전하게 배포 설정으로 주입해야 SDK 지도가 켜집니다. 기본값은 빈 문자열이며 이때는 키 안내만 보입니다.
+Kakao 지도 사용 준비: Kakao Developers에서 앱을 만들고 플랫폼에 `https://hello-world-e90.pages.dev`와 실제 테스트 도메인을 등록한 뒤 JavaScript 키를 발급합니다. 키는 브라우저에 노출되는 공개 키이므로 Kakao Developers에서 허용 도메인을 제한하고 저장소에는 저장하지 않습니다. Cloudflare Pages 환경변수 `KAKAO_JAVASCRIPT_KEY`로 설정하면 Pages Worker의 `/api/config`가 런타임에 키를 제공하고 지도 SDK를 활성화합니다. 키가 비어 있거나 등록 도메인이 맞지 않으면 지도 설정 안내를 표시합니다. 실제 지점 간 선 길이는 직선거리이며 도로 경로가 아닙니다.
 
 `database/users.sql`은 회원가입용 테이블 설계 문서입니다. 실제 D1 테이블은 `migrations/0002_create_users.sql`로 생성됩니다. 인증 API 경로는 `/api/auth/signup` 및 `/api/auth/login`입니다.
 

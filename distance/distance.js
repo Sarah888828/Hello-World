@@ -45,7 +45,7 @@ let measuredPolyline;
 let firstPoint = null;
 let secondPoint = null;
 
-const kakaoJavascriptKey = document.documentElement.dataset.kakaoJavascriptKey?.trim() || "";
+let kakaoJavascriptKey = "";
 
 function haversineKm(startLat, startLon, endLat, endLon) {
   const radians = (degrees) => degrees * Math.PI / 180;
@@ -322,7 +322,17 @@ function setMapPoint(which, position) {
   updateMapDistance();
 }
 
-function initializeKakaoMap() {
+async function initializeKakaoMap() {
+  try {
+    const configResponse = await fetch("/api/config", { cache: "no-store" });
+    if (configResponse.ok) {
+      const config = await configResponse.json();
+      kakaoJavascriptKey = typeof config.kakaoJavascriptKey === "string" ? config.kakaoJavascriptKey.trim() : "";
+    }
+  } catch (error) {
+    console.warn("Could not load public map configuration:", error);
+  }
+
   if (!kakaoJavascriptKey) {
     kakaoMapState.textContent = "Kakao JavaScript 키 설정 필요";
     mapPointStatus.textContent = "카카오 지도 SDK 키가 아직 설정되지 않았습니다. 아래 설정 안내를 확인해 주세요.";

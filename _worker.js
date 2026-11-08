@@ -49,6 +49,16 @@ export default {
       });
     }
 
+    if (url.pathname === "/api/config" && request.method === "GET") {
+      return new Response(JSON.stringify({ kakaoJavascriptKey: env.KAKAO_JAVASCRIPT_KEY || "" }), {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff"
+        }
+      });
+    }
+
     if (url.pathname === "/distance/distance.js") {
       return env.ASSETS.fetch(new Request(new URL("/distance/distance.js", url), request));
     }
