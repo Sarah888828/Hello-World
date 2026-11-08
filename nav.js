@@ -1,11 +1,9 @@
 const navigationItems = [
   { label: "주차장 찾기", href: "#parking-list", match: ["/", "/parking/"] },
-  { label: "이용 안내", href: "guide/", match: ["/guide/"] },
   { label: "전기차 충전", href: "charging/", match: ["/charging/"] },
   { label: "거리 측정", href: "distance/", match: ["/distance/"] },
   { label: "문의 게시판", href: "board/", match: ["/board/"] },
-  { label: "로그인", href: "account/login/", match: ["/account/login/"] },
-  { label: "회원가입", href: "account/signup/", match: ["/account/signup/"] }
+  { label: "로그인", href: "account/login/", match: ["/account/login/", "/account/signup/"] }
 ];
 
 function getSiteBasePath(pathname) {
