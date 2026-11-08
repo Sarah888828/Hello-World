@@ -115,13 +115,18 @@ function updateDestination() {
   googleMapLink.href = `https://www.google.com/maps/dir/?api=1&destination=${query}&travelmode=driving`;
   googleMapLink.textContent = "선택한 주차장으로 길찾기 ↗";
   if (!destinationSelect.disabled) {
-    locateButton.disabled = !selectedDestination;
-    locateButton.textContent = selectedDestination ? "현재 위치로 거리 측정" : "이 주차장은 거리 측정 불가";
+    locateButton.disabled = false;
+    locateButton.textContent = currentPosition && !selectedDestination ? "지도에서 도착지 지정" : "현재 위치로 거리 측정";
   }
+  $(".distance-result-label").textContent = selectedDestination
+    ? "선택한 주차장까지 주소 좌표 기준 직선거리"
+    : "지도에서 선택한 지점까지 참고 직선거리";
   distanceValue.innerHTML = "--<small> km</small>";
   distanceStatus.textContent = selectedDestination
     ? "측정 버튼을 누르고 브라우저에서 위치 접근을 허용해 주세요."
-    : "선택한 주차장의 좌표가 없어 직선거리를 계산할 수 없습니다. 아래 지도 앱을 이용해 주세요.";
+    : currentPosition
+      ? "현재 위치는 확인됐습니다. 지도에서 선택한 주차장 위치를 클릭하면 개략 직선거리를 계산합니다."
+      : "이 주차장의 좌표 자료가 없습니다. 현재 위치 확인 후 지도에서 목적지 지점을 선택해 주세요.";
   if (selectedDestination && currentPosition) {
     renderDistance(haversineMeters(currentPosition, selectedDestination), "내 위치와 선택한 주차장 사이 근사");
   }
@@ -148,7 +153,7 @@ function labelMeasurableDestinations() {
 
 async function loadParkingCoordinates() {
   try {
-    const response = await fetch("./parking-coordinates.json", { cache: "no-cache" });
+    const response = await fetch("/data/parking-coordinates.json", { cache: "no-store" });
     if (!response.ok || !response.headers.get("content-type")?.includes("application/json")) return;
     const payload = await response.json();
     if (!Array.isArray(payload.coordinates)) return;
@@ -174,10 +179,6 @@ async function loadParkingCoordinates() {
 }
 function requestCurrentLocation(forMap = false) {
   if (destinationSelect.disabled) return;
-  if (!selectedDestination && !forMap) {
-    distanceStatus.textContent = "선택한 주차장의 좌표가 없어 거리를 계산할 수 없습니다. 지도 앱 길찾기를 이용하세요.";
-    return;
-  }
   if (!window.isSecureContext) {
     distanceStatus.textContent = "현재 위치 측정은 HTTPS 페이지에서만 사용할 수 있습니다.";
     return;
@@ -198,12 +199,14 @@ function requestCurrentLocation(forMap = false) {
       renderDistance(haversineMeters(currentPosition, selectedDestination), "내 위치와 선택한 주차장 사이 근사");
     } else {
       distanceValue.innerHTML = "--<small> km</small>";
-      distanceStatus.textContent = "현재 위치는 확인했지만 선택한 주차장의 좌표 자료가 없어 거리를 계산할 수 없습니다. 지도 앱에서 실제 길찾기를 이용해 주세요.";
+      distanceStatus.textContent = `현재 위치를 출발점으로 설정했습니다. 지도에서 ${destinationName.textContent} 위치를 클릭하면 참고 직선거리를 계산합니다.`;
+      mapPointStatus.textContent = `${destinationName.textContent}의 실제 위치를 지도 앱에서 확인한 뒤, 개략 선택판에서 해당 위치에 가까운 지점을 클릭해 도착지로 지정하세요. 결과는 참고값입니다.`;
+      $(".distance-result-label").textContent = "지도에서 선택한 지점까지 참고 직선거리";
     }
-    locateButton.disabled = !selectedDestination;
+    locateButton.disabled = false;
     destinationSelect.disabled = false;
     setCurrentPointButton.disabled = !kakaoMap && !fallbackMap;
-    locateButton.textContent = selectedDestination ? "다시 측정" : "이 주차장은 거리 측정 불가";
+    locateButton.textContent = selectedDestination ? "다시 측정" : "지도에서 도착지 지정";
     if (fallbackMap) {
       fallbackMap.setPoint(0, currentPosition);
       fallbackMap.focus(currentPosition);
@@ -219,10 +222,10 @@ function requestCurrentLocation(forMap = false) {
       3: "위치 확인 시간이 초과되었습니다. 다시 시도해 주세요."
     };
     distanceStatus.textContent = errors[error.code] || "현재 위치를 확인할 수 없습니다.";
-    locateButton.disabled = !selectedDestination;
+    locateButton.disabled = false;
     destinationSelect.disabled = false;
     setCurrentPointButton.disabled = !kakaoMap && !fallbackMap;
-    locateButton.textContent = selectedDestination ? "현재 위치로 거리 측정" : "이 주차장은 거리 측정 불가";
+    locateButton.textContent = "현재 위치로 거리 측정";
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });
 }
 
@@ -282,18 +285,25 @@ async function initializeKakaoMap() {
       fallbackMap = await createMeasurementMap(kakaoMapElement, (meters, points) => {
         if (meters === null) {
           distanceValue.innerHTML = "--<small> km</small>";
-          distanceStatus.textContent = "지도에서 출발지와 도착지를 지정하면 거리가 표시됩니다.";
+          distanceStatus.textContent = selectedDestination
+            ? "지도에서 출발지와 도착지를 지정하면 거리가 표시됩니다."
+            : "현재 위치를 설정한 뒤 지도에서 선택한 주차장 위치를 클릭해 주세요. 개략 선택판 기반 참고 거리입니다.";
           googleMapLink.textContent = "선택한 주차장으로 길찾기 ↗";
           const query = encodeURIComponent(`${destinationName.textContent} ${destinationAddress.textContent}`);
           googleMapLink.href = `https://www.google.com/maps/dir/?api=1&destination=${query}&travelmode=driving`;
           return;
         }
-        renderDistance(meters, "지도에서 선택한 출발지와 도착지 사이");
+        const selectedIsUngeocoded = !selectedDestination;
+        renderDistance(meters, selectedIsUngeocoded ? "개략 선택판에서 지정한 위치 기준 참고" : "지도에서 선택한 출발지와 도착지 사이");
+        if (selectedIsUngeocoded) {
+          $(".distance-result-label").textContent = "개략 위치 기반 참고 직선거리";
+        }
         const [origin, target] = points;
         googleMapLink.href = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${target.lat},${target.lng}&travelmode=driving`;
         googleMapLink.textContent = "선택한 두 지점으로 길찾기 ↗";
       });
       if (selectedDestination) fallbackMap.setPoint(1, selectedDestination);
+      else fallbackMap.selectPoint(1);
       if (currentPosition) fallbackMap.setPoint(0, currentPosition);
       setCurrentPointButton.disabled = false;
       clearMapPointsButton.disabled = false;

@@ -124,6 +124,7 @@ export async function createMeasurementMap(container, onMeasure, onClear) {
 
   return {
     setPoint,
+    selectPoint,
     focus() {},
     clearDestination() { points[1] = null; render(); selectPoint(1); },
     clear() { points = [null, null]; render(); selectPoint(0); }
