@@ -166,11 +166,12 @@ function render() {
       <a class="ev-card-link" href="${escapeHtml(station.href)}"${station.href.startsWith("http") ? ' target="_blank" rel="noreferrer"' : ""}>${station.type === "tesla" ? "상세 정보" : "지도 보기"} <span aria-hidden="true">→</span></a>
     </article>
   `).join("");
+}
 
+filter.addEventListener("change", () => {
+  render();
   grid.classList.remove("is-filtering");
   void grid.offsetWidth;
   grid.classList.add("is-filtering");
-}
-
-filter.addEventListener("change", render);
+});
 render();
