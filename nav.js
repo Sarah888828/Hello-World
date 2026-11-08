@@ -32,9 +32,9 @@ function mountSharedNavigation() {
   }).join("");
 
   mount.innerHTML = `
-    <a class="brand" href="${basePath}" aria-label="불당 주차 메인">
+    <a class="brand" href="${basePath}" aria-label="천안 주차 메인">
       <span class="brand-mark" aria-hidden="true">P</span>
-      <span>불당<span class="brand-light">주차</span></span>
+      <span>천안<span class="brand-light">주차</span></span>
     </a>
     <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">메뉴 <span aria-hidden="true">☰</span></button>
     <nav id="main-navigation" class="topnav" aria-label="주 메뉴">${menuItems}</nav>
