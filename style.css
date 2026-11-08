@@ -805,7 +805,7 @@ body { font-size: 15px; line-height: 1.6; }
   .parking-map-result { align-items: flex-start; flex-direction: column; }
 }
 @media (max-width: 700px) {
-  .mobile-menu-toggle { min-height: 44px; border-radius: 8px; }
+  .mobile-menu-toggle { min-height: 48px; border-radius: 8px; }
   .location-pill { min-height: 40px; font-size: 10px; }
   .quick-filter, .filter-chip { min-height: 44px; padding-inline: 13px; font-size: 10px; }
   .view-toggle-button { min-height: 44px; }
