@@ -178,6 +178,30 @@ function searchOriginOnMaps() {
   window.open(originNaverLink.href, "_blank", "noopener,noreferrer");
 }
 
+async function showLocationPermissionState() {
+  if (!navigator.geolocation) {
+    distanceStatus.textContent = "이 브라우저에서는 현재 위치 측정을 지원하지 않습니다. 지도 앱 길찾기를 이용하세요.";
+    return;
+  }
+  if (!window.isSecureContext) {
+    distanceStatus.textContent = "현재 위치는 HTTPS 웹사이트에서만 측정할 수 있습니다. 주소가 https://로 시작하는지 확인하세요.";
+    return;
+  }
+  if (!navigator.permissions?.query) return;
+  try {
+    const permission = await navigator.permissions.query({ name: "geolocation" });
+    if (permission.state === "denied") {
+      distanceStatus.textContent = "위치 권한이 차단되어 있습니다. 주소창 왼쪽 사이트 정보 → 위치 → 허용으로 바꾸고 페이지를 새로고침해 주세요.";
+    } else if (permission.state === "prompt") {
+      distanceStatus.textContent = "현재 위치로 거리 측정을 누른 뒤, 브라우저 팝업에서 위치 접근을 허용해 주세요.";
+    } else if (permission.state === "granted") {
+      distanceStatus.textContent = "위치 권한이 허용되어 있습니다. 현재 위치 버튼을 눌러 근사 직선거리를 계산하세요.";
+    }
+  } catch {
+    // Some browsers do not expose geolocation permission state; the button flow still works.
+  }
+}
+
 async function initializeKakaoMap() {
   try {
     const response = await fetch("/api/config", { cache: "no-store" });
@@ -248,3 +272,4 @@ clearMapPointsButton.addEventListener("click", clearMapPoints);
 
 initializeKakaoMap();
 updateDestination();
+showLocationPermissionState();
