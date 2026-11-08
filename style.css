@@ -965,7 +965,21 @@ body { font-size: 15px; line-height: 1.6; }
   .to-top { font-size: 8px; }
   .parking-dialog { padding: 25px 21px; }
 }
+.search-intro { animation: rise-in .38s ease-out backwards; }
+.search-panel { animation: rise-in .38s .06s ease-out backwards; }
+.parking-card { animation: none; }
+.parking-card:nth-child(-n+6) { animation: card-in .28s ease-out backwards; }
+.parking-card:nth-child(even):nth-child(-n+6) { animation-delay: .045s; }
+.parking-dialog[open], .parking-map-view:not([hidden]) { animation: rise-in .24s ease-out backwards; }
+.search-button, .quick-filter, .filter-chip, .view-toggle-button, .favorite-button, .parking-card .detail-button {
+  transition: transform .16s ease-out, background-color .16s, border-color .16s, color .16s;
+}
+.search-button:active, .quick-filter:active, .filter-chip:active, .view-toggle-button:active,
+.favorite-button:active, .parking-card .detail-button:active { transform: scale(.96); }
+
 @media (prefers-reduced-motion: reduce) {
+  .parking-card:hover, .search-button:active, .quick-filter:active, .filter-chip:active,
+  .view-toggle-button:active, .favorite-button:active, .parking-card .detail-button:active { transform: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }

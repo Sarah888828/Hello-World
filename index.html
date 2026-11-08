@@ -128,7 +128,7 @@
           const input = document.querySelector("#search-input");
           input.value = button.dataset.quickQuery;
           input.dispatchEvent(new Event("input", { bubbles: true }));
-          document.querySelector("#parking-list").scrollIntoView({ behavior: "smooth" });
+          document.querySelector("#parking-list").scrollIntoView();
         });
       });
     </script>
