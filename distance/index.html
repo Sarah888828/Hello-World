@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../style.css?theme=measurement-v2" />
     <script src="../script.js"></script>
-    <script type="module" src="./distance.js?v=measurement-v4"></script>
+    <script type="module" src="./distance.js?v=measurement-v5"></script>
   </head>
   <body>
     <header class="topbar">
@@ -38,7 +38,7 @@
           </select>
           <h2 id="destination-name">불당 제1주차장</h2>
           <p id="destination-address" class="distance-address">천안시 서북구 검은들1길 15</p>
-          <p id="destination-help" class="distance-destination-help">목록에서 ‘직선거리 측정 가능’ 표시를 확인하세요. 다른 주차장도 아래 지도 앱에서 경로를 확인할 수 있습니다.</p>
+          <p id="destination-help" class="distance-destination-help">지도에서 출발지와 도착지를 누르면 직선거리가 표시됩니다. 등록 좌표가 없는 주차장도 지도에서 도착지를 직접 선택할 수 있습니다.</p>
           <div class="distance-result" aria-live="polite">
             <span class="distance-result-label">내 위치에서 직선거리</span>
             <strong id="distance-value">--<small> km</small></strong>
@@ -60,7 +60,7 @@
               <p id="origin-search-status" class="distance-origin-note" role="status">네이버 지도가 새 탭에서 열립니다. 직선거리는 현재 위치로 측정합니다.</p>
             </form>
           </section>
-          <p class="distance-privacy-note"><span aria-hidden="true">ⓘ</span> 위치 권한은 거리 계산에만 사용하며 서버에 전송하거나 저장하지 않습니다.</p>
+          <p class="distance-privacy-note"><span aria-hidden="true">ⓘ</span> 선택한 위치 주변의 지도 타일을 지도 제공자에게 요청합니다. 위치는 이 사이트 서버에 저장하지 않습니다.</p>
         </section>
 
         <div class="distance-scene-card kakao-map-card">
