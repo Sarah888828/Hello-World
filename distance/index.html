@@ -50,17 +50,16 @@
             <a id="distance-map-link" class="distance-map-link" href="https://map.naver.com/p/search/%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noopener noreferrer">네이버 지도 검색 <span aria-hidden="true">↗</span></a>
             <a id="kakao-map-link" class="distance-map-link distance-map-secondary" href="https://map.kakao.com/?q=%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noopener noreferrer">카카오맵 검색 <span aria-hidden="true">↗</span></a>
           </div>
-          <details class="distance-origin-search">
-            <summary>천안 출발지 주소 검색</summary>
+          <section class="distance-origin-search" aria-label="출발지 검색">
             <form id="origin-search-form">
-              <label class="visually-hidden" for="origin-search-input">천안의 장소명 또는 주소</label>
+              <label class="distance-destination-label" for="origin-search-input">내 위치·출발지 주소 검색</label>
               <div class="distance-origin-input-row">
                 <input id="origin-search-input" type="search" placeholder="예: 천안시청, 검은들1길 15" aria-describedby="origin-search-status" required />
                 <button type="submit">지도에서 찾기 ↗</button>
               </div>
               <p id="origin-search-status" class="distance-origin-note" role="status">네이버 지도가 새 탭에서 열립니다. 직선거리는 현재 위치로 측정합니다.</p>
             </form>
-          </details>
+          </section>
           <p class="distance-privacy-note"><span aria-hidden="true">ⓘ</span> 위치 권한은 거리 계산에만 사용하며 서버에 전송하거나 저장하지 않습니다.</p>
         </section>
 
