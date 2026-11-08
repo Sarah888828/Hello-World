@@ -154,7 +154,7 @@ function render() {
   const visible = chargingStations.filter((station) => isVisible(station, filter.value));
   count.textContent = String(visible.length).padStart(2, "0");
   grid.innerHTML = visible.map((station) => `
-    <article class="ev-station-card">
+    <article class="ev-station-card${station.type === "tesla" ? " is-supercharger" : ""}" style="--ev-card-index:${visible.indexOf(station)}">
       <div class="ev-station-symbol" aria-hidden="true">⚡</div>
       <div class="ev-station-main">
         <div class="ev-card-tags"><span class="ev-type-tag">${escapeHtml(station.label)}</span><span class="inquiry-status">${station.speed === "slow" ? "완속" : station.speed === "mixed" ? "급속·완속" : "급속"}</span></div>
@@ -166,6 +166,11 @@ function render() {
       <a class="ev-card-link" href="${escapeHtml(station.href)}"${station.href.startsWith("http") ? ' target="_blank" rel="noreferrer"' : ""}>${station.type === "tesla" ? "상세 정보" : "지도 보기"} <span aria-hidden="true">→</span></a>
     </article>
   `).join("");
+
+  grid.classList.remove("is-filtering");
+  requestAnimationFrame(() => {
+    grid.classList.add("is-filtering");
+  });
 }
 
 filter.addEventListener("change", render);

@@ -1011,3 +1011,79 @@ button, .nav-link, .location-pill, .detail-button, .distance-map-link, .map-poin
   .hero-copy, .hero-art, .search-panel, .section-heading, .guide-section, .guide-faq, .parking-card, .map-point-status { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
   .parking-card:active, .favorite-button:active, .view-toggle-button:active, .filter-chip:active, .quick-filter:active { transform: none; }
 }
+
+/* Expressive, page-scoped motion for EV charging pages. */
+.ev-page .ev-heading,
+.ev-page .ev-notice,
+.ev-page .ev-list-heading,
+.ev-page .ev-search-card,
+.ev-detail-page .ev-detail-layout {
+  animation: ev-section-arrive .72s cubic-bezier(.2,.72,.25,1) both;
+}
+.ev-page .ev-notice { animation-delay: .08s; }
+.ev-page .ev-list-heading { animation-delay: .14s; }
+.ev-page .ev-search-card { animation-delay: .22s; }
+.ev-station-card {
+  position: relative;
+  overflow: hidden;
+  animation: ev-card-arrive .62s cubic-bezier(.18,.7,.25,1) both;
+  animation-delay: calc(min(var(--ev-card-index, 0), 9) * 65ms + 100ms);
+  transition: transform .28s cubic-bezier(.2,.75,.25,1), border-color .28s ease, box-shadow .32s ease, background-color .28s ease;
+}
+.ev-station-card::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(112deg, transparent 18%, rgb(213 229 175 / 9%) 48%, transparent 72%);
+  transform: translateX(-125%);
+}
+.ev-station-grid.is-filtering .ev-station-card::after { animation: ev-card-sheen .8s ease-out both; animation-delay: calc(min(var(--ev-card-index, 0), 7) * 45ms); }
+.ev-station-card:hover {
+  transform: translateY(-7px) scale(1.012);
+  border-color: #747d58;
+  background-color: #20221c;
+  box-shadow: 0 18px 42px rgb(0 0 0 / 38%), 0 0 0 1px rgb(195 211 148 / 10%);
+}
+.ev-station-symbol { transition: transform .35s cubic-bezier(.2,.8,.2,1), color .25s ease, background-color .25s ease; }
+.ev-station-card:hover .ev-station-symbol { transform: translateY(-2px) rotate(-9deg) scale(1.12); color: #eff8d1; }
+.ev-card-link { transition: gap .22s ease, color .22s ease, border-color .22s ease; }
+.ev-card-link:hover { gap: 12px; color: #eaf5cb; }
+.ev-card-link span { display: inline-block; transition: transform .22s ease; }
+.ev-card-link:hover span { transform: translateX(4px); }
+.ev-list-heading .board-filter select { transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.ev-list-heading .board-filter select:focus { transform: translateY(-1px); box-shadow: 0 0 0 4px rgb(195 211 148 / 12%); }
+.ev-station-card.is-supercharger { border-color: #5d6646; background: linear-gradient(135deg, #23261e, #151613 70%); }
+.ev-station-card.is-supercharger::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  content: "";
+  background: linear-gradient(180deg, #d9e9a7, #8b9c62, transparent);
+  transform-origin: top;
+  animation: ev-accent-grow .8s cubic-bezier(.2,.7,.25,1) both;
+}
+.ev-station-card.is-supercharger .ev-station-symbol { color: #e5efa9; text-shadow: 0 0 18px rgb(213 229 175 / 28%); }
+.ev-detail-page .ev-detail-card,
+.ev-detail-page .ev-side-note { animation: ev-section-arrive .7s cubic-bezier(.2,.72,.25,1) both; }
+.ev-detail-page .ev-side-note { animation-delay: .12s; }
+.ev-detail-page .ev-detail-topline { animation: ev-soft-glow 2.8s ease-in-out 1s both; }
+
+@keyframes ev-section-arrive { from { opacity: 0; transform: translateY(18px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+@keyframes ev-card-arrive { from { opacity: 0; transform: translateY(24px) scale(.975); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes ev-card-sheen { to { transform: translateX(125%); } }
+@keyframes ev-accent-grow { from { transform: scaleY(.15); opacity: .35; } to { transform: scaleY(1); opacity: 1; } }
+@keyframes ev-soft-glow { 0%,100% { box-shadow: 0 0 0 rgb(195 211 148 / 0%); } 35% { box-shadow: 0 0 22px rgb(195 211 148 / 15%); } }
+@media (prefers-reduced-motion: reduce) {
+  .ev-page .ev-heading, .ev-page .ev-notice, .ev-page .ev-list-heading,
+  .ev-page .ev-search-card, .ev-detail-page .ev-detail-layout,
+  .ev-station-card, .ev-detail-page .ev-detail-card, .ev-detail-page .ev-side-note,
+  .ev-detail-page .ev-detail-topline, .ev-station-card::before, .ev-station-card::after {
+    animation: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .ev-station-card, .ev-station-symbol, .ev-card-link, .ev-card-link span,
+  .ev-list-heading .board-filter select { transition: none !important; }
+}
