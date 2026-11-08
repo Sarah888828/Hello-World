@@ -127,10 +127,19 @@ function updateDestination() {
   }
 }
 
+function labelMeasurableDestinations() {
+  for (const option of destinationSelect.options) {
+    const suffix = " · 직선거리 측정 가능";
+    if (Object.hasOwn(destinationCoordinates, option.value) && !option.textContent.endsWith(suffix)) {
+      option.textContent += suffix;
+    }
+  }
+}
+
 async function loadParkingCoordinates() {
   try {
     const response = await fetch("./parking-coordinates.json", { cache: "no-cache" });
-    if (!response.ok) return;
+    if (!response.ok || !response.headers.get("content-type")?.includes("application/json")) return;
     const payload = await response.json();
     if (!Array.isArray(payload.coordinates)) return;
     for (const item of payload.coordinates) {
@@ -147,6 +156,7 @@ async function loadParkingCoordinates() {
         };
       }
     }
+    labelMeasurableDestinations();
     updateDestination();
   } catch (error) {
     console.info("Optional parking coordinates are unavailable.", error);
@@ -171,7 +181,7 @@ function requestCurrentLocation(forMap = false) {
   destinationSelect.disabled = true;
   setCurrentPointButton.disabled = true;
   locateButton.textContent = "위치 확인 중…";
-  distanceStatus.textContent = "브라우저의 위치 권한 요청을 기다리고 있습니다. 권한 창이 뜨면 ‘허용’을 선택해 주세요.";
+  distanceStatus.textContent = "현재 위치를 확인 중입니다. 위치 권한 창이 뜨면 ‘허용’을 선택해 주세요.";
   navigator.geolocation.getCurrentPosition(({ coords }) => {
     currentPosition = { latitude: coords.latitude, longitude: coords.longitude };
     if (selectedDestination) {
@@ -190,14 +200,11 @@ function requestCurrentLocation(forMap = false) {
     }
   }, (error) => {
     const errors = {
-      1: "위치 권한이 거부되었습니다. 브라우저 주소창에서 위치 접근을 허용해 주세요.",
+      1: "위치 접근이 차단됐습니다. 주소창의 사이트 설정에서 위치를 허용하거나, Chrome·Edge에서 이 페이지를 열어 다시 시도해 주세요.",
       2: "현재 위치를 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.",
       3: "위치 확인 시간이 초과되었습니다. 다시 시도해 주세요."
     };
     distanceStatus.textContent = errors[error.code] || "현재 위치를 확인할 수 없습니다.";
-    if (error.code === 1) {
-      distanceStatus.textContent += " 사이트 주소창의 자물쇠/권한 메뉴에서 위치 접근을 허용한 뒤 다시 눌러 주세요.";
-    }
     locateButton.disabled = !selectedDestination;
     destinationSelect.disabled = false;
     setCurrentPointButton.disabled = !kakaoMap;
@@ -310,6 +317,7 @@ setCurrentPointButton.addEventListener("click", () => requestCurrentLocation(tru
 clearMapPointsButton.addEventListener("click", clearMapPoints);
 
 initializeKakaoMap();
+labelMeasurableDestinations();
 updateDestination();
 showLocationPermissionState();
 loadParkingCoordinates();
