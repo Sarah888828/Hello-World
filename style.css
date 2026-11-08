@@ -483,6 +483,17 @@ h1 span { color: #d2ddbb; text-decoration: underline; text-decoration-color: #82
 .distance-result-label { color: #aaa99f; font-size: 9px; }
 .distance-result strong { color: #e1ebc2; font-size: 35px; line-height: 1.05; letter-spacing: -1.8px; }
 .distance-result strong small { color: #c2c7ae; font-size: 15px; letter-spacing: 0; }
+.distance-page .distance-layout { align-items: start; }
+.distance-page .distance-info-card, .distance-page .kakao-map-card { border-radius: 16px; }
+.distance-page .distance-result { padding: 18px; border-radius: 12px; }
+.distance-page .distance-result strong { font-size: clamp(34px, 6vw, 54px); }
+.distance-page .distance-button { min-height: 46px; border-radius: 9px; font-size: 13px; }
+.distance-page .distance-origin-search summary { color: #d5e4ac; cursor: pointer; font-weight: 700; }
+.distance-page .distance-origin-search[open] summary { margin-bottom: 12px; }
+.distance-page .kakao-map-card:has(.kakao-map-placeholder:not([hidden])) { min-height: 0; }
+.distance-page .kakao-map-canvas:has(.kakao-map-placeholder:not([hidden])) { min-height: 180px; }
+.distance-page .kakao-map-card:has(.kakao-map-placeholder:not([hidden])) .kakao-map-controls,
+.distance-page .kakao-map-card:has(.kakao-map-placeholder:not([hidden])) .distance-scene-legend { display: none; }
 .distance-status { min-height: 14px; color: #a7a699; font-size: 8px; line-height: 1.65; }
 .distance-button { display: flex; min-height: 43px; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 3px; background: #d4e19f; color: #171812; cursor: pointer; font-size: 9px; font-weight: 700; transition: background .18s, transform .18s; }
 .distance-button:hover { transform: translateY(-1px); background: #e4efb4; }

@@ -73,14 +73,13 @@ function setMapPoint(which, position) {
 }
 
 function updateMapMeasurement() {
+  measuredPolyline?.setMap(null);
+  measuredPolyline = null;
   if (!kakaoMap || !firstPoint || !secondPoint) {
-    distanceValue.innerHTML = "--<small> km</small>";
-    distanceStatus.textContent = "두 점을 지정하면 카카오 지도의 직선거리를 표시합니다. 도로 경로 거리는 아닙니다.";
     mapPointStatus.textContent = `첫 번째 점 ${firstPoint ? "설정됨" : "미설정"} · 두 번째 점 ${secondPoint ? "설정됨" : "미설정"}`;
     return;
   }
 
-  measuredPolyline?.setMap(null);
   measuredPolyline = new kakao.maps.Polyline({
     map: kakaoMap,
     path: [firstPoint, secondPoint],
@@ -89,8 +88,9 @@ function updateMapMeasurement() {
     strokeOpacity: 0.95,
     strokeStyle: "solid"
   });
-  renderDistance(measuredPolyline.getLength(), "선택한 두 지점 사이");
-  mapPointStatus.textContent = "두 점을 선으로 연결했습니다. 이 값은 직선거리입니다.";
+  const meters = measuredPolyline.getLength();
+  const formatted = meters >= 1000 ? `${(meters / 1000).toFixed(2)} km` : `${Math.round(meters)} m`;
+  mapPointStatus.textContent = `지도에서 선택한 두 지점의 직선거리 · ${formatted}`;
   const bounds = new kakao.maps.LatLngBounds();
   bounds.extend(firstPoint);
   bounds.extend(secondPoint);
@@ -107,16 +107,27 @@ function updateDestination() {
   naverMapLink.href = `https://map.naver.com/p/search/${query}`;
   kakaoMapLink.href = `https://map.kakao.com/?q=${query}`;
   googleMapLink.href = `https://www.google.com/maps/dir/?api=1&destination=${query}&travelmode=driving`;
-  locateButton.disabled = false;
-  locateButton.textContent = destination ? "현재 위치로 거리 측정" : "현재 위치 확인";
+  if (!destinationSelect.disabled) {
+    locateButton.disabled = !selectedDestination;
+    locateButton.textContent = selectedDestination ? "현재 위치로 거리 측정" : "이 주차장은 거리 측정 불가";
+  }
   distanceValue.innerHTML = "--<small> km</small>";
   distanceStatus.textContent = selectedDestination
-    ? "현재 위치와 불당 제1주차장 주소 대표점 사이 근사 직선거리를 계산합니다."
-    : "위치를 확인한 뒤에도 이 주차장의 좌표가 없으면 거리는 표시되지 않습니다. 아래 지도 앱에서 길찾기를 이용하세요.";
+    ? "측정 버튼을 누르고 브라우저에서 위치 접근을 허용해 주세요."
+    : "선택한 주차장의 좌표가 없어 직선거리를 계산할 수 없습니다. 아래 지도 앱을 이용해 주세요.";
   if (selectedDestination && currentPosition) {
     renderDistance(haversineMeters(currentPosition, selectedDestination), "내 위치와 선택한 주차장 사이 근사");
   }
   if (kakaoMap && selectedDestination) {
+    const { latitude, longitude } = selectedDestination;
+    setMapPoint("second", new kakao.maps.LatLng(latitude, longitude));
+  } else if (kakaoMap) {
+    secondPointMarker?.setMap(null);
+    secondPointMarker = null;
+    secondPoint = null;
+    updateMapMeasurement();
+  }
+}
 
 async function loadParkingCoordinates() {
   try {
@@ -139,20 +150,13 @@ async function loadParkingCoordinates() {
       }
     }
     updateDestination();
-    if (kakaoMap && selectedDestination) {
-      setMapPoint("second", new kakao.maps.LatLng(selectedDestination.latitude, selectedDestination.longitude));
-    }
   } catch (error) {
     console.info("Optional parking coordinates are unavailable.", error);
   }
 }
-    const center = new kakao.maps.LatLng(selectedDestination.latitude, selectedDestination.longitude);
-    setMapPoint("second", center);
-  }
-}
-
-function requestCurrentLocation() {
-  if (!selectedDestination) {
+function requestCurrentLocation(forMap = false) {
+  if (destinationSelect.disabled) return;
+  if (!selectedDestination && !forMap) {
     distanceStatus.textContent = "선택한 주차장의 좌표가 없어 거리를 계산할 수 없습니다. 지도 앱 길찾기를 이용하세요.";
     return;
   }
@@ -166,6 +170,8 @@ function requestCurrentLocation() {
   }
 
   locateButton.disabled = true;
+  destinationSelect.disabled = true;
+  setCurrentPointButton.disabled = true;
   locateButton.textContent = "위치 확인 중…";
   distanceStatus.textContent = "브라우저의 위치 권한 요청을 기다리고 있습니다. 권한 창이 뜨면 ‘허용’을 선택해 주세요.";
   navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -176,8 +182,10 @@ function requestCurrentLocation() {
       distanceValue.innerHTML = "--<small> km</small>";
       distanceStatus.textContent = "현재 위치는 확인했지만 선택한 주차장의 좌표 자료가 없어 거리를 계산할 수 없습니다. 지도 앱에서 실제 길찾기를 이용해 주세요.";
     }
-    locateButton.disabled = false;
-    locateButton.textContent = "다시 측정";
+    locateButton.disabled = !selectedDestination;
+    destinationSelect.disabled = false;
+    setCurrentPointButton.disabled = !kakaoMap;
+    locateButton.textContent = selectedDestination ? "다시 측정" : "이 주차장은 거리 측정 불가";
     if (kakaoMap) {
       setMapPoint("first", new kakao.maps.LatLng(coords.latitude, coords.longitude));
       kakaoMap.panTo(firstPoint);
@@ -192,8 +200,10 @@ function requestCurrentLocation() {
     if (error.code === 1) {
       distanceStatus.textContent += " 사이트 주소창의 자물쇠/권한 메뉴에서 위치 접근을 허용한 뒤 다시 눌러 주세요.";
     }
-    locateButton.disabled = false;
-    locateButton.textContent = "현재 위치로 거리 측정";
+    locateButton.disabled = !selectedDestination;
+    destinationSelect.disabled = false;
+    setCurrentPointButton.disabled = !kakaoMap;
+    locateButton.textContent = selectedDestination ? "현재 위치로 거리 측정" : "이 주차장은 거리 측정 불가";
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });
 }
 
@@ -223,6 +233,7 @@ async function showLocationPermissionState() {
   if (!navigator.permissions?.query) return;
   try {
     const permission = await navigator.permissions.query({ name: "geolocation" });
+    if (!selectedDestination || destinationSelect.disabled || currentPosition) return;
     if (permission.state === "denied") {
       distanceStatus.textContent = "위치 권한이 차단되어 있습니다. 주소창 왼쪽 사이트 정보 → 위치 → 허용으로 바꾸고 페이지를 새로고침해 주세요.";
     } else if (permission.state === "prompt") {
@@ -247,8 +258,8 @@ async function initializeKakaoMap() {
   }
 
   if (!kakaoKey) {
-    kakaoMapState.textContent = "Kakao JavaScript 키 설정 필요";
-    mapPointStatus.textContent = "현재 위치와 좌표 등록 주차장 사이 직선거리는 사용할 수 있습니다. 지도 마커·두 점 연결은 Kakao 키 설정 후 활성화됩니다.";
+    kakaoMapState.textContent = "내장 지도 사용 불가";
+    mapPointStatus.textContent = "좌표가 확인된 주차장까지의 직선거리 측정과 외부 지도 링크는 이용할 수 있습니다.";
     return;
   }
 
@@ -268,7 +279,11 @@ async function initializeKakaoMap() {
       kakaoMapPlaceholder.hidden = true;
       kakaoMapState.textContent = "Kakao 지도 준비 완료";
       kakaoMap.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
-      if (selectedDestination) setMapPoint("second", center);
+      setCurrentPointButton.disabled = false;
+      clearMapPointsButton.disabled = false;
+      if (selectedDestination) {
+        setMapPoint("second", new kakao.maps.LatLng(selectedDestination.latitude, selectedDestination.longitude));
+      }
       kakao.maps.event.addListener(kakaoMap, "click", ({ latLng }) => setMapPoint(firstPoint ? "second" : "first", latLng));
     });
   };
@@ -292,7 +307,7 @@ function clearMapPoints() {
 }
 
 destinationSelect.addEventListener("change", updateDestination);
-locateButton.addEventListener("click", requestCurrentLocation);
+locateButton.addEventListener("click", () => requestCurrentLocation());
 originSearchButton.addEventListener("click", searchOriginOnMaps);
 originSearchInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -300,7 +315,7 @@ originSearchInput.addEventListener("keydown", (event) => {
     searchOriginOnMaps();
   }
 });
-setCurrentPointButton.addEventListener("click", requestCurrentLocation);
+setCurrentPointButton.addEventListener("click", () => requestCurrentLocation(true));
 clearMapPointsButton.addEventListener("click", clearMapPoints);
 
 initializeKakaoMap();

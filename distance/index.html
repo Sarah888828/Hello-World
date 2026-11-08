@@ -12,12 +12,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../style.css?theme=editorial-v6" />
-    <script type="importmap">
-      {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
-    </script>
+    <link rel="stylesheet" href="../style.css?theme=measurement-v2" />
     <script src="../script.js"></script>
-    <script type="module" src="./distance.js?v=LATEST_DISTANCE_MODULE"></script>
+    <script type="module" src="./distance.js?v=measurement-v2"></script>
   </head>
   <body>
     <header class="topbar">
@@ -29,25 +26,11 @@
         <a class="detail-back" href="../#home"><span aria-hidden="true">←</span> 메인으로 돌아가기</a>
         <p class="section-kicker">KAKAO MAP · DISTANCE TOOL</p>
         <h1 id="distance-title">내 위치에서<br /><span>주차장까지</span></h1>
-        <p>먼저 목적지를 선택하고 <strong>현재 위치로 거리 측정</strong>을 누른 다음 브라우저의 위치 권한 창에서 허용을 선택하세요. 실제 거리는 근사 직선거리이며 도로 경로는 지도 앱에서 확인할 수 있습니다.</p>
+        <p>목적지 주차장을 선택하면 내 위치에서의 직선거리를 확인할 수 있습니다.</p>
       </section>
 
       <section class="distance-layout" aria-label="내 위치와 주차장 거리 측정">
-        <div class="distance-scene-card kakao-map-card">
-          <div class="distance-scene-top"><span class="distance-scene-label"><span class="distance-live-dot"></span> KAKAO MAP · TWO-POINT MEASURE</span><span id="kakao-map-state" class="distance-scene-caption">설정 확인 중</span></div>
-          <div id="kakao-map" class="kakao-map-canvas" role="application" aria-label="지도를 클릭해 목적지 마커를 지정하는 카카오 지도">
-            <div id="kakao-map-placeholder" class="kakao-map-placeholder">
-              <span class="kakao-map-placeholder-icon" aria-hidden="true">⌖</span>
-              <strong>카카오 지도 연결 준비</strong>
-              <p>지도를 사용하려면 Kakao Developers JavaScript 키와 허용 도메인 등록이 필요합니다.</p>
-            </div>
-          </div>
-          <div class="kakao-map-controls"><button id="set-current-point" class="map-point-button" type="button">내 위치를 첫 번째 점으로 설정</button><button id="clear-map-points" class="map-clear-button" type="button">점 지우기</button></div>
-          <div id="map-point-status" class="map-point-status" role="status" aria-live="polite">첫 번째 점은 내 위치 버튼으로, 두 번째 점은 지도 클릭으로 지정합니다.</div>
-          <div class="distance-scene-legend"><span><i class="legend-dot user-dot"></i>첫 번째 점</span><span><i class="legend-dot parking-dot"></i>두 번째 점</span><span class="distance-scene-note">직선거리 · 실제 도로 경로 아님</span></div>
-        </div>
-
-        <aside class="distance-info-card">
+        <section class="distance-info-card" aria-label="목적지 선택과 거리 측정">
           <p class="section-kicker">DESTINATION</p>
           <label class="distance-destination-label" for="destination-select">목적지 주차장</label>
           <select id="destination-select" class="distance-destination-select" aria-describedby="destination-help">
@@ -55,16 +38,7 @@
           </select>
           <h2 id="destination-name">불당 제1주차장</h2>
           <p id="destination-address" class="distance-address">천안시 서북구 검은들1길 15</p>
-          <p id="destination-help" class="distance-destination-help">현재 위치 직선거리 계산은 좌표가 확인된 불당 제1주차장만 지원합니다. 다른 주차장과 두 지점 지도 측정은 Kakao 키 설정 후 사용할 수 있습니다.</p>
-          <div class="distance-origin-search">
-            <label class="distance-destination-label" for="origin-search-input">내 위치·출발지 주소 검색</label>
-            <div class="distance-origin-input-row"><input id="origin-search-input" type="search" autocomplete="street-address" placeholder="예: 천안시청, 불당동 카페" /><button id="origin-search-button" type="button">지도에서 찾기</button></div>
-            <p id="origin-search-status" class="distance-origin-note" role="status" aria-live="polite">검색어로 지도 앱을 열어 주소를 확인하세요. 검색만으로 거리 좌표가 자동 입력되지는 않습니다.</p>
-            <div class="distance-map-actions distance-origin-map-actions">
-              <a id="origin-naver-link" class="distance-map-link" href="https://map.naver.com/p/search/%EC%B2%9C%EC%95%88%EC%8B%9C" target="_blank" rel="noopener noreferrer">네이버에서 출발지 검색 ↗</a>
-              <a id="origin-kakao-link" class="distance-map-link distance-map-secondary" href="https://map.kakao.com/?q=%EC%B2%9C%EC%95%88%EC%8B%9C" target="_blank" rel="noopener noreferrer">카카오에서 출발지 검색 ↗</a>
-            </div>
-          </div>
+          <p id="destination-help" class="distance-destination-help">좌표가 확인된 주차장은 직선거리를 측정할 수 있습니다. 도로 경로는 아래 지도 앱에서 확인하세요.</p>
           <div class="distance-result" aria-live="polite">
             <span class="distance-result-label">내 위치에서 직선거리</span>
             <strong id="distance-value">--<small> km</small></strong>
@@ -73,15 +47,38 @@
           <button id="locate-button" class="distance-button" type="button">현재 위치로 거리 측정 <span aria-hidden="true">↗</span></button>
           <div class="distance-map-actions">
             <a id="google-map-link" class="distance-map-link distance-map-google" href="https://www.google.com/maps/dir/?api=1&amp;destination=%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015&amp;travelmode=driving" target="_blank" rel="noopener noreferrer">Google 지도 길찾기 <span aria-hidden="true">↗</span></a>
-            <a id="distance-map-link" class="distance-map-link" href="https://map.naver.com/p/search/%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noopener noreferrer">네이버 지도에서 실제 길찾기 <span aria-hidden="true">↗</span></a>
+            <a id="distance-map-link" class="distance-map-link" href="https://map.naver.com/p/search/%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noopener noreferrer">네이버 지도 검색 <span aria-hidden="true">↗</span></a>
             <a id="kakao-map-link" class="distance-map-link distance-map-secondary" href="https://map.kakao.com/?q=%EB%B6%88%EB%8B%B9%20%EC%A0%9C1%EC%A3%BC%EC%B0%A8%EC%9E%A5%20%EC%B2%9C%EC%95%88%EC%8B%9C%20%EC%84%9C%EB%B6%81%EA%B5%AC%20%EA%B2%80%EC%9D%80%EB%93%A41%EA%B8%B8%2015" target="_blank" rel="noopener noreferrer">카카오맵 검색 <span aria-hidden="true">↗</span></a>
           </div>
+          <details class="distance-origin-search">
+            <summary>출발지 주소를 지도에서 찾기</summary>
+            <label class="distance-destination-label" for="origin-search-input">내 위치·출발지 주소 검색</label>
+            <div class="distance-origin-input-row"><input id="origin-search-input" type="search" autocomplete="street-address" placeholder="예: 천안시청, 불당동 카페" /><button id="origin-search-button" type="button">지도에서 찾기</button></div>
+            <p id="origin-search-status" class="distance-origin-note" role="status" aria-live="polite">검색어로 지도 앱을 열어 주소를 확인하세요. 검색만으로 거리 좌표가 자동 입력되지는 않습니다.</p>
+            <div class="distance-map-actions distance-origin-map-actions">
+              <a id="origin-naver-link" class="distance-map-link" href="https://map.naver.com/p/search/%EC%B2%9C%EC%95%88%EC%8B%9C" target="_blank" rel="noopener noreferrer">네이버에서 출발지 검색 ↗</a>
+              <a id="origin-kakao-link" class="distance-map-link distance-map-secondary" href="https://map.kakao.com/?q=%EC%B2%9C%EC%95%88%EC%8B%9C" target="_blank" rel="noopener noreferrer">카카오에서 출발지 검색 ↗</a>
+            </div>
+          </details>
           <p class="distance-privacy-note"><span aria-hidden="true">ⓘ</span> 위치 권한은 거리 계산에만 사용하며 서버에 전송하거나 저장하지 않습니다.</p>
-        </aside>
+        </section>
+
+        <div class="distance-scene-card kakao-map-card">
+          <div class="distance-scene-top"><span class="distance-scene-label"><span class="distance-live-dot"></span> KAKAO MAP · TWO-POINT MEASURE</span><span id="kakao-map-state" class="distance-scene-caption">설정 확인 중</span></div>
+          <div id="kakao-map" class="kakao-map-canvas" role="application" aria-label="지도를 클릭해 목적지 마커를 지정하는 카카오 지도">
+            <div id="kakao-map-placeholder" class="kakao-map-placeholder">
+              <span class="kakao-map-placeholder-icon" aria-hidden="true">⌖</span>
+              <strong>내장 지도</strong>
+              <p>내장 지도가 연결되지 않아도 직선거리 측정 도구와 지도 앱 링크를 이용할 수 있습니다.</p>
+            </div>
+          </div>
+          <div class="kakao-map-controls"><button id="set-current-point" disabled class="map-point-button" type="button">내 위치를 첫 번째 점으로 설정</button><button id="clear-map-points" disabled class="map-clear-button" type="button">점 지우기</button></div>
+          <div id="map-point-status" class="map-point-status" role="status" aria-live="polite">첫 번째 점은 내 위치 버튼으로, 두 번째 점은 지도 클릭으로 지정합니다.</div>
+          <div class="distance-scene-legend"><span><i class="legend-dot user-dot"></i>첫 번째 점</span><span><i class="legend-dot parking-dot"></i>두 번째 점</span><span class="distance-scene-note">두 지점 사이 직선거리</span></div>
+        </div>
       </section>
 
       <p class="distance-disclaimer">직선거리는 확인된 주소 대표 좌표를 사용한 근사값이며 실제 도로 이동 거리·소요시간이 아닙니다. 도로 경로는 선택한 주차장 이름과 주소를 지도 앱에 전달해 확인합니다. 현재 위치는 버튼을 눌렀을 때 브라우저에서만 읽으며 이 사이트 서버에 저장하지 않습니다. 위치 측정은 HTTPS에서 지원됩니다.</p>
-      <p class="kakao-key-setup-note"><strong>지도 연결 설정:</strong> 실제 Kakao 지도를 표시하려면 Kakao Developers에서 JavaScript 키를 발급하고 배포 도메인을 허용 목록에 등록한 뒤, 이 페이지의 <code>data-kakao-javascript-key</code> 설정값에 키를 넣어야 합니다. 현재 키가 없어 지도 대신 설정 안내가 표시됩니다. 실제 키를 GitHub에 커밋하지 마세요.</p>
     </main>
 
     <footer class="footer"><a class="brand footer-brand" href="../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>거리 계산은 참고용이며 내 위치는 저장하지 않습니다.</p><a href="../#home" class="to-top">메인으로 ↑</a></footer>
