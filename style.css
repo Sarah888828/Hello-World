@@ -803,6 +803,8 @@ body { font-size: 15px; line-height: 1.6; }
   .quick-filter { min-height: 40px; }
   .view-toggle-button { min-height: 42px; }
   .parking-map-result { align-items: flex-start; flex-direction: column; }
+  .topbar .mobile-menu-toggle { min-height: 44px; }
+  .search-quick-filters .quick-filter, .parking-controls .filter-chip { min-height: 44px; }
 }
 @media (max-width: 700px) {
   .mobile-menu-toggle { min-height: 48px; border-radius: 8px; }
