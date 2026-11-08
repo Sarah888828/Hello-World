@@ -73,7 +73,7 @@ npm start
 
 Kakao 지도 사용 준비: Kakao Developers에서 앱을 만들고 플랫폼에 `https://hello-world-e90.pages.dev`와 실제 테스트 도메인을 등록한 뒤 JavaScript 키를 발급합니다. 키는 브라우저에 노출되는 공개 키이므로 Kakao Developers에서 허용 도메인을 제한하고 저장소에는 저장하지 않습니다. Cloudflare Pages 환경변수 `KAKAO_JAVASCRIPT_KEY`로 설정하면 Pages Worker의 `/api/config`가 런타임에 키를 제공하고 지도 SDK를 활성화합니다. 키가 비어 있거나 등록 도메인이 맞지 않으면 지도 설정 안내를 표시합니다. 실제 지점 간 선 길이는 직선거리이며 도로 경로가 아닙니다.
 
-공영주차장 주소를 Kakao Local API로 좌표화하려면 로컬에서 Kakao Developers REST 키를 환경변수로 설정하고 `node geocode-kakao.mjs`를 실행합니다. 스크립트는 매칭이 불완전하면 좌표 JSON을 생성하지 않습니다. 생성 파일 `data/parking-coordinates.json`은 로컬/개인 데이터로 취급해 Git에 올리지 않습니다. 좌표를 전체 사용자에게 제공하려면 권리·이용조건을 확인하고, 검수된 공개 가능한 좌표 데이터만 별도 배포 설정에 반영해야 합니다. REST API 키를 프런트엔드나 저장소에 넣지 마세요.
+공영주차장 55곳의 주소를 Kakao Local API로 좌표화하려면 로컬에서 Kakao Developers REST 키를 환경변수로 설정하고 `node geocode-kakao.mjs`를 실행합니다. Windows PowerShell 예: `$env:KAKAO_REST_KEY = "발급받은 REST 키"; node .\geocode-kakao.mjs`. 스크립트는 주소 검색 응답의 경도 `x`, 위도 `y`를 저장하고, 천안 좌표 범위를 벗어나거나 매칭이 빠진 곳이 있으면 전체 좌표 파일을 생성하지 않습니다. 결과 파일 `data/parking-coordinates.json`은 `.gitignore` 대상이며 Git에 올리지 않습니다. 이 지오코딩은 주소 대표 좌표이지 현장 출입구 측량값이나 실시간 잔여면수가 아닙니다. 55곳 전체 사용 전에 매칭 주소를 공식 지도/현장과 대조해 검수하세요. REST API 키를 프런트엔드, HTML, 저장소 또는 이 채팅에 넣지 마세요.
 
 `database/users.sql`은 회원가입용 테이블 설계 문서입니다. 실제 D1 테이블은 `migrations/0002_create_users.sql`로 생성됩니다. 인증 API 경로는 `/api/auth/signup` 및 `/api/auth/login`입니다.
 
