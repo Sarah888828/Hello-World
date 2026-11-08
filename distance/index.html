@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-kakao-javascript-key="">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,12 +33,18 @@
       </section>
 
       <section class="distance-layout" aria-label="내 위치와 주차장 거리 측정">
-        <div class="distance-scene-card">
-          <div class="distance-scene-top"><span class="distance-scene-label"><span class="distance-live-dot"></span> 3D DISTANCE VIEW</span><span class="distance-scene-caption">개념 시각화</span></div>
-          <div id="distance-scene" class="distance-scene" role="img" aria-label="현재 위치에서 주차장 주소 대표점까지의 직선거리를 나타내는 3D 시각화">
-            <div class="scene-fallback" aria-hidden="true"><span class="scene-fallback-user">●</span><span class="scene-fallback-line"></span><span class="scene-fallback-parking">P</span></div>
+        <div class="distance-scene-card kakao-map-card">
+          <div class="distance-scene-top"><span class="distance-scene-label"><span class="distance-live-dot"></span> KAKAO MAP · TWO-POINT MEASURE</span><span id="kakao-map-state" class="distance-scene-caption">지도 준비 중</span></div>
+          <div id="kakao-map" class="kakao-map-canvas" role="application" aria-label="지도를 클릭해 목적지 마커를 지정하는 카카오 지도">
+            <div id="kakao-map-placeholder" class="kakao-map-placeholder">
+              <span class="kakao-map-placeholder-icon" aria-hidden="true">⌖</span>
+              <strong>카카오 지도 연결 준비</strong>
+              <p>지도를 사용하려면 Kakao Developers JavaScript 키와 허용 도메인 등록이 필요합니다.</p>
+            </div>
           </div>
-          <div class="distance-scene-legend"><span><i class="legend-dot user-dot"></i>내 위치</span><span><i class="legend-dot parking-dot"></i><span id="scene-destination-name">불당 제1주차장</span></span><span class="distance-scene-note">개념도 · 실제 경로 아님</span></div>
+          <div class="kakao-map-controls"><button id="set-current-point" class="map-point-button" type="button">내 위치를 첫 번째 점으로 설정</button><button id="clear-map-points" class="map-clear-button" type="button">점 지우기</button></div>
+          <div id="map-point-status" class="map-point-status" role="status" aria-live="polite">첫 번째 점은 내 위치 버튼으로, 두 번째 점은 지도 클릭으로 지정합니다.</div>
+          <div class="distance-scene-legend"><span><i class="legend-dot user-dot"></i>첫 번째 점</span><span><i class="legend-dot parking-dot"></i>두 번째 점</span><span class="distance-scene-note">직선거리 · 실제 도로 경로 아님</span></div>
         </div>
 
         <aside class="distance-info-card">
@@ -49,7 +55,7 @@
           </select>
           <h2 id="destination-name">불당 제1주차장</h2>
           <p id="destination-address" class="distance-address">천안시 서북구 검은들1길 15</p>
-          <p id="destination-help" class="distance-destination-help">직선거리 좌표가 설정된 목적지는 불당 제1주차장뿐입니다. 다른 주차장은 측정 버튼 대신 아래 지도 길찾기를 이용하세요.</p>
+          <p id="destination-help" class="distance-destination-help">목적지는 목록에서 선택하거나, Kakao 지도에 연결한 뒤 지도 클릭으로 두 번째 점을 지정할 수 있습니다.</p>
           <div class="distance-origin-search">
             <label class="distance-destination-label" for="origin-search-input">내 위치·출발지 주소 검색</label>
             <div class="distance-origin-input-row"><input id="origin-search-input" type="search" autocomplete="street-address" placeholder="예: 천안시청, 불당동 카페" /><button id="origin-search-button" type="button">지도에서 찾기</button></div>
@@ -75,6 +81,7 @@
       </section>
 
       <p class="distance-disclaimer">직선거리는 확인된 주소 대표 좌표를 사용한 근사값이며 실제 도로 이동 거리·소요시간이 아닙니다. 도로 경로는 선택한 주차장 이름과 주소를 지도 앱에 전달해 확인합니다. 현재 위치는 버튼을 눌렀을 때 브라우저에서만 읽으며 이 사이트 서버에 저장하지 않습니다. 위치 측정은 HTTPS에서 지원됩니다.</p>
+      <p class="kakao-key-setup-note"><strong>지도 연결 설정:</strong> 실제 Kakao 지도를 표시하려면 Kakao Developers에서 JavaScript 키를 발급하고 배포 도메인을 허용 목록에 등록한 뒤, 이 페이지의 <code>data-kakao-javascript-key</code> 설정값에 키를 넣어야 합니다. 현재 키가 없어 지도 대신 설정 안내가 표시됩니다. 실제 키를 GitHub에 커밋하지 마세요.</p>
     </main>
 
     <footer class="footer"><a class="brand footer-brand" href="../"><span class="brand-mark" aria-hidden="true">P</span><span>불당<span class="brand-light">주차</span></span></a><p>거리 계산은 참고용이며 내 위치는 저장하지 않습니다.</p><a href="../#home" class="to-top">메인으로 ↑</a></footer>

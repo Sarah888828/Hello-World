@@ -27,11 +27,25 @@ const originSearchButton = document.querySelector("#origin-search-button");
 const originSearchStatus = document.querySelector("#origin-search-status");
 const originNaverLink = document.querySelector("#origin-naver-link");
 const originKakaoLink = document.querySelector("#origin-kakao-link");
+const kakaoMapElement = document.querySelector("#kakao-map");
+const kakaoMapPlaceholder = document.querySelector("#kakao-map-placeholder");
+const kakaoMapState = document.querySelector("#kakao-map-state");
+const mapPointStatus = document.querySelector("#map-point-status");
+const setCurrentPointButton = document.querySelector("#set-current-point");
+const clearMapPointsButton = document.querySelector("#clear-map-points");
 let renderer;
 let scene;
 let camera;
 let routeLine;
 let userMarker;
+let kakaoMap;
+let firstPointMarker;
+let secondPointMarker;
+let measuredPolyline;
+let firstPoint = null;
+let secondPoint = null;
+
+const kakaoJavascriptKey = document.documentElement.dataset.kakaoJavascriptKey?.trim() || "";
 
 function haversineKm(startLat, startLon, endLat, endLon) {
   const radians = (degrees) => degrees * Math.PI / 180;
@@ -264,6 +278,110 @@ function searchOriginOnMaps(openNaver = true) {
   if (openNaver) window.open(originNaverLink.href, "_blank", "noopener,noreferrer");
 }
 
+function updateMapDistance() {
+  if (!firstPoint || !secondPoint || !window.kakao?.maps?.services) {
+    distanceValue.innerHTML = '--<small> km</small>';
+    distanceStatus.textContent = "지도에서 두 점을 지정하면 직선거리를 계산합니다. 실제 도로 경로 거리가 아닙니다.";
+    mapPointStatus.textContent = `첫 번째 점: ${firstPoint ? "설정됨" : "미설정"} · 두 번째 점: ${secondPoint ? "설정됨" : "미설정"}`;
+    return;
+  }
+
+  const path = [firstPoint, secondPoint];
+  if (measuredPolyline) measuredPolyline.setMap(null);
+  measuredPolyline = new kakao.maps.Polyline({
+    map: kakaoMap,
+    path,
+    strokeWeight: 4,
+    strokeColor: "#c7d994",
+    strokeOpacity: 0.95,
+    strokeStyle: "solid"
+  });
+  const meters = measuredPolyline.getLength();
+  distanceValue.innerHTML = meters >= 1000
+    ? `${(meters / 1000).toFixed(2)}<small> km</small>`
+    : `${Math.round(meters)}<small> m</small>`;
+  distanceStatus.textContent = "카카오 지도 두 점 사이 직선거리입니다. 도로 경로 거리·시간이 아닙니다.";
+  mapPointStatus.textContent = "두 점을 연결했습니다. 선은 직선거리 측정이며 실제 도로 경로가 아닙니다.";
+  const bounds = new kakao.maps.LatLngBounds();
+  bounds.extend(firstPoint);
+  bounds.extend(secondPoint);
+  kakaoMap.setBounds(bounds, 48, 48, 48, 48);
+}
+
+function setMapPoint(which, position) {
+  const markerOptions = { map: kakaoMap, position };
+  if (which === "first") {
+    firstPoint = position;
+    if (firstPointMarker) firstPointMarker.setMap(null);
+    firstPointMarker = new kakao.maps.Marker({ ...markerOptions, title: "첫 번째 지점" });
+  } else {
+    secondPoint = position;
+    if (secondPointMarker) secondPointMarker.setMap(null);
+    secondPointMarker = new kakao.maps.Marker({ ...markerOptions, title: "두 번째 지점" });
+  }
+  updateMapDistance();
+}
+
+function initializeKakaoMap() {
+  if (!kakaoJavascriptKey) {
+    kakaoMapState.textContent = "Kakao JavaScript 키 설정 필요";
+    mapPointStatus.textContent = "카카오 지도 SDK 키가 아직 설정되지 않았습니다. 아래 설정 안내를 확인해 주세요.";
+    return;
+  }
+
+  kakaoMapState.textContent = "Kakao 지도 불러오는 중";
+  const script = document.createElement("script");
+  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(kakaoJavascriptKey)}&autoload=false`;
+  script.async = true;
+  script.onload = () => {
+    if (!window.kakao?.maps) {
+      kakaoMapState.textContent = "Kakao 지도 SDK를 불러오지 못했습니다";
+      return;
+    }
+    kakao.maps.load(() => {
+      const center = new kakao.maps.LatLng(destination.latitude, destination.longitude);
+      kakaoMap = new kakao.maps.Map(kakaoMapElement, { center, level: 4 });
+      kakaoMapPlaceholder.hidden = true;
+      kakaoMapState.textContent = "지도 준비 완료 · 클릭해 두 번째 점 지정";
+      kakaoMap.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+      setMapPoint("first", center);
+      kakao.maps.event.addListener(kakaoMap, "click", (mouseEvent) => setMapPoint("second", mouseEvent.latLng));
+      setCurrentPointButton.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          mapPointStatus.textContent = "이 브라우저에서는 현재 위치 기능을 지원하지 않습니다.";
+          return;
+        }
+        mapPointStatus.textContent = "현재 위치 권한을 기다리는 중입니다.";
+        navigator.geolocation.getCurrentPosition(({ coords }) => {
+          const position = new kakao.maps.LatLng(coords.latitude, coords.longitude);
+          setMapPoint("first", position);
+          kakaoMap.panTo(position);
+        }, (error) => {
+          mapPointStatus.textContent = error.code === 1
+            ? "위치 권한이 거부되었습니다. 브라우저 설정에서 허용하거나 지도를 클릭해 첫 번째 점을 지정하세요."
+            : "현재 위치를 확인하지 못했습니다. 지도를 클릭해 첫 번째 점을 지정할 수 있습니다.";
+        }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });
+      });
+      clearMapPointsButton.addEventListener("click", () => {
+        firstPoint = null;
+        secondPoint = null;
+        firstPointMarker?.setMap(null);
+        secondPointMarker?.setMap(null);
+        measuredPolyline?.setMap(null);
+        firstPointMarker = null;
+        secondPointMarker = null;
+        measuredPolyline = null;
+        updateMapDistance();
+      });
+    });
+  };
+  script.onerror = () => {
+    kakaoMapState.textContent = "지도 로드 실패 · 키와 허용 도메인을 확인해 주세요";
+    mapPointStatus.textContent = "Kakao Developers 앱의 JavaScript 키와 사이트 도메인 등록이 필요합니다.";
+  };
+  document.head.append(script);
+}
+
 function requestLocation() {
   if (!destination) {
     distanceStatus.textContent = "선택한 주차장은 좌표가 확인되지 않아 거리를 계산할 수 없습니다. 네이버·카카오·Google 지도 길찾기를 이용해 주세요.";
@@ -303,13 +421,14 @@ function requestLocation() {
 }
 
 try {
-  initScene();
+  if (sceneElement) initScene();
 } catch (error) {
   console.error("Three.js initialization failed:", error);
   sceneElement.classList.add("scene-unavailable");
   distanceStatus.textContent = "3D 장면을 불러오지 못했습니다. 거리 측정은 계속 사용할 수 있습니다.";
 }
 
+initializeKakaoMap();
 updateDestination();
 destinationSelect.addEventListener("change", updateDestination);
 locateButton.addEventListener("click", requestLocation);
