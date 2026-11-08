@@ -106,12 +106,12 @@ function updateDestination() {
   naverMapLink.href = `https://map.naver.com/p/search/${query}`;
   kakaoMapLink.href = `https://map.kakao.com/?q=${query}`;
   googleMapLink.href = `https://www.google.com/maps/dir/?api=1&destination=${query}&travelmode=driving`;
-  locateButton.disabled = !selectedDestination;
-  locateButton.textContent = selectedDestination ? "현재 위치로 거리 측정" : "이 주차장 좌표 미등록";
+  locateButton.disabled = false;
+  locateButton.textContent = destination ? "현재 위치로 거리 측정" : "현재 위치 확인";
   distanceValue.innerHTML = "--<small> km</small>";
   distanceStatus.textContent = selectedDestination
     ? "현재 위치와 불당 제1주차장 주소 대표점 사이 근사 직선거리를 계산합니다."
-    : "이 주차장의 좌표는 확인되지 않아 직선거리를 계산할 수 없습니다. 아래 지도 앱에서 길찾기를 이용하세요.";
+    : "위치를 확인한 뒤에도 이 주차장의 좌표가 없으면 거리는 표시되지 않습니다. 아래 지도 앱에서 길찾기를 이용하세요.";
   if (kakaoMap && selectedDestination) {
     const center = new kakao.maps.LatLng(selectedDestination.latitude, selectedDestination.longitude);
     setMapPoint("second", center);
@@ -137,7 +137,12 @@ function requestCurrentLocation() {
   distanceStatus.textContent = "브라우저의 위치 권한 요청을 기다리고 있습니다. 권한 창이 뜨면 ‘허용’을 선택해 주세요.";
   navigator.geolocation.getCurrentPosition(({ coords }) => {
     currentPosition = { latitude: coords.latitude, longitude: coords.longitude };
-    renderDistance(haversineMeters(currentPosition, selectedDestination), "내 위치와 선택한 주차장 사이 근사");
+    if (selectedDestination) {
+      renderDistance(haversineMeters(currentPosition, selectedDestination), "내 위치와 선택한 주차장 사이 근사");
+    } else {
+      distanceValue.innerHTML = "--<small> km</small>";
+      distanceStatus.textContent = "현재 위치는 확인했지만 선택한 주차장의 좌표 자료가 없어 거리를 계산할 수 없습니다. 지도 앱에서 실제 길찾기를 이용해 주세요.";
+    }
     locateButton.disabled = false;
     locateButton.textContent = "다시 측정";
     if (kakaoMap) {
