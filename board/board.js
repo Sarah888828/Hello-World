@@ -90,6 +90,7 @@ inquiryForm.addEventListener("submit", async (event) => {
     content: String(formData.get("content") || "").trim(),
     private: formData.has("private")
   };
+  const isCorrectionReport = inquiry.category === "정보 정정/제보";
 
   if (inquiry.name.length < 2 || inquiry.title.length < 2 || inquiry.content.length < 5) {
     formMessage.textContent = "작성자와 제목은 2자 이상, 문의 내용은 5자 이상 입력해 주세요.";
@@ -109,7 +110,9 @@ inquiryForm.addEventListener("submit", async (event) => {
     if (!response.ok) throw new Error(result.error || "문의 저장에 실패했습니다.");
 
     inquiryForm.reset();
-    formMessage.textContent = "문의가 SQLite 데이터베이스에 저장되었습니다.";
+    formMessage.textContent = isCorrectionReport
+      ? "제보가 접수되었습니다. 자동 반영되지는 않으며 공식 자료 확인 후 검토가 필요합니다."
+      : "문의가 저장되었습니다.";
     await loadInquiries();
   } catch (error) {
     formMessage.textContent = error.message || "서버에 연결할 수 없습니다. 서버 상태를 확인해 주세요.";
