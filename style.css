@@ -983,3 +983,22 @@ body { font-size: 15px; line-height: 1.6; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* Restrained interaction motion; follows prefers-reduced-motion below. */
+.hero-copy, .hero-art, .search-panel, .section-heading, .guide-section, .guide-faq { animation: editorial-enter .58s cubic-bezier(.2,.7,.25,1) both; }
+.hero-art { animation-delay: 90ms; }
+.search-panel { animation-delay: 140ms; }
+.section-heading { animation-delay: 70ms; }
+.guide-section, .guide-faq { animation-delay: 90ms; }
+.parking-card { animation: card-in .4s cubic-bezier(.2,.7,.25,1) both; animation-delay: calc(var(--card-index, 0) * 28ms); }
+.parking-card:active { transform: translateY(-1px) scale(.995); }
+.favorite-button:active, .view-toggle-button:active, .filter-chip:active, .quick-filter:active { transform: scale(.96); }
+.search-wrap:focus-within .search-icon { transform: rotate(-20deg) scale(1.08); color: #e0eabf; }
+.search-icon { transition: transform .2s ease, color .2s ease; }
+.map-point-status.status-pulse { animation: status-pulse .42s ease; }
+@keyframes editorial-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes status-pulse { 0% { opacity: .55; transform: translateY(2px); } 100% { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy, .hero-art, .search-panel, .section-heading, .guide-section, .guide-faq, .parking-card, .map-point-status { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
+  .parking-card:active, .favorite-button:active, .view-toggle-button:active, .filter-chip:active, .quick-filter:active { transform: none; }
+}
