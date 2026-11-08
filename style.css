@@ -988,6 +988,46 @@ button, .nav-link, .location-pill, .detail-button, .distance-map-link, .map-poin
 .map-point-status.status-pulse { animation: status-pulse .42s ease; }
 @keyframes editorial-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes status-pulse { 0% { opacity: .55; transform: translateY(2px); } 100% { opacity: 1; transform: translateY(0); } }
+
+.search-intro, .ev-heading { position: relative; }
+.route-graphic {
+  position: absolute;
+  inset: 50% 0 auto auto;
+  width: min(35%, 320px);
+  height: auto;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #d6ec9a;
+}
+.ev-heading .route-graphic { color: #83e6c2; }
+.route-streets { fill: none; stroke: currentColor; stroke-width: 1; opacity: .18; }
+.route-track, .route-signal { fill: none; stroke: currentColor; stroke-linecap: round; }
+.route-track { stroke-width: 3; opacity: .55; }
+.route-signal { stroke-width: 5; stroke-dasharray: 16 100; stroke-dashoffset: 16; filter: drop-shadow(0 0 5px currentColor); }
+.route-origin, .route-pin { fill: currentColor; }
+.route-pin { filter: drop-shadow(0 0 9px currentColor); }
+.route-icon { fill: #171b14; font-size: 17px; font-weight: 800; }
+.route-ring { fill: none; stroke: currentColor; stroke-width: 1.5; opacity: .45; transform-box: fill-box; transform-origin: center; }
+
+@media (min-width: 761px) {
+  .search-intro, .ev-heading { padding-right: 35%; }
+}
+@media (max-width: 760px) {
+  .route-graphic { position: static; display: block; width: min(100%, 230px); margin-top: 6px; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .route-signal { animation: route-travel 1.3s ease-in-out 3; }
+  .route-ring { animation: route-beacon 1.3s ease-out 3; }
+}
+@keyframes route-travel {
+  from { stroke-dashoffset: 16; }
+  to { stroke-dashoffset: -100; }
+}
+@keyframes route-beacon {
+  0%, 60% { transform: scale(.77); opacity: .75; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-copy, .hero-art, .search-panel, .section-heading, .guide-section, .guide-faq, .parking-card, .map-point-status { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
   .parking-card:active, .favorite-button:active, .view-toggle-button:active, .filter-chip:active, .quick-filter:active { transform: none; }
