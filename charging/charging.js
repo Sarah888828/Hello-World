@@ -168,9 +168,8 @@ function render() {
   `).join("");
 
   grid.classList.remove("is-filtering");
-  requestAnimationFrame(() => {
-    grid.classList.add("is-filtering");
-  });
+  void grid.offsetWidth;
+  grid.classList.add("is-filtering");
 }
 
 filter.addEventListener("change", render);

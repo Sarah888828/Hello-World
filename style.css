@@ -1026,8 +1026,8 @@ button, .nav-link, .location-pill, .detail-button, .distance-map-link, .map-poin
 .ev-station-card {
   position: relative;
   overflow: hidden;
-  animation: ev-card-arrive .62s cubic-bezier(.18,.7,.25,1) both;
-  animation-delay: calc(min(var(--ev-card-index, 0), 9) * 65ms + 100ms);
+  animation: ev-card-arrive .9s cubic-bezier(.16,1,.3,1) both;
+  animation-delay: calc(min(var(--ev-card-index, 0), 9) * 130ms + 160ms);
   transition: transform .28s cubic-bezier(.2,.75,.25,1), border-color .28s ease, box-shadow .32s ease, background-color .28s ease;
 }
 .ev-station-card::after {
@@ -1038,7 +1038,8 @@ button, .nav-link, .location-pill, .detail-button, .distance-map-link, .map-poin
   background: linear-gradient(112deg, transparent 18%, rgb(213 229 175 / 9%) 48%, transparent 72%);
   transform: translateX(-125%);
 }
-.ev-station-grid.is-filtering .ev-station-card::after { animation: ev-card-sheen .8s ease-out both; animation-delay: calc(min(var(--ev-card-index, 0), 7) * 45ms); }
+.ev-station-grid.is-filtering .ev-station-card { animation: ev-filter-arrive .72s cubic-bezier(.16,1,.3,1) both; animation-delay: calc(min(var(--ev-card-index, 0), 7) * 100ms); }
+.ev-station-grid.is-filtering .ev-station-card::after { animation: ev-card-sheen 1.05s ease-out both; animation-delay: calc(min(var(--ev-card-index, 0), 7) * 90ms + 100ms); }
 .ev-station-card:hover {
   transform: translateY(-7px) scale(1.012);
   border-color: #747d58;
@@ -1070,8 +1071,9 @@ button, .nav-link, .location-pill, .detail-button, .distance-map-link, .map-poin
 .ev-detail-page .ev-detail-topline { animation: ev-soft-glow 2.8s ease-in-out 1s both; }
 
 @keyframes ev-section-arrive { from { opacity: 0; transform: translateY(18px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-@keyframes ev-card-arrive { from { opacity: 0; transform: translateY(24px) scale(.975); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes ev-card-sheen { to { transform: translateX(125%); } }
+@keyframes ev-card-arrive { 0% { opacity: 0; transform: translate3d(0, 48px, 0) rotateX(9deg) scale(.94); filter: blur(8px); } 62% { opacity: 1; transform: translate3d(0, -5px, 0) rotateX(0) scale(1.012); filter: blur(0); } 100% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0) scale(1); filter: blur(0); } }
+@keyframes ev-filter-arrive { 0% { opacity: 0; transform: translate3d(0, 32px, 0) scale(.96); } 70% { opacity: 1; transform: translate3d(0, -4px, 0) scale(1.015); } 100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+@keyframes ev-card-sheen { 0% { transform: translateX(-130%) skewX(-12deg); } 100% { transform: translateX(140%) skewX(-12deg); } }
 @keyframes ev-accent-grow { from { transform: scaleY(.15); opacity: .35; } to { transform: scaleY(1); opacity: 1; } }
 @keyframes ev-soft-glow { 0%,100% { box-shadow: 0 0 0 rgb(195 211 148 / 0%); } 35% { box-shadow: 0 0 22px rgb(195 211 148 / 15%); } }
 @media (prefers-reduced-motion: reduce) {
@@ -1084,6 +1086,7 @@ button, .nav-link, .location-pill, .detail-button, .distance-map-link, .map-poin
     opacity: 1 !important;
     transform: none !important;
   }
+  .ev-station-grid.is-filtering .ev-station-card { animation: none !important; }
   .ev-station-card, .ev-station-symbol, .ev-card-link, .ev-card-link span,
   .ev-list-heading .board-filter select { transition: none !important; }
 }
