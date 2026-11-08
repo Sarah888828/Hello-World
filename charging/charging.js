@@ -166,6 +166,15 @@ function render() {
       <a class="ev-card-link" href="${escapeHtml(station.href)}"${station.href.startsWith("http") ? ' target="_blank" rel="noreferrer"' : ""}>${station.type === "tesla" ? "상세 정보" : "지도 보기"} <span aria-hidden="true">→</span></a>
     </article>
   `).join("");
+
+  grid.querySelectorAll(".ev-station-card").forEach((card) => {
+    card.addEventListener("animationend", (event) => {
+      if (event.animationName === "ev-card-arrive" || event.animationName === "ev-filter-arrive") {
+        card.style.animation = "none";
+        requestAnimationFrame(() => { card.style.animation = ""; });
+      }
+    }, { once: true });
+  });
 }
 
 filter.addEventListener("change", () => {
