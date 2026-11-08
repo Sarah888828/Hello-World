@@ -39,7 +39,6 @@
             <button class="quick-filter" type="button" data-quick-query="불당">불당동</button>
             <button class="quick-filter" type="button" data-quick-query="두정">두정역</button>
             <button class="quick-filter" type="button" data-quick-query="공원">공원</button>
-            <button class="quick-filter" type="button" data-quick-query="충전">전기차 충전</button>
             <span class="quick-filter-hint">천안시 공영주차장 55곳</span>
           </div>
         </div>
@@ -64,6 +63,7 @@
           <button class="filter-chip" type="button" data-filter="paid" aria-pressed="false">유료</button>
           <button class="filter-chip" type="button" data-filter="free" aria-pressed="false">무료</button>
           <button class="filter-chip" type="button" data-filter="temporary" aria-pressed="false">임시 무료</button>
+          <button id="charger-filter" class="filter-chip" type="button" aria-pressed="false">전기차 충전</button>
           <button id="favorites-filter" class="filter-chip" type="button" aria-pressed="false">즐겨찾기 <span id="favorites-count">0</span></button>
         </div>
         <label class="sort-control district-select" for="district-filter"><span>지역</span>
@@ -75,12 +75,16 @@
         </label>
         </div>
         <div class="parking-view-toolbar">
-          <p id="favorites-storage-note">즐겨찾기는 이 브라우저에만 저장됩니다.</p>
+          <div class="results-summary">
+            <p id="results-summary" role="status"></p>
+            <button id="reset-filters" type="button" hidden>초기화</button>
+          </div>
           <div class="view-toggle" role="group" aria-label="주차장 표시 방식">
             <button class="view-toggle-button active" type="button" data-view="list" aria-pressed="true">목록</button>
             <button class="view-toggle-button" type="button" data-view="map" aria-pressed="false">지도 링크</button>
           </div>
         </div>
+        <p id="favorites-storage-note" class="data-notice">즐겨찾기는 이 브라우저에만 저장됩니다.</p>
         <section id="parking-map-view" class="parking-map-view" aria-label="주차장 지도 검색" hidden>
           <div class="parking-map-intro"><strong>주차장 위치를 지도 앱에서 확인하세요</strong><p>정확한 위치·도로 경로는 선택한 주차장의 지도 검색 결과에서 확인할 수 있습니다. 이 화면은 실시간 잔여면수나 좌표 기반 지도를 표시하지 않습니다.</p></div>
           <div id="parking-map-links" class="parking-map-links"></div>

@@ -766,6 +766,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ev-map-button, .distance-button, .submit-inquiry, .account-submit { min-height: 44px; border-radius: 10px; font-size: 13px; }
 .guide-faq, .distance-result { border-radius: 12px; }
 .footer p { font-size: 11px; }
+.parking-controls { border-radius: 12px; background: white; }
+.results-summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; min-width: 0; }
+.results-summary p { margin: 0; color: var(--ink); font-size: 14px; font-weight: 700; overflow-wrap: anywhere; }
+#reset-filters { min-height: 36px; padding: 0 8px; border: 0; background: transparent; color: var(--accent); cursor: pointer; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+.card-facts { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
+.card-facts .capacity-label { margin: 0; }
+.charger-tag { padding: 4px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 700; }
+.parking-card .card-bottom { justify-content: flex-end; align-items: center; gap: 14px; }
+.card-detail-link { font-size: 13px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.parking-card .detail-button { border-color: var(--accent); background: var(--accent); color: white; }
+.parking-card .detail-button:hover { background: var(--accent-hover); }
 .detail-photo-card::after { background: linear-gradient(180deg, transparent 48%, rgb(0 0 0 / 74%)); }
 
 @media (max-width: 700px) {

@@ -237,6 +237,7 @@ let emptyState;
 let filterButtons = [];
 let parkingDialog;
 let activeFilter = "all";
+let chargersOnly = false;
 let activeDistrictFilter = "all";
 let favoritesOnly = false;
 let parkingView = "list";
@@ -281,16 +282,24 @@ function initializeHomepage() {
   if (!parkingGrid || !searchInput || !searchButton || !sortSelect || !resultCount || !emptyState || !parkingDialog) return;
 
   filterButtons.forEach((button) => {
-    if (button === favoritesFilter) return;
+    if (!button.dataset.filter) return;
     button.addEventListener("click", () => {
       activeFilter = button.dataset.filter;
       filterButtons.forEach((item) => {
+        if (!item.dataset.filter) return;
         const isActive = item === button;
         item.classList.toggle("active", isActive);
         item.setAttribute("aria-pressed", String(isActive));
       });
       renderParkingLots();
     });
+  });
+  const chargerFilter = document.querySelector("#charger-filter");
+  chargerFilter?.addEventListener("click", () => {
+    chargersOnly = !chargersOnly;
+    chargerFilter.classList.toggle("active", chargersOnly);
+    chargerFilter.setAttribute("aria-pressed", String(chargersOnly));
+    renderParkingLots();
   });
   favoritesFilter?.addEventListener("click", () => {
     favoritesOnly = !favoritesOnly;
@@ -343,10 +352,12 @@ function initializeHomepage() {
   parkingDialog.addEventListener("click", (event) => {
     if (event.target === parkingDialog) parkingDialog.close();
   });
-  document.querySelector("#reset-search")?.addEventListener("click", () => {
+  function resetFilters() {
     searchInput.value = "";
     activeFilter = "all";
       activeDistrictFilter = "all";
+    chargersOnly = false;
+    favoritesOnly = false;
       if (districtFilter) districtFilter.value = "all";
     filterButtons.forEach((button) => {
       const isActive = button.dataset.filter === "all";
@@ -355,7 +366,9 @@ function initializeHomepage() {
     });
     renderParkingLots();
     searchInput.focus();
-  });
+  }
+  document.querySelector("#reset-search")?.addEventListener("click", resetFilters);
+  document.querySelector("#reset-filters")?.addEventListener("click", resetFilters);
 
   renderParkingLots();
   updateFavoritesCount(favoritesCount);
@@ -367,6 +380,7 @@ function getVisibleLots() {
     .filter((lot) => activeFilter === "all" || lot.type === activeFilter)
     .filter((lot) => activeDistrictFilter === "all" || lot.district === activeDistrictFilter)
     .filter((lot) => !favoritesOnly || favoriteIds.has(lot.id))
+    .filter((lot) => !chargersOnly || lot.charger?.exists)
     .filter((lot) => !query || `${lot.name} ${lot.address} ${lot.typeLabel} ${lot.charger?.exists ? `전기차 충전 ${lot.charger.count} ${lot.charger.output} 급속 ${lot.charger.price}` : ""}`.toLocaleLowerCase("ko-KR").includes(query))
     .sort((first, second) => sortSelect.value === "capacity"
       ? parseCapacity(second.capacity) - parseCapacity(first.capacity)
@@ -388,6 +402,10 @@ function getCardTypeClass(lot) {
 function getLotDetailUrl(lot) {
   const detailedLots = new Set(["buldang-public", "buldang-2", "buldang-3", "buldang-4", "buldang-5"]);
   if (detailedLots.has(lot.id)) return `${getBasePath()}parking/${encodeURIComponent(lot.id)}/index.html`;
+  return null;
+}
+
+function getLotMapUrl(lot) {
   return `https://map.naver.com/p/search/${encodeURIComponent(lot.name + " " + lot.address)}`;
 }
 
@@ -453,11 +471,24 @@ function renderParkingLots() {
   const visibleLots = getVisibleLots();
   updateFavoritesCount(document.querySelector("#favorites-count"));
   resultCount.textContent = String(visibleLots.length).padStart(2, "0");
+  const selectedTypes = { paid: "유료", free: "무료", temporary: "임시 무료" };
+  const query = searchInput.value.trim();
+  const filters = [
+    activeDistrictFilter === "all" ? "" : activeDistrictFilter,
+    selectedTypes[activeFilter],
+    chargersOnly ? "전기차 충전" : "",
+    favoritesOnly ? "즐겨찾기" : "",
+    query ? `“${query}”` : "",
+  ].filter(Boolean);
+  document.querySelector("#results-summary").textContent = [...filters, `${visibleLots.length}곳`].join(" · ");
+  document.querySelector("#reset-filters").hidden = filters.length === 0;
   emptyState.hidden = visibleLots.length > 0;
   parkingGrid.hidden = visibleLots.length === 0 || parkingView !== "list";
   const mapView = document.querySelector("#parking-map-view");
   if (mapView) mapView.hidden = parkingView !== "map";
-  parkingGrid.innerHTML = visibleLots.map((lot) => `
+  parkingGrid.innerHTML = visibleLots.map((lot) => {
+    const detailUrl = getLotDetailUrl(lot);
+    return `
       <article class="parking-card">
       <div class="card-topline">
         <span class="type-tag ${getCardTypeClass(lot)}">${escapeHtml(lot.typeLabel)}</span>
@@ -467,12 +498,19 @@ function renderParkingLots() {
       <h3 class="card-title">${escapeHtml(lot.name)}</h3>
       <p class="card-address" title="${escapeHtml(lot.address)}">${escapeHtml(lot.address)}</p>
       <div class="card-divider"></div>
-      <div class="card-meta"><span>${escapeHtml(lot.priceLabel)}</span><span class="card-price">${lot.price == null ? "공식 안내 확인" : `${lot.price.toLocaleString("ko-KR")}원 / 시간`}</span></div>
-      <p class="capacity-label">총 주차면 <strong>${escapeHtml(lot.capacity.split(" · ")[0])}</strong></p>
-      <p class="availability-unavailable"><span aria-hidden="true">◷</span> 실시간 빈자리 정보 없음</p>
-      <div class="card-bottom"><span class="hours-label">${escapeHtml(lot.charger.exists ? `⚡ 충전 ${lot.charger.count}` : lot.hours)}</span><a class="detail-button" href="${getLotDetailUrl(lot)}"${lot.id.startsWith("buldang-") ? "" : ' target="_blank" rel="noreferrer"'}>${lot.id.startsWith("buldang-") ? "상세 보기　→" : "지도 보기　↗"}</a></div>
+      <div class="card-facts">
+        <p class="capacity-label">총 주차면 <strong>${escapeHtml(lot.capacity.split(" · ")[0])}</strong></p>
+        <span class="hours-label">${escapeHtml(lot.hours)}</span>
+        ${lot.charger?.exists ? `<span class="charger-tag">충전 ${escapeHtml(lot.charger.count)}</span>` : ""}
+        ${lot.price == null ? "" : `<span class="card-price">${lot.price.toLocaleString("ko-KR")}원 / 시간</span>`}
+      </div>
+      <div class="card-bottom">
+        ${detailUrl ? `<a class="card-detail-link" href="${detailUrl}">상세 정보</a>` : ""}
+        <a class="detail-button" href="${getLotMapUrl(lot)}" target="_blank" rel="noopener noreferrer">지도에서 보기 ↗</a>
+      </div>
     </article>
-  `).join("");
+  `;
+  }).join("");
   if (parkingView === "map") renderParkingMapLinks(document.querySelector("#parking-map-links"), visibleLots);
 }
 
