@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css?theme=editorial-v6" />
+    <link rel="stylesheet" href="style.css?theme=parking-editorial-v2" />
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -23,9 +23,10 @@
     <main id="home">
       <section class="search-section" aria-labelledby="hero-title">
         <div class="search-intro">
-          <p class="section-kicker">천안시 주차 안내</p>
-          <h1 id="hero-title">어디에 주차하시나요?</h1>
-          <p>천안시 공영주차장의 위치, 운영시간, 전기차 충전 정보를 찾아보세요.</p>
+          <p class="section-kicker"><span class="section-heading-mark" aria-hidden="true"></span> CHEONAN PUBLIC PARKING</p>
+          <h1 id="hero-title">천안의 주차,<br /><span>한눈에 찾다.</span></h1>
+          <p>천안시 공영주차장 55곳의 위치와 주차 규모를 살펴보세요. 방문 전 운영 정보는 현장 안내를 확인해 주세요.</p>
+          <div class="search-intro-stats" aria-label="주차 정보 요약"><span><strong>55</strong> 공영주차장</span><i aria-hidden="true"></i><span><strong>2</strong> 행정구</span><i aria-hidden="true"></i><span>공식 현황 기준</span></div>
           <svg class="route-graphic" viewBox="0 0 320 148" aria-hidden="true" focusable="false">
             <path class="route-streets" d="M8 34h306M8 72h306M8 110h306M40 8v132M88 8v132M148 8v132M208 8v132M268 8v132M23 143 298 12"/>
             <path class="route-track" pathLength="100" d="M40 110h69q16 0 16-16V62q0-16 16-16h91"/>
@@ -40,8 +41,8 @@
           <div class="search-wrap">
             <span class="search-icon" aria-hidden="true">⌕</span>
             <label class="visually-hidden" for="search-input">주차장 이름이나 주소 검색</label>
-            <input id="search-input" type="search" placeholder="주차장 이름이나 주소" autocomplete="off" />
-            <button id="search-button" class="search-button" type="button">주차장 찾기</button>
+            <input id="search-input" type="search" placeholder="예: 불당 제5주차장, 두정동" autocomplete="off" />
+            <button id="search-button" class="search-button" type="button">주차장 찾기 <span aria-hidden="true">↗</span></button>
           </div>
           <div class="search-quick-filters">
             <span class="quick-filter-label">빠른 찾기</span>
