@@ -6,6 +6,7 @@ const VERIFIED_DESTINATIONS = {
     address: "천안시 서북구 검은들1길 15"
   }
 };
+let destinationCoordinates = { ...VERIFIED_DESTINATIONS };
 
 const $ = (selector) => document.querySelector(selector);
 const distanceValue = $("#distance-value");
@@ -101,7 +102,7 @@ function updateDestination() {
   if (!lot) return;
   destinationName.textContent = lot.name;
   destinationAddress.textContent = lot.address;
-  selectedDestination = VERIFIED_DESTINATIONS[lot.id] || null;
+  selectedDestination = destinationCoordinates[lot.id] || null;
   const query = encodeURIComponent(`${lot.name} ${lot.address}`);
   naverMapLink.href = `https://map.naver.com/p/search/${query}`;
   kakaoMapLink.href = `https://map.kakao.com/?q=${query}`;
@@ -112,7 +113,39 @@ function updateDestination() {
   distanceStatus.textContent = selectedDestination
     ? "현재 위치와 불당 제1주차장 주소 대표점 사이 근사 직선거리를 계산합니다."
     : "위치를 확인한 뒤에도 이 주차장의 좌표가 없으면 거리는 표시되지 않습니다. 아래 지도 앱에서 길찾기를 이용하세요.";
+  if (selectedDestination && currentPosition) {
+    renderDistance(haversineMeters(currentPosition, selectedDestination), "내 위치와 선택한 주차장 사이 근사");
+  }
   if (kakaoMap && selectedDestination) {
+
+async function loadParkingCoordinates() {
+  try {
+    const response = await fetch("./parking-coordinates.json", { cache: "no-cache" });
+    if (!response.ok) return;
+    const payload = await response.json();
+    if (!Array.isArray(payload.coordinates)) return;
+    for (const item of payload.coordinates) {
+      if (typeof item.id === "string"
+        && Number.isFinite(item.latitude)
+        && Number.isFinite(item.longitude)
+        && item.latitude >= 36.5 && item.latitude <= 37.1
+        && item.longitude >= 126.8 && item.longitude <= 127.5) {
+        destinationCoordinates[item.id] = {
+          latitude: item.latitude,
+          longitude: item.longitude,
+          name: item.name,
+          address: item.address
+        };
+      }
+    }
+    updateDestination();
+    if (kakaoMap && selectedDestination) {
+      setMapPoint("second", new kakao.maps.LatLng(selectedDestination.latitude, selectedDestination.longitude));
+    }
+  } catch (error) {
+    console.info("Optional parking coordinates are unavailable.", error);
+  }
+}
     const center = new kakao.maps.LatLng(selectedDestination.latitude, selectedDestination.longitude);
     setMapPoint("second", center);
   }
@@ -273,3 +306,4 @@ clearMapPointsButton.addEventListener("click", clearMapPoints);
 initializeKakaoMap();
 updateDestination();
 showLocationPermissionState();
+loadParkingCoordinates();
