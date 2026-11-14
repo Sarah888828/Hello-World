@@ -66,7 +66,7 @@ GitHub 저장소는 [Sarah888828/Hello-World](https://github.com/Sarah888828/Hel
 
 회원가입과 로그인 API는 Cloudflare Pages Functions와 D1의 `users` 테이블을 사용합니다. 비밀번호는 PBKDF2-SHA-256으로 해시해 저장하며, 로그인 성공 후에도 세션 쿠키·로그아웃·보호된 사용자 영역은 구현되어 있지 않아 로그인 상태가 유지되지 않습니다. `database/users.sql`은 참고용 설계 문서입니다.
 
-로그인 API는 Cloudflare Durable Object로 IP당 60초에 최대 30회 요청을 제한합니다. 요청 수 검사는 Durable Object 안에서 직렬화해 해당 IP 키에 대해 원자적으로 처리하며, 초과 시 `429`와 `Retry-After`를 반환합니다. 미등록 이메일도 고정 dummy hash로 PBKDF2 검증을 수행해 잘못된 비밀번호와 같은 `401` 본문을 반환합니다. 다만 IP 변경·분산 공격은 별도 방어가 필요하므로 공개 운영에서는 WAF 규칙, CAPTCHA와 추가 모니터링도 검토하세요.
+로그인 API는 D1의 `login_rate_limits` 테이블로 IP당 60초에 최대 30회 요청을 제한합니다. IP 자체 대신 SHA-256 해시를 저장하며, 제한을 넘으면 `429`와 `Retry-After`를 반환합니다. 미등록 이메일도 고정 dummy hash로 PBKDF2 검증을 수행해 잘못된 비밀번호와 같은 `401` 본문을 반환합니다. 이는 단일 D1 데이터베이스를 기준으로 한 제한이며, IP 변경·분산 공격은 별도 방어가 필요하므로 공개 운영에서는 WAF 규칙, CAPTCHA와 추가 모니터링도 검토하세요.
 
 ## 데이터 출처와 보안
 

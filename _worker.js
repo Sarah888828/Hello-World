@@ -39,38 +39,49 @@ export default {
         });
       }
       const clientIp = request.headers.get("CF-Connecting-IP");
-      if (!clientIp || !env.LOGIN_RATE_LIMITER) {
+      if (!clientIp) {
         return new Response(JSON.stringify({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }), {
           status: 503,
           headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }
         });
       }
 
-      if (!env.LOGIN_RATE_LIMITER_TOKEN) {
-        return new Response(JSON.stringify({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }), {
-          status: 503,
-          headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }
-        });
-      }
+      const windowSeconds = 60;
+      const limit = 30;
+      const now = Math.floor(Date.now() / 1000);
+      const windowStart = Math.floor(now / windowSeconds) * windowSeconds;
+      try {
+        const ipDigest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(clientIp));
+        const ipHash = Array.from(new Uint8Array(ipDigest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+        const rate = await env.DB.prepare(`
+          INSERT INTO login_rate_limits (ip_hash, window_start, request_count)
+          VALUES (?, ?, 1)
+          ON CONFLICT(ip_hash) DO UPDATE SET
+            request_count = CASE
+              WHEN login_rate_limits.window_start = excluded.window_start THEN login_rate_limits.request_count + 1
+              ELSE 1
+            END,
+            window_start = excluded.window_start
+          RETURNING request_count, window_start
+        `).bind(ipHash, windowStart).first();
 
-      const limitResponse = await fetch("https://cheonan-login-rate-limiter.horizontal486.workers.dev/check", {
-        method: "POST",
-        headers: {
-          "CF-Connecting-IP": clientIp,
-          Authorization: `Bearer ${env.LOGIN_RATE_LIMITER_TOKEN}`
+        if (rate.request_count > limit) {
+          const retryAfter = Math.max(1, rate.window_start + windowSeconds - now);
+          return new Response(JSON.stringify({ error: "로그인 요청이 많습니다. 잠시 후 다시 시도해 주세요." }), {
+            status: 429,
+            headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Retry-After": String(retryAfter), "X-Content-Type-Options": "nosniff" }
+          });
         }
-      });
-      if (!limitResponse.ok) {
+
+        // Opportunistically prune expired IP buckets without adding a second write on every request.
+        if (rate.request_count === 1 && now % 60 < 2) {
+          await env.DB.prepare("DELETE FROM login_rate_limits WHERE window_start < ?").bind(windowStart - windowSeconds).run();
+        }
+      } catch (error) {
+        console.error("Login rate limit check failed:", error?.name || "Error", error?.message || "unknown");
         return new Response(JSON.stringify({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }), {
           status: 503,
           headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }
-        });
-      }
-      const limit = await limitResponse.json();
-      if (!limit.allowed) {
-        return new Response(JSON.stringify({ error: "로그인 요청이 많습니다. 잠시 후 다시 시도해 주세요." }), {
-          status: 429,
-          headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Retry-After": String(limit.retryAfter), "X-Content-Type-Options": "nosniff" }
         });
       }
 
