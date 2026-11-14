@@ -144,10 +144,10 @@ function updateDestination() {
 
 function labelMeasurableDestinations() {
   for (const option of destinationSelect.options) {
-    const suffix = " · 직선거리 측정 가능";
-    if (Object.hasOwn(destinationCoordinates, option.value) && !option.textContent.endsWith(suffix)) {
-      option.textContent += suffix;
-    }
+    const baseLabel = option.textContent.replace(/ · (?:직선거리 측정 가능|좌표 확인 필요 · 지도에서 수동 선택)$/, "");
+    option.textContent = Object.hasOwn(destinationCoordinates, option.value)
+      ? `${baseLabel} · 직선거리 측정 가능`
+      : `${baseLabel} · 좌표 확인 필요 · 지도에서 수동 선택`;
   }
 }
 
@@ -174,7 +174,7 @@ async function loadParkingCoordinates() {
     labelMeasurableDestinations();
     updateDestination();
   } catch (error) {
-    console.info("Optional parking coordinates are unavailable.", error);
+    console.info("Optional parking coordinates are unavailable; destinations remain marked for manual location selection.", error);
   }
 }
 function requestCurrentLocation(forMap = false) {

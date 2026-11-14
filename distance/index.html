@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../style.css?theme=editorial-v6" />
     <script src="../script.js"></script>
-    <script type="module" src="./distance.js?v=all-lots-distance-v2"></script>
+    <script type="module" src="./distance.js?v=coords-status-v3"></script>
   </head>
   <body>
     <header class="topbar">
@@ -26,7 +26,7 @@
         <a class="detail-back" href="../#home"><span aria-hidden="true">←</span> 메인으로 돌아가기</a>
         <p class="section-kicker">KAKAO MAP · DISTANCE TOOL</p>
         <h1 id="distance-title">내 위치에서<br /><span>주차장까지</span></h1>
-        <p>먼저 목적지를 선택하고 <strong>현재 위치로 거리 측정</strong>을 누른 다음 브라우저의 위치 권한 창에서 허용을 선택하세요. 실제 거리는 근사 직선거리이며 도로 경로는 지도 앱에서 확인할 수 있습니다.</p>
+          <p>좌표가 확인된 주차장은 현재 위치에서의 직선거리를 계산합니다. 좌표가 없는 곳은 지도에서 두 지점을 선택해 참고 거리를 잴 수 있으며, 결과는 실제 주차장 위치를 보장하지 않습니다.</p>
       </section>
 
       <section class="distance-layout" aria-label="내 위치와 주차장 거리 측정">
@@ -55,7 +55,7 @@
           </select>
           <h2 id="destination-name">불당 제1주차장</h2>
           <p id="destination-address" class="distance-address">천안시 서북구 검은들1길 15</p>
-          <p id="destination-help" class="distance-destination-help">현재 위치 직선거리 계산은 좌표가 확인된 불당 제1주차장만 지원합니다. 다른 주차장과 두 지점 지도 측정은 Kakao 키 설정 후 사용할 수 있습니다.</p>
+          <p id="destination-help" class="distance-destination-help">목적지 목록에서 ‘좌표 확인 필요’로 표시된 주차장은 주소 좌표 데이터가 아직 배포되지 않았습니다. 위치 권한을 허용한 뒤 지도에서 도착 지점을 직접 선택해 참고 거리를 확인하거나 지도 앱 길찾기를 이용하세요.</p>
           <div class="distance-origin-search">
             <form id="origin-search-form">
               <label class="distance-destination-label" for="origin-search-input">출발지 주소·장소 검색 (지도 앱 열기)</label>
@@ -82,7 +82,7 @@
         </aside>
       </section>
 
-      <p class="distance-disclaimer">직선거리는 확인된 주소 대표 좌표를 사용한 근사값이며 실제 도로 이동 거리·소요시간이 아닙니다. 도로 경로는 선택한 주차장 이름과 주소를 지도 앱에 전달해 확인합니다. 현재 위치는 버튼을 눌렀을 때 브라우저에서만 읽으며 이 사이트 서버에 저장하지 않습니다. 위치 측정은 HTTPS에서 지원됩니다.</p>
+      <p class="distance-disclaimer">좌표가 확인된 주차장 거리도 주소 대표 좌표 기준 근사 직선거리이며 도로 이동 거리·시간이 아닙니다. 좌표가 없는 목적지에서 개략 선택판으로 잰 값은 실제 지리 좌표나 주차장 출입구 기준이 아닌 참고값입니다. 현재 위치는 버튼을 눌렀을 때 브라우저에서만 읽으며 서버에 저장하지 않습니다.</p>
       <p class="kakao-key-setup-note"><strong>카카오 두 점 지도는 선택 기능입니다.</strong> 사용하려면 Kakao Developers JavaScript 키와 허용 도메인 등록이 필요합니다. 현재 위치 직선거리 측정은 이 설정 없이 사용할 수 있습니다. 키를 저장소에 커밋하지 마세요.</p>
     </main>
 
