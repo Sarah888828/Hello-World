@@ -1,10 +1,31 @@
 import { onRequestPost as onSignup } from "./functions/api/auth/signup.js";
 import { onRequestPost as onLogin } from "./functions/api/auth/login.js";
 import { onRequestGet as onInquiriesGet, onRequestPost as onInquiriesPost } from "./functions/api/inquiries.js";
+
+const SECURITY_HEADERS = {
+  "Content-Security-Policy": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://dapi.kakao.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://dapi.kakao.com https://dapi.kakao.com/v2/local https://map.kakao.com https://fonts.googleapis.com https://fonts.gstatic.com; frame-src 'self'; upgrade-insecure-requests",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "geolocation=(self), camera=(), microphone=()"
+};
+
+function secure(response) {
+  const headers = new Headers(response.headers);
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) headers.set(name, value);
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
 export { LoginRateLimiter } from "./functions/lib/login-rate-limiter.js";
 
 export default {
   async fetch(request, env, context) {
+    return secure(await route(request, env, context));
+  }
+};
+
+async function route(request, env, context) {
     const url = new URL(request.url);
 
     if (url.pathname === "/passes" || url.pathname.startsWith("/passes/")) {
@@ -116,5 +137,4 @@ export default {
     }
 
     return env.ASSETS.fetch(request);
-  }
-};
+}
