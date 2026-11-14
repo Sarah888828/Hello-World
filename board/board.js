@@ -4,6 +4,7 @@ const inquiryCount = document.querySelector("#inquiry-count");
 const emptyState = document.querySelector("#inquiry-empty");
 const formMessage = document.querySelector("#form-message");
 const categoryFilter = document.querySelector("#category-filter");
+let hasLoadedInquiries = false;
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (character) => ({
@@ -28,13 +29,14 @@ function formatDate(value) {
 }
 
 async function loadInquiries() {
-  inquiryList.classList.add("is-loading");
+  if (!hasLoadedInquiries) inquiryList.classList.add("is-loading");
   inquiryList.setAttribute("aria-busy", "true");
   try {
     const response = await fetch("/api/inquiries");
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || "문의 목록을 불러오지 못했습니다.");
     renderInquiries(result.inquiries || []);
+    hasLoadedInquiries = true;
   } catch (error) {
     inquiryList.classList.remove("is-loading");
     inquiryList.replaceChildren();
