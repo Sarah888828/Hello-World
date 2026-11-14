@@ -67,6 +67,20 @@ const contentTypes = {
   ".md": "text/markdown; charset=utf-8"
 };
 
+/** SQLite DATETIME 문자열(UTC)을 KST ISO 8601 문자열로 변환 */
+function toKstIso(utcDatetime) {
+  if (!utcDatetime) return utcDatetime;
+  const date = new Date(utcDatetime + "Z");
+  if (Number.isNaN(date.getTime())) return utcDatetime;
+  const y = date.getFullYear();
+  const mo = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  const h = String(date.getHours() + 9).padStart(2, "0");
+  const mi = String(date.getMinutes()).padStart(2, "0");
+  const s = String(date.getSeconds()).padStart(2, "0");
+  return `${y}-${mo}-${d}T${h}:${mi}:${s}+09:00`;
+}
+
 function sendJson(response, status, body) {
   response.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
@@ -118,7 +132,12 @@ const server = createServer(async (request, response) => {
   if (pathname === "/api/inquiries" && request.method === "GET") {
     try {
       const category = requestUrl.searchParams.get("category");
-      const inquiries = listInquiries.all().filter((item) => !category || category === "all" || item.category === category);
+      const items = listInquiries.all().filter((item) => !category || category === "all" || item.category === category);
+      const inquiries = items.map((item) => ({
+        ...item,
+        createdAt: toKstIso(item.createdAt),
+        updatedAt: toKstIso(item.updatedAt)
+      }));
       return sendJson(response, 200, { inquiries });
     } catch (error) {
       console.error("Failed to read inquiries:", error);
@@ -149,6 +168,10 @@ const server = createServer(async (request, response) => {
                deleted_at AS deletedAt
         FROM inquiries WHERE id = ?
       `).get(result.lastInsertRowid);
+      if (saved) {
+        saved.createdAt = toKstIso(saved.createdAt);
+        saved.updatedAt = toKstIso(saved.updatedAt);
+      }
       return sendJson(response, 201, { inquiry: saved });
     } catch (error) {
       console.error("Failed to save inquiry:", error);

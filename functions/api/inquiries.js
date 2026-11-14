@@ -15,6 +15,20 @@ function cleanText(value) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+/** SQLite DATETIME 문자열(UTC)을 KST ISO 8601 문자열로 변환 */
+function toKstIso(utcDatetime) {
+  if (!utcDatetime) return utcDatetime;
+  const date = new Date(utcDatetime + "Z");
+  if (Number.isNaN(date.getTime())) return utcDatetime;
+  const y = date.getFullYear();
+  const mo = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  const h = String(date.getHours() + 9).padStart(2, "0");
+  const mi = String(date.getMinutes()).padStart(2, "0");
+  const s = String(date.getSeconds()).padStart(2, "0");
+  return `${y}-${mo}-${d}T${h}:${mi}:${s}+09:00`;
+}
+
 export async function onRequestGet({ request, env }) {
   try {
     const category = new URL(request.url).searchParams.get("category");
@@ -46,7 +60,12 @@ export async function onRequestGet({ request, env }) {
       `).all();
     }
 
-    return json({ inquiries: result.results });
+    const inquiries = (result.results || []).map((row) => ({
+      ...row,
+      createdAt: toKstIso(row.createdAt),
+      updatedAt: toKstIso(row.updatedAt)
+    }));
+    return json({ inquiries });
   } catch (error) {
     console.error("Failed to read D1 inquiries:", error);
     return json({ error: "문의 목록을 불러오지 못했습니다." }, 500);
