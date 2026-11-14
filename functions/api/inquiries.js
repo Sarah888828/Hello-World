@@ -65,6 +65,10 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "JSON 요청을 확인해 주세요." }, 400);
   }
 
+  if (body === null || typeof body !== "object" || Array.isArray(body)) {
+    return json({ error: "요청 본문은 JSON 객체여야 합니다." }, 400);
+  }
+
   const category = cleanText(body.category);
   const name = cleanText(body.name);
   const title = cleanText(body.title);

@@ -40,6 +40,10 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "요청 형식을 확인해 주세요." }, 400);
   }
 
+  if (body === null || typeof body !== "object" || Array.isArray(body)) {
+    return json({ error: "요청 본문은 JSON 객체여야 합니다." }, 400);
+  }
+
   const nickname = clean(body.nickname);
   const email = clean(body.email).toLowerCase();
   const password = typeof body.password === "string" ? body.password : "";
