@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Publish the site first, then replace YOUR_DOMAIN with the real public hostname.
-Sitemap: https://YOUR_DOMAIN/sitemap.xml
+Sitemap: https://hello-world-e90.pages.dev/sitemap.xml

@@ -1,68 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Replace YOUR_DOMAIN with the deployed site's real hostname before publishing. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://YOUR_DOMAIN/</loc>
+    <loc>https://hello-world-e90.pages.dev/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/distance/</loc>
+    <loc>https://hello-world-e90.pages.dev/distance/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/charging/</loc>
+    <loc>https://hello-world-e90.pages.dev/charging/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/charging/central-church/</loc>
+    <loc>https://hello-world-e90.pages.dev/charging/central-church/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/parking/buldang-public/</loc>
+    <loc>https://hello-world-e90.pages.dev/parking/buldang-public/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/parking/buldang-2/</loc>
+    <loc>https://hello-world-e90.pages.dev/parking/buldang-2/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/parking/buldang-3/</loc>
+    <loc>https://hello-world-e90.pages.dev/parking/buldang-3/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/parking/buldang-4/</loc>
+    <loc>https://hello-world-e90.pages.dev/parking/buldang-4/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/parking/buldang-5/</loc>
+    <loc>https://hello-world-e90.pages.dev/parking/buldang-5/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/board/</loc>
+    <loc>https://hello-world-e90.pages.dev/board/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/guide/</loc>
+    <loc>https://hello-world-e90.pages.dev/guide/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/account/signup/</loc>
+    <loc>https://hello-world-e90.pages.dev/account/signup/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/account/login/</loc>
+    <loc>https://hello-world-e90.pages.dev/account/login/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
