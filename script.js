@@ -471,8 +471,7 @@ function renderParkingDetailPage(lot) {
         <dl class="detail-info-list charger-info-list">${chargerRows}</dl>
         ${charger.exists ? `<p class="charger-data-note">${escapeHtml(charger.verified)}. 실제 단가는 충전기 화면에서 결제 전에 확인해 주세요.</p><a class="detail-official-link" href="${escapeHtml(charger.source)}" target="_blank" rel="noreferrer">충전소 상세·실시간 정보 보기 ↗</a>` : `<p class="charger-data-note">천안도시공사 공식 주차장 현황에 전기차 충전기 수량이 표시되지 않습니다. 주변 충전소는 지도에서 확인해 주세요.</p>`}
         <p class="detail-page-disclaimer">주차장 명칭·주소·운영 현황은 천안도시공사 공식 목록을 기준으로 표시했어요. 요금과 운영 조건은 변경될 수 있으니 방문 전에 공식 안내나 현장 표지판을 확인해 주세요.</p>
-    <a class="detail-side-note" href="https://www.cauc.or.kr/_parking/main.asp?no=2" target="_blank" rel="noreferrer">주차요금 공식 안내 ↗</a>
-        <a class="detail-official-link" href="https://www.cauc.or.kr/_parking/main.asp?no=2" target="_blank" rel="noreferrer">주차요금 공식 안내 ↗</a>
+            <a class="detail-official-link" href="https://www.cauc.or.kr/_parking/main.asp?no=2" target="_blank" rel="noreferrer">주차요금 공식 안내 ↗</a>
         <a class="detail-map-link" href="https://map.naver.com/p/search/${encodeURIComponent(lot.name + " " + lot.address)}" target="_blank" rel="noreferrer">지도에서 길찾기 <span aria-hidden="true">↗</span></a>
       </article>
       <aside class="detail-side-note"><span class="guide-icon" aria-hidden="true">✳</span><h2>방문 전에 확인해 주세요</h2><p>주차 가능 대수와 요금은 실시간으로 연동되지 않아요. 출발 전 최신 정보를 확인해 주세요.</p><a href="https://www.cheonan.go.kr/" target="_blank" rel="noreferrer">천안시 홈페이지 ↗</a></aside>
