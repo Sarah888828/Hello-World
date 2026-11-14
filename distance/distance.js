@@ -46,7 +46,10 @@ function haversineMeters(a, b) {
   const deltaLongitude = radians(b.longitude - a.longitude);
   const term = Math.sin(deltaLatitude / 2) ** 2
     + Math.cos(radians(a.latitude)) * Math.cos(radians(b.latitude)) * Math.sin(deltaLongitude / 2) ** 2;
-  return 2 * earthRadiusMeters * Math.atan2(Math.sqrt(term), Math.sqrt(1 - term));
+  // term이 부동소수점 오차로 1을 초과하면 1 - term이 음수가 되어 NaN이 발생하므로
+  // 1을 넘지 않도록 clamp (하버사인 공식에서 term의 이론적 최댓값은 1)
+  const clampedTerm = Math.min(term, 1);
+  return 2 * earthRadiusMeters * Math.atan2(Math.sqrt(clampedTerm), Math.sqrt(1 - clampedTerm));
 }
 
 function renderDistance(meters, label) {
