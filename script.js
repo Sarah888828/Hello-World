@@ -362,6 +362,14 @@ function initializeHomepage() {
     }
     const detailButton = event.target.closest("[data-lot-id]");
     if (detailButton) showParkingDetails(detailButton.dataset.lotId);
+    const card = event.target.closest(".parking-card[data-lot-id]");
+    if (card && !event.target.closest("button, a, input, select")) showParkingDetails(card.dataset.lotId);
+  });
+  parkingGrid.addEventListener("keydown", (event) => {
+    const card = event.target.closest(".parking-card[data-lot-id]");
+    if (!card || event.target !== card || !["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    showParkingDetails(card.dataset.lotId);
   });
   document.querySelector("#dialog-close")?.addEventListener("click", () => parkingDialog.close());
   parkingDialog.addEventListener("click", (event) => {
@@ -503,7 +511,7 @@ function renderParkingLots() {
   const mapView = document.querySelector("#parking-map-view");
   if (mapView) mapView.hidden = parkingView !== "map";
   parkingGrid.innerHTML = renderedLots.map((lot) => `
-      <article class="parking-card motion-enter">
+    <article class="parking-card motion-enter" data-lot-id="${escapeHtml(lot.id)}" tabindex="0" role="button" aria-label="${escapeHtml(lot.name)} 상세 정보 열기">
       <div class="card-topline">
         <span class="type-tag ${getCardTypeClass(lot)}">${escapeHtml(lot.typeLabel)}</span>
         <span class="distance-tag">${escapeHtml(lot.distance)}</span>
@@ -515,7 +523,7 @@ function renderParkingLots() {
       <div class="card-meta"><span>${escapeHtml(lot.priceLabel)}</span><span class="card-price">${lot.price == null ? "공식 안내 확인" : `${lot.price.toLocaleString("ko-KR")}원 / 시간`}</span></div>
       <p class="capacity-label">총 주차면 <strong>${escapeHtml(lot.capacity.split(" · ")[0])}</strong></p>
       <p class="availability-unavailable"><span aria-hidden="true">◷</span> 실시간 빈자리 정보 없음</p>
-      <div class="card-bottom"><span class="hours-label">${escapeHtml(lot.charger.exists ? `⚡ 충전 ${lot.charger.count}` : lot.hours)}</span><a class="detail-button" href="${getLotDetailUrl(lot)}"${lot.id.startsWith("buldang-") ? "" : ' target="_blank" rel="noreferrer"'}>${lot.id.startsWith("buldang-") ? "상세 보기　→" : "지도 보기　↗"}</a></div>
+      <div class="card-bottom"><span class="hours-label">${escapeHtml(lot.charger.exists ? `⚡ 충전 ${lot.charger.count}` : lot.hours)}</span><button class="detail-button" type="button" data-lot-id="${escapeHtml(lot.id)}" aria-label="${escapeHtml(lot.name)} 상세 정보 보기">상세 보기　→</button></div>
     </article>
   `).join("");
   parkingGrid.querySelectorAll(".parking-card").forEach((card, index) => {
