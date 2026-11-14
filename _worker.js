@@ -46,9 +46,20 @@ export default {
         });
       }
 
-      const limiterId = env.LOGIN_RATE_LIMITER.idFromName(clientIp);
-      const limiter = env.LOGIN_RATE_LIMITER.get(limiterId);
-      const limitResponse = await limiter.fetch("https://login-rate-limiter/check", { method: "POST" });
+      if (!env.LOGIN_RATE_LIMITER_TOKEN) {
+        return new Response(JSON.stringify({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }), {
+          status: 503,
+          headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }
+        });
+      }
+
+      const limitResponse = await fetch("https://cheonan-login-rate-limiter.horizontal486.workers.dev/check", {
+        method: "POST",
+        headers: {
+          "CF-Connecting-IP": clientIp,
+          Authorization: `Bearer ${env.LOGIN_RATE_LIMITER_TOKEN}`
+        }
+      });
       if (!limitResponse.ok) {
         return new Response(JSON.stringify({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }), {
           status: 503,

@@ -7,11 +7,3 @@ binding = "DB"
 database_name = "buldang-parking-db"
 database_id = "b8faf191-7944-4efc-82e6-c228f11c708b"
 migrations_dir = "migrations"
-
-[[durable_objects.bindings]]
-name = "LOGIN_RATE_LIMITER"
-class_name = "LoginRateLimiter"
-
-[[migrations]]
-tag = "v1-login-rate-limiter"
-new_sqlite_classes = ["LoginRateLimiter"]
