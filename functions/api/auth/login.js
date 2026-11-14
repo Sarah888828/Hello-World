@@ -35,30 +35,6 @@ async function verifyPassword(password, storedHash) {
 }
 
 export async function onRequestPost({ request, env }) {
-  const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
-  if (env.LOGIN_RATE_LIMITER) {
-    try {
-      const { success } = await env.LOGIN_RATE_LIMITER.limit({ key: clientIp });
-      if (!success) {
-        return new Response(JSON.stringify({ error: "로그인 요청이 많습니다. 잠시 후 다시 시도해 주세요." }), {
-          status: 429,
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "Cache-Control": "no-store",
-            "X-Content-Type-Options": "nosniff",
-            "Retry-After": "60"
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Login rate limiter unavailable:", error);
-      return json({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }, 503);
-    }
-  } else if (env.NODE_ENV === "production") {
-    console.error("LOGIN_RATE_LIMITER binding is missing in production.");
-    return json({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }, 503);
-  }
-
   let body;
   try {
     const raw = await request.text();

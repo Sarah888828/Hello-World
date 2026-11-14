@@ -1,6 +1,7 @@
 import { onRequestPost as onSignup } from "./functions/api/auth/signup.js";
 import { onRequestPost as onLogin } from "./functions/api/auth/login.js";
 import { onRequestGet as onInquiriesGet, onRequestPost as onInquiriesPost } from "./functions/api/inquiries.js";
+export { LoginRateLimiter } from "./functions/lib/login-rate-limiter.js";
 
 export default {
   async fetch(request, env, context) {
@@ -37,6 +38,31 @@ export default {
           headers: { "Content-Type": "application/json; charset=utf-8", Allow: "POST", "Cache-Control": "no-store" }
         });
       }
+      const clientIp = request.headers.get("CF-Connecting-IP");
+      if (!clientIp || !env.LOGIN_RATE_LIMITER) {
+        return new Response(JSON.stringify({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }), {
+          status: 503,
+          headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }
+        });
+      }
+
+      const limiterId = env.LOGIN_RATE_LIMITER.idFromName(clientIp);
+      const limiter = env.LOGIN_RATE_LIMITER.get(limiterId);
+      const limitResponse = await limiter.fetch("https://login-rate-limiter/check", { method: "POST" });
+      if (!limitResponse.ok) {
+        return new Response(JSON.stringify({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }), {
+          status: 503,
+          headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }
+        });
+      }
+      const limit = await limitResponse.json();
+      if (!limit.allowed) {
+        return new Response(JSON.stringify({ error: "로그인 요청이 많습니다. 잠시 후 다시 시도해 주세요." }), {
+          status: 429,
+          headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Retry-After": String(limit.retryAfter), "X-Content-Type-Options": "nosniff" }
+        });
+      }
+
       return onLogin({ request, env, params: {}, data: {} });
     }
 
