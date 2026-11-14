@@ -1,4 +1,6 @@
 const ITERATIONS = 100_000;
+const DUMMY_HASH = "pbkdf2-sha256$100000$MTIzNDU2Nzg5MGFiY2RlZg$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+const MAX_PASSWORD_LENGTH = 128;
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -33,6 +35,30 @@ async function verifyPassword(password, storedHash) {
 }
 
 export async function onRequestPost({ request, env }) {
+  const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+  if (env.LOGIN_RATE_LIMITER) {
+    try {
+      const { success } = await env.LOGIN_RATE_LIMITER.limit({ key: clientIp });
+      if (!success) {
+        return new Response(JSON.stringify({ error: "로그인 요청이 많습니다. 잠시 후 다시 시도해 주세요." }), {
+          status: 429,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Cache-Control": "no-store",
+            "X-Content-Type-Options": "nosniff",
+            "Retry-After": "60"
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Login rate limiter unavailable:", error);
+      return json({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }, 503);
+    }
+  } else if (env.NODE_ENV === "production") {
+    console.error("LOGIN_RATE_LIMITER binding is missing in production.");
+    return json({ error: "로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요." }, 503);
+  }
+
   let body;
   try {
     const raw = await request.text();
@@ -44,7 +70,7 @@ export async function onRequestPost({ request, env }) {
 
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   const password = typeof body.password === "string" ? body.password : "";
-  if (!email || email.length > 254 || !password || password.length > 128) {
+  if (!email || email.length > 254 || !password || password.length > MAX_PASSWORD_LENGTH) {
     return json({ error: "이메일과 비밀번호를 확인해 주세요." }, 400);
   }
 
@@ -54,7 +80,10 @@ export async function onRequestPost({ request, env }) {
       FROM users WHERE email = ? COLLATE NOCASE AND deleted_at IS NULL
     `).bind(email).first();
 
-    if (!user || !(await verifyPassword(password, user.password_hash))) {
+    // Always spend one PBKDF2 verification, whether the account exists or not.
+    // This makes unknown emails follow the same expensive path as a bad password.
+    const passwordMatches = await verifyPassword(password, user?.password_hash || DUMMY_HASH);
+    if (!user || !passwordMatches) {
       return json({ error: "이메일 또는 비밀번호가 올바르지 않습니다." }, 401);
     }
 

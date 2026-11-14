@@ -64,7 +64,9 @@ GitHub 저장소는 [Sarah888828/Hello-World](https://github.com/Sarah888828/Hel
 
 문의 내용은 D1의 `inquiries` 테이블에 저장됩니다. 비공개 표시는 일반 목록 응답에서 본문을 숨기는 용도이며, 관리자 인증이나 비공개 관리자 조회 기능을 뜻하지 않습니다.
 
-회원가입 화면과 로그인 화면은 현재 HTML/CSS 시안입니다. 사용자 계정 생성, 로그인 인증, 세션 유지는 공개 서비스에서 사용할 수 있도록 연결되어 있지 않으므로 실제 개인정보를 입력하지 마세요. `database/users.sql`은 설계 문서이며 배포 데이터베이스에 적용된 스키마가 아닙니다.
+회원가입과 로그인 API는 Cloudflare Pages Functions와 D1의 `users` 테이블을 사용합니다. 비밀번호는 PBKDF2-SHA-256으로 해시해 저장하며, 로그인 성공 후에도 세션 쿠키·로그아웃·보호된 사용자 영역은 구현되어 있지 않아 로그인 상태가 유지되지 않습니다. `database/users.sql`은 참고용 설계 문서입니다.
+
+로그인 API에는 IP 기준으로 분당 30회 요청 제한을 둡니다. 존재하지 않는 이메일도 고정 dummy hash로 PBKDF2 검증을 수행하므로 미등록 계정과 잘못된 비밀번호에 같은 오류 응답을 돌려줍니다. Cloudflare Rate Limiting binding은 데이터센터별 로컬 제한이며 전역 엄격 제한이나 DDoS 방어를 보장하지 않습니다. 강한 전역 제한이 필요하면 Durable Objects 기반 제한, WAF 규칙, CAPTCHA/추가 인증을 검토하세요.
 
 ## 데이터 출처와 보안
 
