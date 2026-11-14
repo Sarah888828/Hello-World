@@ -71,13 +71,11 @@ function renderInquiries(inquiries) {
     <article class="inquiry-card">
       <div class="inquiry-card-top">
         <span class="inquiry-category">${escapeHtml(item.category)}</span>
-        ${item.private ? '<span class="private-badge">비공개</span>' : '<span class="inquiry-status">접수</span>'}
+        <span class="inquiry-status">접수</span>
       </div>
       <h3>${escapeHtml(item.title)}</h3>
       <div class="inquiry-card-meta"><span>${escapeHtml(item.name)}</span><time datetime="${escapeHtml(item.createdAt)}">${escapeHtml(formatDate(item.createdAt))}</time></div>
-      ${item.private
-        ? '<p class="inquiry-preview private-preview">비공개로 등록된 문의입니다.</p>'
-        : `<p class="inquiry-preview">${escapeHtml(item.content)}</p>`}
+      <p class="inquiry-preview">${escapeHtml(item.content)}</p>
     </article>
   `).join("");
 }
@@ -118,7 +116,9 @@ inquiryForm.addEventListener("submit", async (event) => {
     if (!response.ok) throw new Error(result.error || "문의 저장에 실패했습니다.");
 
     inquiryForm.reset();
-    formMessage.textContent = isCorrectionReport
+    formMessage.textContent = inquiry.private
+      ? "비공개로 접수되어 공개 목록에는 표시되지 않습니다. 관리자 인증 기능은 아직 없으므로 민감정보는 포함하지 마세요."
+      : isCorrectionReport
       ? "제보가 접수되었습니다. 자동 반영되지는 않으며 공식 자료 확인 후 검토가 필요합니다."
       : "문의가 저장되었습니다.";
     await loadInquiries();

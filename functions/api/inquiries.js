@@ -22,27 +22,25 @@ export async function onRequestGet({ request, env }) {
 
     if (category && category !== "all") {
       result = await env.DB.prepare(`
-        SELECT id, category, name, title,
-               CASE WHEN is_private = 1 THEN '' ELSE content END AS content,
-               is_private AS private,
+        SELECT id, category, name, title, content,
+               0 AS private,
                created_at AS createdAt,
                updated_at AS updatedAt,
                deleted_at AS deletedAt
         FROM inquiries
-        WHERE deleted_at IS NULL AND category = ?
+        WHERE deleted_at IS NULL AND is_private = 0 AND category = ?
         ORDER BY id DESC
         LIMIT 200
       `).bind(category).all();
     } else {
       result = await env.DB.prepare(`
-        SELECT id, category, name, title,
-               CASE WHEN is_private = 1 THEN '' ELSE content END AS content,
-               is_private AS private,
+        SELECT id, category, name, title, content,
+               0 AS private,
                created_at AS createdAt,
                updated_at AS updatedAt,
                deleted_at AS deletedAt
         FROM inquiries
-        WHERE deleted_at IS NULL
+        WHERE deleted_at IS NULL AND is_private = 0
         ORDER BY id DESC
         LIMIT 200
       `).all();
@@ -88,17 +86,7 @@ export async function onRequestPost({ request, env }) {
       VALUES (?, ?, ?, ?, ?)
     `).bind(category, name, title, content, body.private ? 1 : 0).run();
 
-    const saved = await env.DB.prepare(`
-      SELECT id, category, name, title,
-             CASE WHEN is_private = 1 THEN '' ELSE content END AS content,
-             is_private AS private,
-             created_at AS createdAt,
-             updated_at AS updatedAt,
-             deleted_at AS deletedAt
-      FROM inquiries WHERE id = ?
-    `).bind(result.meta.last_row_id).first();
-
-    return json({ inquiry: saved }, 201);
+    return json({ accepted: true, id: result.meta.last_row_id, private: Boolean(body.private) }, 201);
   } catch (error) {
     console.error("Failed to save D1 inquiry:", error);
     return json({ error: "문의 저장에 실패했습니다." }, 500);
