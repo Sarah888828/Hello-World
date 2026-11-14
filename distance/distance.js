@@ -152,11 +152,21 @@ function labelMeasurableDestinations() {
 }
 
 async function loadParkingCoordinates() {
+  labelMeasurableDestinations();
   try {
     const response = await fetch("/data/parking-coordinates.json", { cache: "no-store" });
-    if (!response.ok || !response.headers.get("content-type")?.includes("application/json")) return;
+    if (!response.ok || !response.headers.get("content-type")?.includes("application/json")) {
+      const reason = response.ok ? "좌표 데이터 대신 웹페이지 응답을 받았습니다." : `좌표 데이터 요청 오류 (${response.status}).`;
+      kakaoMapState.textContent = "전체 주차장 좌표 미배포";
+      mapPointStatus.textContent = `${reason} 불당 제1주차장을 제외한 목적지는 지도에서 수동 선택하는 참고 측정만 가능합니다.`;
+      return;
+    }
     const payload = await response.json();
-    if (!Array.isArray(payload.coordinates)) return;
+    if (!Array.isArray(payload.coordinates)) {
+      kakaoMapState.textContent = "좌표 데이터 형식 오류";
+      mapPointStatus.textContent = "좌표 파일 형식이 올바르지 않습니다. 검수된 좌표 파일을 배포해 주세요.";
+      return;
+    }
     for (const item of payload.coordinates) {
       if (typeof item.id === "string"
         && Number.isFinite(item.latitude)
@@ -175,6 +185,8 @@ async function loadParkingCoordinates() {
     updateDestination();
   } catch (error) {
     console.info("Optional parking coordinates are unavailable; destinations remain marked for manual location selection.", error);
+    kakaoMapState.textContent = "전체 주차장 좌표 미배포";
+    mapPointStatus.textContent = "전체 주차장 좌표 파일을 불러오지 못했습니다. 불당 제1주차장을 제외한 목적지는 지도에서 수동 선택하는 참고 측정만 가능합니다.";
   }
 }
 function requestCurrentLocation(forMap = false) {

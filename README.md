@@ -24,7 +24,7 @@
 
 ## 거리 측정의 범위
 
-브라우저 위치 권한을 허용하면 등록 좌표가 있는 목적지까지 근사 직선거리를 계산합니다. 목적지 목록은 좌표가 등록되지 않은 주차장을 “좌표 확인 필요 · 지도에서 수동 선택”으로 표시합니다. 이런 목적지에서 개략 선택판으로 얻는 숫자는 사용자가 찍은 위치를 기준으로 한 참고값이며 실제 주차장 좌표·출입구까지의 거리가 아닙니다. 전체 목적지의 자동 계산을 켜려면 Kakao REST 지오코딩 결과 `data/parking-coordinates.json`을 별도 승인된 Pages 정적 asset으로 배포해야 합니다. 해당 파일은 `.gitignore` 대상이라 저장소나 배포에는 자동 포함되지 않습니다. 주소 대표점은 공식 지도와 대조해 검수해야 하며, 위치 정보는 사이트 서버에 저장하지 않습니다.
+브라우저 위치 권한을 허용하면 등록 좌표가 있는 목적지까지 근사 직선거리를 계산합니다. 목적지 목록은 좌표가 등록되지 않은 주차장을 “좌표 확인 필요 · 지도에서 수동 선택”으로 표시합니다. 이런 목적지에서 개략 선택판으로 얻는 숫자는 사용자가 찍은 위치를 기준으로 한 참고값이며 실제 주차장 좌표·출입구까지의 거리가 아닙니다. 전체 목적지 자동 계산에 필요한 `data/parking-coordinates.json`은 `.gitignore` 대상입니다. Kakao REST 지오코딩과 좌표 검수가 끝난 55행 파일이 있을 때 `scripts/deploy-pages.ps1`이 이를 일시적으로 `public/data/`에 복사해 Pages 정적 asset으로 포함하고, 배포 뒤 복사본을 삭제합니다. 파일이 없거나 55행이 아니면 좌표 없는 상태로 배포하고 임의 좌표는 만들지 않습니다. 주소 대표점은 공식 지도와 대조해 검수해야 하며 위치 정보는 서버에 저장하지 않습니다.
 
 ## 개발 및 실행
 
@@ -56,7 +56,7 @@ geocode-kakao.mjs                   Kakao REST 지오코딩 도구
 
 ## 배포
 
-GitHub 저장소는 [Sarah888828/Hello-World](https://github.com/Sarah888828/Hello-World)이며 배포 대상은 Cloudflare Pages의 `hello-world` 프로젝트입니다. 기본 절차는 `main`에 변경을 커밋·푸시한 뒤 Pages 배포를 확인하는 것입니다. Wrangler를 사용할 때는 로그인된 Cloudflare 계정에서 `wrangler pages deploy <배포 폴더> --project-name hello-world --branch main`으로 배포할 수 있습니다.
+GitHub 저장소는 [Sarah888828/Hello-World](https://github.com/Sarah888828/Hello-World)이며 배포 대상은 Cloudflare Pages의 `hello-world` 프로젝트입니다. 최신 좌표 파일을 포함해 배포하려면 PowerShell에서 `./scripts/deploy-pages.ps1`을 실행하세요. 스크립트는 55개 검수 좌표가 있을 때만 정적 asset으로 포함합니다. 좌표 파일이 없으면 경고를 내고, 해당 데이터 없이 정상적으로 배포합니다. 좌표 파일 준비 없이 직접 `wrangler pages deploy`를 실행하면 무시된 JSON은 배포되지 않습니다.
 
 검색엔진 설정은 `robots.txt`와 `sitemap.xml`을 사용합니다. 현재 사이트 도메인은 `https://hello-world-e90.pages.dev/`입니다. 사이트맵과 robots 파일을 수정할 때는 이 주소와 공개 페이지 경로가 일치하는지 확인하세요.
 
