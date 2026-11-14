@@ -41,6 +41,7 @@ export async function createMeasurementMap(container, onMeasure, onClear) {
   const status = document.querySelector("#map-point-status");
   let activePoint = 0;
   let points = [null, null];
+  const markers = [null, null];
 
   function selectPoint(index) {
     activePoint = index;
@@ -49,39 +50,54 @@ export async function createMeasurementMap(container, onMeasure, onClear) {
   }
 
   function render() {
-    markerLayer.replaceChildren();
     points.forEach((point, index) => {
-      if (!point) return;
+      if (!point) {
+        markers[index]?.remove();
+        markers[index] = null;
+        return;
+      }
       const position = schematicPosition(point);
-      const marker = document.createElement("button");
-      marker.type = "button";
-      marker.className = `schematic-map-marker marker-${index + 1}`;
-      marker.textContent = index === 0 ? "A" : "B";
-      marker.setAttribute("aria-label", `${index === 0 ? "출발지" : "도착지"} 위치 마커`);
+      let marker = markers[index];
+      if (!marker) {
+        marker = document.createElement("button");
+        marker.type = "button";
+        marker.className = `schematic-map-marker marker-${index + 1}`;
+        marker.textContent = index === 0 ? "A" : "B";
+        marker.setAttribute("aria-label", `${index === 0 ? "출발지" : "도착지"} 위치 마커`);
+        marker.addEventListener("pointerdown", (event) => {
+          marker.dataset.dragging = "true";
+          marker.setPointerCapture(event.pointerId);
+          event.preventDefault();
+        });
+        marker.addEventListener("pointermove", (event) => {
+          if (marker.dataset.dragging !== "true") return;
+          const rect = board.getBoundingClientRect();
+          const x = Math.max(3, Math.min(97, ((event.clientX - rect.left) / rect.width) * 100));
+          const y = Math.max(5, Math.min(95, ((event.clientY - rect.top) / rect.height) * 100));
+          points[index] = {
+            longitude: CENTER.longitude + ((x - 50) / 100) * LNG_SPAN,
+            latitude: CENTER.latitude - ((y - 50) / 100) * LAT_SPAN
+          };
+          marker.style.left = `${x}%`;
+          marker.style.top = `${y}%`;
+          renderMeasurement();
+        });
+        const stopDragging = () => { delete marker.dataset.dragging; };
+        marker.addEventListener("pointerup", stopDragging);
+        marker.addEventListener("pointercancel", stopDragging);
+        marker.addEventListener("lostpointercapture", stopDragging);
+        marker.addEventListener("click", (event) => { event.stopPropagation(); selectPoint(index); });
+        markers[index] = marker;
+        markerLayer.append(marker);
+      }
       marker.style.left = `${position.x}%`;
       marker.style.top = `${position.y}%`;
-      let dragging = false;
-      marker.addEventListener("pointerdown", (event) => {
-        dragging = true;
-        marker.setPointerCapture(event.pointerId);
-        event.preventDefault();
-      });
-      marker.addEventListener("pointermove", (event) => {
-        if (!dragging) return;
-        const rect = board.getBoundingClientRect();
-        const x = Math.max(3, Math.min(97, ((event.clientX - rect.left) / rect.width) * 100));
-        const y = Math.max(5, Math.min(95, ((event.clientY - rect.top) / rect.height) * 100));
-        points[index] = {
-          longitude: CENTER.longitude + ((x - 50) / 100) * LNG_SPAN,
-          latitude: CENTER.latitude - ((y - 50) / 100) * LAT_SPAN
-        };
-        render();
-      });
-      marker.addEventListener("pointerup", () => { dragging = false; });
-      marker.addEventListener("click", (event) => { event.stopPropagation(); selectPoint(index); });
-      markerLayer.append(marker);
     });
 
+    renderMeasurement();
+  }
+
+  function renderMeasurement() {
     if (points[0] && points[1]) {
       const first = schematicPosition(points[0]);
       const second = schematicPosition(points[1]);
