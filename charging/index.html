@@ -10,7 +10,8 @@
     <meta property="og:type" content="website" />
     <title>전기차 충전소 | 불당 주차</title>
     <link rel="stylesheet" href="../style.css?theme=ev-editorial-v1" />
-    <script src="charging.js" defer></script>
+    <script src="../script.js?v=charger-source-sync-v2" defer></script>
+    <script src="charging.js?v=charger-source-sync-v2" defer></script>
   </head>
   <body>
     <header class="topbar">
@@ -32,9 +33,9 @@
             <div class="ev-bolt">ϟ</div><span class="ev-art-label">POWER<br />YOUR WAY</span>
           </div>
           <div class="ev-hero-stats" aria-label="충전소 요약">
-            <div><strong>10</strong><span>등록 충전소</span></div>
+            <div><strong id="ev-registered-count">19</strong><span>등록 충전소</span></div>
             <i aria-hidden="true"></i>
-            <div><strong>09<span>+</span></strong><span>공영 · Tesla</span></div>
+            <div><strong>18</strong><span>공영 충전소</span></div>
             <i aria-hidden="true"></i>
             <div><strong>2<span>종</span></strong><span>충전 방식</span></div>
           </div>
@@ -43,12 +44,12 @@
 
       <section class="ev-notice" aria-label="충전 정보 안내">
         <span class="ev-notice-mark" aria-hidden="true">i</span>
-        <div><strong>목록 범위 안내</strong><p>천안도시공사 공식 현황의 공영 충전소 9곳과 천안중앙교회 Tesla 수퍼차저입니다. 민간 충전소를 포함한 실시간 전체 현황은 <a href="https://www.ev.or.kr/nportal/monitor/evMap.do" target="_blank" rel="noreferrer">무공해차 통합누리집 지도</a>에서 확인하세요. 운영 상태와 요금은 바뀔 수 있습니다.</p></div>
+        <div><strong>목록 범위 안내</strong><p>천안도시공사 공식 현황의 공영주차장 18곳과 천안중앙교회 Tesla 수퍼차저입니다. 민간 충전소를 포함한 실시간 전체 현황은 <a href="https://www.ev.or.kr/nportal/monitor/evMap.do" target="_blank" rel="noreferrer">무공해차 통합누리집 지도</a>에서 확인하세요. 운영 상태와 요금은 바뀔 수 있습니다.</p></div>
       </section>
 
       <section class="ev-list ev-list-section" aria-labelledby="ev-list-title">
         <div class="ev-list-heading">
-          <div><p class="section-kicker">PICK YOUR CHARGER</p><h2 id="ev-list-title">충전소 찾기 <span id="ev-count" class="count-badge">10</span></h2><p class="ev-list-subtitle">장소를 고르고 주변 지도와 사업자 안내를 확인하세요.</p></div>
+          <div><p class="section-kicker">PICK YOUR CHARGER</p><h2 id="ev-list-title">충전소 찾기 <span id="ev-count" class="count-badge">19</span></h2><p class="ev-list-subtitle">공영 충전소 18곳과 Tesla 수퍼차저를 표시합니다.</p></div>
           <label class="ev-filter-control" for="ev-type-filter"><span>필터</span><select id="ev-type-filter" aria-label="충전소 종류 필터"><option value="all">전체 충전소</option><option value="public">공영주차장 충전기</option><option value="tesla">Tesla 수퍼차저</option><option value="fast">급속</option><option value="slow">완속</option></select></label>
         </div>
         <div class="ev-station-grid" id="ev-station-grid" aria-live="polite"></div>
