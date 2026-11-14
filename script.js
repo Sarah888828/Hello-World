@@ -369,7 +369,7 @@ function getVisibleLots() {
     .filter((lot) => !favoritesOnly || favoriteIds.has(lot.id))
     .filter((lot) => !query || `${lot.name} ${lot.address} ${lot.typeLabel} ${lot.charger?.exists ? `전기차 충전 ${lot.charger.count} ${lot.charger.output} 급속 ${lot.charger.price}` : "충전기 없음"}`.toLocaleLowerCase("ko-KR").includes(query))
     .sort((first, second) => sortSelect.value === "capacity"
-      ? parseCapacity(first.capacity) - parseCapacity(second.capacity)
+      ? parseCapacity(second.capacity) - parseCapacity(first.capacity)
       : first.name.localeCompare(second.name, "ko-KR"));
 }
 
