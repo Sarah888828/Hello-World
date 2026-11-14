@@ -117,7 +117,7 @@ inquiryForm.addEventListener("submit", async (event) => {
 
     inquiryForm.reset();
     formMessage.textContent = inquiry.private
-      ? "비공개로 접수되어 공개 목록에는 표시되지 않습니다. 관리자 인증 기능은 아직 없으므로 민감정보는 포함하지 마세요."
+      ? "비공개 요청으로 접수했습니다. 작성자·제목·본문은 저장되지 않으며, 관리자가 내용을 확인하거나 답변할 수 없습니다."
       : isCorrectionReport
       ? "제보가 접수되었습니다. 자동 반영되지는 않으며 공식 자료 확인 후 검토가 필요합니다."
       : "문의가 저장되었습니다.";

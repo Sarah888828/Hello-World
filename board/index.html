@@ -30,7 +30,7 @@
 
       <section class="board-notice" aria-label="게시판 안내">
         <span class="board-notice-icon" aria-hidden="true">i</span>
-          <p><strong>문의는 데이터베이스에 저장됩니다.</strong> 비공개 문의는 공개 목록 API에서 제외됩니다. 다만 별도 관리자 인증·관리자 화면은 아직 없으므로 전화번호·차량번호 등 민감정보는 입력하지 마세요. 정보 정정 제보는 공식 자료 확인 후 수동 검토하며 즉시 수정되지 않습니다. 공식 주차 정보는 <a href="https://www.cauc.or.kr/_parking/main.asp?no=1" target="_blank" rel="noreferrer">천안도시공사 안내</a>에서 확인해 주세요.</p>
+          <p><strong>문의는 데이터베이스에 저장됩니다.</strong> 비공개 문의는 작성자·제목·본문을 저장하지 않고 공개 목록에서도 제외합니다. 비공개 문의를 관리자가 확인하는 기능은 없으므로, 민감정보를 포함해 회신이 필요한 내용은 작성하지 마세요. 정보 정정 제보는 공식 자료 확인 후 수동 검토하며 즉시 수정되지 않습니다. 공식 주차 정보는 <a href="https://www.cauc.or.kr/_parking/main.asp?no=1" target="_blank" rel="noreferrer">천안도시공사 안내</a>에서 확인해 주세요.</p>
       </section>
 
       <section class="static-board" aria-labelledby="faq-title">
@@ -55,7 +55,7 @@
           <label class="form-field" for="inquiry-name"><span>작성자 <b aria-hidden="true">*</b></span><input id="inquiry-name" name="name" type="text" maxlength="24" placeholder="닉네임을 입력해 주세요" required /></label>
           <label class="form-field" for="inquiry-title"><span>제목 <b aria-hidden="true">*</b></span><input id="inquiry-title" name="title" type="text" maxlength="80" placeholder="문의 제목을 입력해 주세요" required /></label>
           <label class="form-field" for="inquiry-content"><span>문의 내용 <b aria-hidden="true">*</b></span><textarea id="inquiry-content" name="content" rows="5" maxlength="1200" placeholder="정보 제보라면 주차장명, 틀린 내용, 확인 가능한 공식 출처를 적어 주세요. 개인정보는 작성하지 마세요." required></textarea></label>
-          <label class="private-option" for="inquiry-private"><input id="inquiry-private" name="private" type="checkbox" /><span><strong>비공개 문의로 표시</strong><small>비공개 문의는 일반 문의 목록 API에서 제외됩니다. 관리자 조회 기능은 제공되지 않습니다.</small></span></label>
+          <label class="private-option" for="inquiry-private"><input id="inquiry-private" name="private" type="checkbox" /><span><strong>비공개 문의로 표시</strong><small>작성자·제목·본문은 저장하지 않으며 관리자도 문의 내용을 확인할 수 없습니다.</small></span></label>
           <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
           <button class="submit-inquiry" type="submit">문의 등록 <span aria-hidden="true">→</span></button>
         </form>

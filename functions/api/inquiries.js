@@ -71,6 +71,7 @@ export async function onRequestPost({ request, env }) {
   const name = cleanText(body.name);
   const title = cleanText(body.title);
   const content = cleanText(body.content);
+  const isPrivate = body.private === true;
 
   if (!categories.has(category)) return json({ error: "문의 유형을 선택해 주세요." }, 400);
   if (name.length < 2 || name.length > 24) return json({ error: "작성자는 2~24자로 입력해 주세요." }, 400);
@@ -81,12 +82,14 @@ export async function onRequestPost({ request, env }) {
   }
 
   try {
+    // Private inquiries are intentionally stored without identifying text.
+    // No private detail is returned to the client or exposed in public queries.
     const result = await env.DB.prepare(`
       INSERT INTO inquiries (category, name, title, content, is_private)
       VALUES (?, ?, ?, ?, ?)
-    `).bind(category, name, title, content, body.private ? 1 : 0).run();
+    `).bind(category, isPrivate ? "비공개 문의" : name, isPrivate ? "비공개 문의" : title, isPrivate ? "" : content, isPrivate ? 1 : 0).run();
 
-    return json({ accepted: true, id: result.meta.last_row_id, private: Boolean(body.private) }, 201);
+    return json({ accepted: true, private: isPrivate }, 201);
   } catch (error) {
     console.error("Failed to save D1 inquiry:", error);
     return json({ error: "문의 저장에 실패했습니다." }, 500);
