@@ -8,11 +8,24 @@
     <meta property="og:title" content="천안시 공영주차장 전체 안내 | 천안 주차" />
     <meta property="og:description" content="천안시 공영주차장 전체 목록과 위치·주차 면수·전기차 충전 정보를 확인하세요." />
     <meta property="og:type" content="website" />
-    <title>천안시 공영주차장 전체 안내 | 천안 주차</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css?theme=parking-motion-v3" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" /></noscript>
+    <link rel="preload" as="style" href="style.css?theme=parking-perf-v1" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="style.css?theme=parking-perf-v1" /></noscript>
+    <style>
+      :root{color-scheme:dark;background:#080909;color:#f0f0ed;font-family:Arial,"Malgun Gothic",sans-serif}
+      body{margin:0;background:#080909}
+      .topbar{min-height:64px}
+      .search-section{min-height:380px;max-width:1168px;margin:19px auto 0;padding:34px 36px 26px;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(320px,.96fr);align-items:center;gap:24px}
+      .search-panel{min-height:120px;border:1px solid #454a39;border-radius:11px;background:#171914}
+      .search-wrap{min-height:50px}
+      @media(max-width:700px){.search-section{grid-template-columns:1fr;margin:8px 12px 0;padding:24px 18px 14px}.search-panel{min-width:0}}
+    </style>
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" /></noscript>
+    <link rel="preload" as="style" href="style.css?theme=parking-motion-v4" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="style.css?theme=parking-motion-v4" /></noscript>
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -105,6 +118,9 @@
           <a href="https://www.cauc.or.kr/_parking/main.asp?no=1" target="_blank" rel="noopener noreferrer">공식 현황 ↗</a>
         </div>
         <div id="parking-grid" class="parking-grid" aria-live="polite"></div>
+        <div class="load-more-wrap"><button id="load-more-parking" class="load-more-button" type="button" hidden>더 많은 주차장 보기 <span id="load-more-count"></span><span aria-hidden="true">↓</span></button></div>
+        <div id="parking-load-sentinel" class="parking-load-sentinel" aria-hidden="true"></div>
+        <div class="load-more-wrap"><button id="load-more-parking" class="load-more-button" type="button" hidden>더 많은 주차장 보기 <span id="load-more-count"></span><span aria-hidden="true">↓</span></button></div>
         <div id="empty-state" class="empty-state" hidden>
           <span aria-hidden="true">⌕</span>
           <h3>검색 결과가 없어요</h3>

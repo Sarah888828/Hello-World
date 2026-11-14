@@ -65,8 +65,12 @@
         <div class="inquiry-list-heading"><div><p class="section-kicker">INQUIRY BOARD</p><h2 id="inquiry-list-title">문의 목록 <span id="inquiry-count" class="count-badge">0</span></h2></div>
           <label class="board-filter" for="category-filter"><span class="visually-hidden">문의 유형 필터</span><select id="category-filter" aria-label="문의 유형 필터"><option value="all">전체</option><option value="주차장 이용">주차장 이용</option><option value="요금·운영시간">요금·운영시간</option><option value="전기차 충전">전기차 충전</option><option value="정보 정정/제보">정보 정정/제보</option><option value="사이트 이용">사이트 이용</option><option value="기타">기타</option></select></label>
         </div>
-        <div id="inquiry-list" class="inquiry-list" aria-live="polite"></div>
-        <div id="inquiry-empty" class="inquiry-empty"><span class="empty-mark" aria-hidden="true"></span><h3>아직 등록된 문의가 없어요</h3><p>궁금한 점을 첫 문의로 남겨 주세요.</p></div>
+        <div id="inquiry-list" class="inquiry-list is-loading" aria-live="polite" aria-busy="true" aria-label="문의 목록 불러오는 중">
+          <div class="inquiry-skeleton" aria-hidden="true"><span class="skeleton-chip"></span><span class="skeleton-title"></span><span class="skeleton-line"></span><span class="skeleton-line short"></span></div>
+          <div class="inquiry-skeleton" aria-hidden="true"><span class="skeleton-chip"></span><span class="skeleton-title"></span><span class="skeleton-line"></span><span class="skeleton-line short"></span></div>
+          <div class="inquiry-skeleton" aria-hidden="true"><span class="skeleton-chip"></span><span class="skeleton-title"></span><span class="skeleton-line"></span><span class="skeleton-line short"></span></div>
+        </div>
+        <div id="inquiry-empty" class="inquiry-empty" hidden><span class="empty-mark" aria-hidden="true"></span><h3>아직 등록된 문의가 없어요</h3><p>궁금한 점을 첫 문의로 남겨 주세요.</p></div>
       </section>
     </main>
 

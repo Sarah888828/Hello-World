@@ -28,6 +28,7 @@ function formatDate(value) {
 }
 
 async function loadInquiries() {
+  inquiryList.classList.add("is-loading");
   inquiryList.setAttribute("aria-busy", "true");
   try {
     const response = await fetch("/api/inquiries");
@@ -35,6 +36,8 @@ async function loadInquiries() {
     if (!response.ok) throw new Error(result.error || "문의 목록을 불러오지 못했습니다.");
     renderInquiries(result.inquiries || []);
   } catch (error) {
+    inquiryList.classList.remove("is-loading");
+    inquiryList.replaceChildren();
     inquiryCount.textContent = "!";
     inquiryList.hidden = true;
     emptyState.hidden = false;
@@ -43,11 +46,14 @@ async function loadInquiries() {
     formMessage.textContent = error.message;
     formMessage.classList.add("error");
   } finally {
+    inquiryList.classList.remove("is-loading");
     inquiryList.removeAttribute("aria-busy");
+    inquiryList.removeAttribute("aria-label");
   }
 }
 
 function renderInquiries(inquiries) {
+  inquiryList.classList.remove("is-loading");
   const selectedCategory = categoryFilter.value;
   const filtered = inquiries.filter((item) => selectedCategory === "all" || item.category === selectedCategory);
 

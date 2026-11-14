@@ -241,6 +241,17 @@ let activeDistrictFilter = "all";
 let favoritesOnly = false;
 let parkingView = "list";
 const favoritesStorageKey = "buldang-parking-favorites-v1";
+const INITIAL_PARKING_BATCH = 12;
+const PARKING_BATCH_SIZE = 12;
+let visibleParkingLimit = INITIAL_PARKING_BATCH;
+let currentVisibleLotIds = "";
+let currentVisibleLotCount = 0;
+let parkingLoadObserver;
+
+function revealNextParkingBatch() {
+  visibleParkingLimit = Math.min(visibleParkingLimit + PARKING_BATCH_SIZE, currentVisibleLotCount);
+  renderParkingLots();
+}
 
 function getFavoriteIds() {
   try {
@@ -276,6 +287,8 @@ function initializeHomepage() {
   const parkingMapView = document.querySelector("#parking-map-view");
   const parkingMapLinks = document.querySelector("#parking-map-links");
   const districtFilter = document.querySelector("#district-filter");
+  const loadMoreButton = document.querySelector("#load-more-parking");
+  const loadSentinel = document.querySelector("#parking-load-sentinel");
   parkingDialog = document.querySelector("#parking-dialog");
 
   if (!parkingGrid || !searchInput || !searchButton || !sortSelect || !resultCount || !emptyState || !parkingDialog) return;
@@ -315,6 +328,17 @@ function initializeHomepage() {
     activeDistrictFilter = districtFilter.value;
     renderParkingLots();
   });
+  loadMoreButton?.addEventListener("click", () => {
+    revealNextParkingBatch();
+  });
+  if (loadSentinel && "IntersectionObserver" in window) {
+    parkingLoadObserver = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting) && visibleParkingLimit < currentVisibleLotCount) {
+        revealNextParkingBatch();
+      }
+    }, { rootMargin: "500px 0px", threshold: 0 });
+    parkingLoadObserver.observe(loadSentinel);
+  }
 
   searchInput.addEventListener("input", renderParkingLots);
   searchButton.addEventListener("click", renderParkingLots);
@@ -451,13 +475,34 @@ function renderParkingDetailPage(lot) {
 
 function renderParkingLots() {
   const visibleLots = getVisibleLots();
+  const visibleLotIds = visibleLots.map((lot) => lot.id).join("|");
+  if (visibleLotIds !== currentVisibleLotIds) {
+    currentVisibleLotIds = visibleLotIds;
+    visibleParkingLimit = INITIAL_PARKING_BATCH;
+  }
+  const renderedLots = visibleLots.slice(0, visibleParkingLimit);
+  currentVisibleLotCount = visibleLots.length;
   updateFavoritesCount(document.querySelector("#favorites-count"));
   resultCount.textContent = String(visibleLots.length).padStart(2, "0");
+  const resultsSummary = document.querySelector("#results-summary");
+  if (resultsSummary) {
+    resultsSummary.textContent = visibleLots.length > renderedLots.length
+      ? `${visibleLots.length}곳 중 ${renderedLots.length}곳 표시`
+      : `${visibleLots.length}곳`;
+  }
+  const loadMoreButton = document.querySelector("#load-more-parking");
+  const loadMoreCount = document.querySelector("#load-more-count");
+  if (loadMoreButton) {
+    const remaining = visibleLots.length - renderedLots.length;
+    loadMoreButton.hidden = remaining <= 0;
+    loadMoreButton.setAttribute("aria-label", `주차장 ${Math.min(remaining, PARKING_BATCH_SIZE)}곳 더 보기`);
+    if (loadMoreCount) loadMoreCount.textContent = remaining > 0 ? `(${remaining}곳 남음)` : "";
+  }
   emptyState.hidden = visibleLots.length > 0;
   parkingGrid.hidden = visibleLots.length === 0 || parkingView !== "list";
   const mapView = document.querySelector("#parking-map-view");
   if (mapView) mapView.hidden = parkingView !== "map";
-  parkingGrid.innerHTML = visibleLots.map((lot) => `
+  parkingGrid.innerHTML = renderedLots.map((lot) => `
       <article class="parking-card motion-enter">
       <div class="card-topline">
         <span class="type-tag ${getCardTypeClass(lot)}">${escapeHtml(lot.typeLabel)}</span>
