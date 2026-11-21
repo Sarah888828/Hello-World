@@ -108,13 +108,14 @@ export async function createMeasurementMap(container, onMeasure, onClear) {
       board.classList.add("has-two-points");
       const meters = haversineMeters(points[0], points[1]);
       status.textContent = `두 지점의 개략 직선거리 · ${meters >= 1000 ? `${(meters / 1000).toFixed(2)} km` : `${Math.round(meters)} m`}. 실제 좌표·도로거리가 아닙니다.`;
-      onMeasure?.(meters);
+      onMeasure?.(meters, points.map((point) => ({ lat: point.latitude, lng: point.longitude })));
     } else {
       board.classList.remove("has-two-points");
       svgLine.setAttribute("x1", "0");
       svgLine.setAttribute("y1", "0");
       svgLine.setAttribute("x2", "0");
       svgLine.setAttribute("y2", "0");
+      onMeasure?.(null, null);
       onClear?.();
       status.textContent = `개략 선택판에서 ${points[0] ? "출발지는 선택됨 · 도착지" : "출발지"} 위치를 선택하세요.`;
     }
